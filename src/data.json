@@ -10,5 +10,14 @@
 			"operators": ["is", "is not"]
 		}
 	},
-	"Impression attributes": {}
+	"Impression attributes": {
+		"111": {
+			"values": ["123", "134", "156"],
+			"operators": ["is", "is not"]
+		},
+		"222": {
+			"values": ["234"],
+			"operators": ["is", "is"]
+		}
+	}
 }

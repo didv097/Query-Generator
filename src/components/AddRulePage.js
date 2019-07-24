@@ -44,7 +44,6 @@ export default function AddRulePage() {
 	const [selectedAttribute, setAttribute] = React.useState("")
 	const [selectedOperator, setOperator] = React.useState("");
 	const [searchText, setSearchText] = React.useState("");
-	// const [selectedValue, setValue] = React.useState("");
 	const [addedValues, setAddedValues] = React.useState("");
 	
 	const daysChanged = (event, d) => {
@@ -77,7 +76,13 @@ export default function AddRulePage() {
 		setOperator(event.target.value);
 	}
 	const searchChanged = event => {
-		setSearchText(event.target.value);
+		const newVal = event.target.value;
+		setSearchText(newVal);
+		setAddedValues(
+			data[selectedAttType][selectedAttribute]["values"].filter(v => {
+				return newVal.length === 0 ? false : v.toLowerCase().indexOf(newVal.toLowerCase()) !== -1;
+			})
+		);
 	}
 	
 	const addRule = () => {
@@ -339,7 +344,9 @@ export default function AddRulePage() {
 					</Grid>
 				</Grid>
 				<Grid item xs={2}>
-					<h1>Reports</h1>
+					<Box style={{backgroundColor: "gray"}} width="100%" height="700px" position="absolute" p={1}>
+						<h1>Report</h1>
+					</Box>
 				</Grid>
 			</Grid>
 		</Box>
