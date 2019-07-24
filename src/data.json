@@ -1,10 +1,14 @@
 {
-	"Device Type": {
-		"values": ["Desktop", "Mobile", "Tablet", "Other"],
-		"operators": ["is", "is not"]
+	"User attributes": {},
+	"Page view attributes": {
+		"Device Type": {
+			"values": ["Desktop", "Mobile", "Tablet", "Other"],
+			"operators": ["is", "is not"]
+		},
+		"City": {
+			"values": ["Barrie", "Belleville", "Brampton"],
+			"operators": ["is", "is not"]
+		}
 	},
-	"City": {
-		"values": ["Barrie", "Belleville", "Brampton"],
-		"operators": ["is", "is not"]
-	}
+	"Impression attributes": {}
 }

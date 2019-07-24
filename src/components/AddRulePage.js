@@ -22,31 +22,56 @@ import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import SearchIcon from '@material-ui/icons/Search';
 import AddCircleIcon from '@material-ui/icons/AddCircle';
 import RemoveCircleIcon from '@material-ui/icons/RemoveCircle';
+import EditIcon from '@material-ui/icons/Edit';
 
 import data from '../data.json'
-let attributes = [];
-for (let k in data) attributes.push(k)
+const attTypes = [];
+const attributes = {};
+for (let at in data) {
+	attTypes.push(at);
+	attributes[at] = [];
+	for (let a in data[at]) {
+		attributes[at].push(a);
+	}
+}
+console.log(attributes)
 
 export default function AddRulePage() {
-	const dataTypes = ["User attributes", "Page view attributes", "Impression attributes"];
-	const [expanded, setExpanded] = React.useState(false);
+
+	const [days, setDays] = React.useState(0);
 	const [rules, setRules] = React.useState([]);
-	const [selectedAttribute, setAttribute] = React.useState("City")
+	const [selectedAttType, setAttType] = React.useState("");
+	const [selectedAttribute, setAttribute] = React.useState("")
 	const [selectedOperator, setOperator] = React.useState("");
 	const [searchText, setSearchText] = React.useState("");
-	const [selectedValue, setValue] = React.useState("");
-
-	const expansionChange = panel => (event, isExpanded) => {
-		setExpanded(isExpanded ? panel : false);
+	// const [selectedValue, setValue] = React.useState("");
+	const [addedValues, setAddedValues] = React.useState("");
+	
+	const daysChanged = (event, d) => {
+		setDays(d);
+	}
+	const expansionChange = attType => (event, isExpanded) => {
+		setAttType(isExpanded ? attType : "");
+		setAttribute("");
+		setOperator("");
+		setAddedValues([]);
 	}
 	const attributeItemClick = (event, val) => {
 		setAttribute(val);
-	}
-	const valueItemClick = (event, val) => {
-		setValue(val);
+		setOperator("");
+		setAddedValues([]);
 	}
 	const valuePlusClick = (event, val) => {
-		setValue(val);
+		if (addedValues.indexOf(val) === -1) {
+			setAddedValues([
+				...addedValues, val
+			]);
+		}
+	}
+	const valueMinusClick = (event, val) => {
+		setAddedValues(addedValues.filter(v => {
+			return val !== v;
+		}))
 	}
 	const operatorChanged = event => {
 		setOperator(event.target.value);
@@ -54,20 +79,30 @@ export default function AddRulePage() {
 	const searchChanged = event => {
 		setSearchText(event.target.value);
 	}
-
-	const addRule = (att, value) => {
-		setRules([
-			...rules, 
-			{
-				id: rules.length, 
-				value: {
-					att: att,
-					value: value
-				}
-			}
-		]);
+	
+	const addRule = () => {
+		const newRule = {
+			attType: selectedAttType,
+			attribute: selectedAttribute,
+			operator: selectedOperator,
+			values: addedValues
+		};
+		if (rules.filter(r => {
+			return r.attribute === selectedAttribute;
+		}).length === 0) {
+			setRules([...rules, newRule]);
+		}
 	}
-
+	const removeRule = (rule) => {
+		setRules(rules.filter(r => {
+			return rule.attType !== r.attType || rule.attribute !== r.attribute || rule.operator !== r.operator;
+		}))
+		setAttType(rule.attType);
+		setAttribute(rule.attribute);
+		setOperator(rule.operator);
+		setAddedValues(rule.values);
+	}
+	
 	return (
 		<Box>
 			<Grid
@@ -101,7 +136,7 @@ export default function AddRulePage() {
 							<Box justifyContent="flex-start" m={1}>
 								<Box justifyContent="flex-start" m={1} mb={3}>
 									<Typography>TIME</Typography>
-									<Chip label="No time selected" />
+									<Chip label={days === 0 ? "No time selected": "Past " + days + " days"} />
 									<Grid container spacing={1}>
 										<Grid item>
 											<Typography variant="caption">0 days</Typography>
@@ -109,8 +144,10 @@ export default function AddRulePage() {
 										<Grid item xs>
 											<Slider
 												aria-labelledby="continuous-slider"
+												value={days}
 												min={0}
 												max={90}
+												onChange={daysChanged}
 											/>
 										</Grid>
 										<Grid item>
@@ -120,17 +157,18 @@ export default function AddRulePage() {
 								</Box>
 								<Box justifyContent="flex-start" m={1}>
 									<Typography>DATA</Typography>
-									{dataTypes.map(dataType => (
-										<ExpansionPanel expanded={expanded === dataType} onChange={expansionChange(dataType)}>
+									{attTypes.map(attType => (
+										<ExpansionPanel key={attType} expanded={selectedAttType === attType} onChange={expansionChange(attType)}>
 											<ExpansionPanelSummary
 												expandIcon={<ExpandMoreIcon />}
 											>
-												{dataType}
+												{attType}
 											</ExpansionPanelSummary>
 											<ExpansionPanelDetails>
 												<List>
-													{attributes.map(att => (
+													{attributes[attType].map(att => (
 														<ListItem
+															key={att}
 															button
 															selected = {selectedAttribute === att}
 															onClick = {event => attributeItemClick(event, att)}
@@ -148,21 +186,43 @@ export default function AddRulePage() {
 						<Grid item xs={9} m={1}>
 							<Box justifyContent="flex-start" m={1} mb={3}>
 								<Typography>RULES</Typography>
-								<Paper>
+								<Paper style={{height: "70px"}}>
+								{rules.length === 0 ? (
 									<Box p={2}>
-										<Typography>Rules will appear here after being created in the ADD RULE section below</Typography>
+										<Typography style={{textAlign: "center"}}>Rules will appear here after being created in the ADD RULE section below</Typography>
 									</Box>
+								) : (
+									<Box m={1}>
+										{rules.map(rule => (
+											<Box key={rule.attribute} m={1} p={0} style={{backgroundColor: "#bbb", display: "inline-block"}}>
+												<Typography variant="caption" style={{margin: "0"}}>
+													{rule.attribute + " " + rule.operator + " " + rule.values}
+												</Typography>
+												<IconButton id="134" size="small" style={{margin: "0"}} onClick={event => removeRule(rule)}>
+													<EditIcon/>
+												</IconButton>
+											</Box>
+										))}
+									</Box>
+								)}
+									
 								</Paper>
 							</Box>
 							<Box justifyContent="flex-start" m={1}>
 								<Typography>ADD RULE</Typography>
-								<Paper>
+
+								<Paper style={{height: "400px"}}>
+								{days === 0 || selectedAttribute === "" ? (
+									<Box style={{padding: "140px"}}>
+										<Typography variant="h6" style={{textAlign: "center"}}>Select a time frame and data attribute from the left to begin</Typography>
+									</Box>
+								) : (
 									<Box p={2}>
 										<Grid container direction="column" spacing={1} m={2}>
 											<Grid item xs>
-												<div>
-													<Typography>City</Typography>
-												</div>
+												<Box m={1}>
+													<Typography>{selectedAttribute}</Typography>
+												</Box>
 											</Grid>
 											<Grid item>
 												<Grid container direction="row" justify="flex-start" alignItems="flex-end">
@@ -174,8 +234,8 @@ export default function AddRulePage() {
 																value={selectedOperator}
 																onChange={operatorChanged}
 															>
-																{data[selectedAttribute]["operators"].map(op => (
-																	<MenuItem value={op}>
+																{data[selectedAttType][selectedAttribute]["operators"].map(op => (
+																	<MenuItem key={op} value={op}>
 																		<Typography>{op}</Typography>
 																	</MenuItem>
 																))}
@@ -201,19 +261,15 @@ export default function AddRulePage() {
 													<Grid item xs={6}>
 														<Box m={1}>
 															<List component="nav">
-																{data[selectedAttribute]["values"].map(val => (
-																	<ListItem
-																		button
-																		selected={selectedValue === val}
-																		onClick={event => valueItemClick(event, val)}
-																	>
+																{data[selectedAttType][selectedAttribute]["values"].map(val => (
+																	<ListItem key={val} button>
 																		<ListItemText primary={val}></ListItemText>
 																		<ListItemSecondaryAction>
 																			<IconButton
 																				edge="end"
 																				onClick={event => valuePlusClick(event, val)}
 																			>
-																				<AddCircleIcon></AddCircleIcon>
+																				<AddCircleIcon/>
 																			</IconButton>
 																		</ListItemSecondaryAction>
 																	</ListItem>
@@ -224,7 +280,19 @@ export default function AddRulePage() {
 													<Grid item xs={6}>
 														<Box m={1}>
 															<List component="nav">
-																
+																{addedValues.map(val => (
+																	<ListItem key={val} button>
+																		<ListItemText primary={val}/>
+																		<ListItemSecondaryAction>
+																			<IconButton
+																				edge="end"
+																				onClick={event => valueMinusClick(event, val)}
+																			>
+																				<RemoveCircleIcon/>
+																			</IconButton>
+																		</ListItemSecondaryAction>
+																	</ListItem>
+																))}
 															</List>
 														</Box>
 													</Grid>
@@ -232,6 +300,7 @@ export default function AddRulePage() {
 											</Grid>
 										</Grid>
 									</Box>
+								)}
 								</Paper>
 							</Box>
 							<Box justifyContent="flex-start" m={1}>
@@ -245,6 +314,8 @@ export default function AddRulePage() {
 										<Box m={1}>
 											<Button
 												variant="contained"
+												disabled={selectedAttribute === "" || selectedOperator === "" || addedValues.length === 0}
+												onClick={addRule}
 											>
 												<i className="material-icons">add</i>
 												Add Rule
@@ -253,7 +324,13 @@ export default function AddRulePage() {
 									</Grid>
 									<Grid item>
 										<Box m={1}>
-											<Button variant="contained" color="primary">Done</Button>
+											<Button
+												variant="contained"
+												color="primary"
+												disabled
+											>
+												Done
+											</Button>
 										</Box>
 									</Grid>
 								</Grid>
@@ -262,7 +339,7 @@ export default function AddRulePage() {
 					</Grid>
 				</Grid>
 				<Grid item xs={2}>
-					<h1>33333</h1>
+					<h1>Reports</h1>
 				</Grid>
 			</Grid>
 		</Box>
