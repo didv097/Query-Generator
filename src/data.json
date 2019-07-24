@@ -1,0 +1,10 @@
+{
+	"Device Type": {
+		"values": ["Desktop", "Mobile", "Tablet", "Other"],
+		"operators": ["is", "is not"]
+	},
+	"City": {
+		"value": ["Barrie", "Belleville", "Brampton"],
+		"operators": ["is", "is not"]
+	}
+}
