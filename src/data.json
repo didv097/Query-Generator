@@ -4,7 +4,7 @@
 		"operators": ["is", "is not"]
 	},
 	"City": {
-		"value": ["Barrie", "Belleville", "Brampton"],
+		"values": ["Barrie", "Belleville", "Brampton"],
 		"operators": ["is", "is not"]
 	}
 }
