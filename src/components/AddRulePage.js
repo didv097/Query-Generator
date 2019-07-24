@@ -150,7 +150,7 @@ export default function AddRulePage() {
 								<Typography>RULES</Typography>
 								<Paper>
 									<Box p={2}>
-										<Typography variant="caption">Rules will appear here after being created in the ADD RULE section below</Typography>
+										<Typography>Rules will appear here after being created in the ADD RULE section below</Typography>
 									</Box>
 								</Paper>
 							</Box>
@@ -233,6 +233,30 @@ export default function AddRulePage() {
 										</Grid>
 									</Box>
 								</Paper>
+							</Box>
+							<Box justifyContent="flex-start" m={1}>
+								<Grid
+									container
+									direction="row"
+									justify="flex-end"
+									alignContent="flex-end"
+								>
+									<Grid item>
+										<Box m={1}>
+											<Button
+												variant="contained"
+											>
+												<i className="material-icons">add</i>
+												Add Rule
+											</Button>
+										</Box>
+									</Grid>
+									<Grid item>
+										<Box m={1}>
+											<Button variant="contained" color="primary">Done</Button>
+										</Box>
+									</Grid>
+								</Grid>
 							</Box>
 						</Grid>
 					</Grid>
