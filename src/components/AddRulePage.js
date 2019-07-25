@@ -303,6 +303,7 @@ export default function AddRulePage() {
 														fullWidth
 														multiline
 														variant="outlined"
+														placeholder="Enter your comma separated list of values here ..."
 														value={valueStr}
 														onChange={valueStrChanged}
 														rows="10"
