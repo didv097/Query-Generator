@@ -1,29 +1,31 @@
 import React from 'react';
 import {
 	Grid,
-	Button,
 	Box,
-	Chip,
+	Paper,
 	Typography,
+	Button,
+	Chip,
 	Slider,
 	ExpansionPanel,
 	ExpansionPanelSummary,
 	ExpansionPanelDetails,
 	List,
 	ListItem,
-	Paper,
-	MenuItem,
-	TextField,
 	ListItemText,
 	ListItemSecondaryAction,
+	MenuItem,
+	TextField,
 	IconButton,
 	Modal
 } from '@material-ui/core';
-import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
-import SearchIcon from '@material-ui/icons/Search';
-import AddCircleIcon from '@material-ui/icons/AddCircle';
-import RemoveCircleIcon from '@material-ui/icons/RemoveCircle';
-import EditIcon from '@material-ui/icons/Edit';
+import {
+	ExpandMore,
+	Search,
+	AddCircle,
+	RemoveCircle,
+	Edit
+} from '@material-ui/icons'
 
 import data from '../data.json'
 const attTypes = [];
@@ -35,7 +37,9 @@ for (let at in data) {
 		attributes[at].push(a);
 	}
 }
+let prevRuleIndex = 0;
 let newRule = {
+	index: -1,
 	attType: "",
 	attribute: "",
 	operator: "",
@@ -44,12 +48,13 @@ let newRule = {
 
 export default function AddRulePage() {
 
-	const [days, setDays] = React.useState(0);
+	const [days, setDays] = React.useState(90);
 	const [rules, setRules] = React.useState([]);
 	const [selectedAttType, setAttType] = React.useState("");
 	const [selectedAttribute, setAttribute] = React.useState("")
 	const [selectedOperator, setOperator] = React.useState("");
 	const [searchText, setSearchText] = React.useState("");
+	const [values, setValues] = React.useState([]);
 	const [addedValues, setAddedValues] = React.useState("");
 	const [modalOpened, setModalOpened] = React.useState(false);
 
@@ -65,7 +70,8 @@ export default function AddRulePage() {
 	}
 	const attributeItemClick = (event, val) => {
 		setAttribute(val);
-		setOperator("");
+		setOperator(data[selectedAttType][val]["operators"][0]);
+		setValues(data[selectedAttType][val]["values"]);
 		setAddedValues([]);
 		setSearchText("");
 	}
@@ -75,13 +81,11 @@ export default function AddRulePage() {
 				...addedValues, val
 			]);
 		}
-		setSearchText("");
 	}
 	const valueMinusClick = (event, val) => {
 		setAddedValues(addedValues.filter(v => {
 			return val !== v;
 		}))
-		setSearchText("");
 	}
 	const operatorChanged = event => {
 		setOperator(event.target.value);
@@ -89,36 +93,35 @@ export default function AddRulePage() {
 	const searchChanged = event => {
 		const newVal = event.target.value;
 		setSearchText(newVal);
-		// if (newVal === "") {
-		// 	return;
-		// }
-		setAddedValues(
+		setValues(
 			data[selectedAttType][selectedAttribute]["values"].filter(v => {
-				return newVal === "" ? false : v.toLowerCase().indexOf(newVal.toLowerCase()) !== -1;
+				return v.toLowerCase().indexOf(newVal.toLowerCase()) !== -1;
 			})
 		);
 	}
 	const modalOK = () => {
 		setModalOpened(false);
 		setRules([...rules, newRule]);
+		setAddedValues([]);
 	}
 	
 	const addRule = () => {
 		newRule = {
+			index: prevRuleIndex++,
 			attType: selectedAttType,
 			attribute: selectedAttribute,
 			operator: selectedOperator,
 			values: addedValues
 		};
-		if (rules.filter(r => {
-			return r.attribute === selectedAttribute;
-		}).length === 0) {
+		// if (rules.filter(r => {
+		// 	return r.attribute === selectedAttribute;
+		// }).length === 0) {
 			setModalOpened(true);
-		}
+		// }
 	}
 	const removeRule = (rule) => {
 		setRules(rules.filter(r => {
-			return rule.attType !== r.attType || rule.attribute !== r.attribute || rule.operator !== r.operator;
+			return rule.index !== r.index;
 		}))
 		setAttType(rule.attType);
 		setAttribute(rule.attribute);
@@ -141,12 +144,6 @@ export default function AddRulePage() {
 							<Button variant="contained" size="small" color="default" href="/SegmentsPage">
 								<i className="material-icons">file_copy</i>
 								Segments
-							</Button>
-						</Box>
-						<Box m={1} display="inline">
-							<Button variant="contained" size="small" color="default" href="/">
-								<i className="material-icons">add</i>
-								New segment
 							</Button>
 						</Box>
 					</Box>
@@ -184,7 +181,7 @@ export default function AddRulePage() {
 									{attTypes.map(attType => (
 										<ExpansionPanel key={attType} expanded={selectedAttType === attType} onChange={expansionChange(attType)}>
 											<ExpansionPanelSummary
-												expandIcon={<ExpandMoreIcon />}
+												expandIcon={<ExpandMore />}
 											>
 												{attType}
 											</ExpansionPanelSummary>
@@ -218,14 +215,14 @@ export default function AddRulePage() {
 								) : (
 									<Box m={1}>
 										{rules.map(rule => (
-											<Box key={rule.attribute} m={1} p={0} style={{backgroundColor: "#bbb", display: "inline-block"}}>
+											<Box key={rule} m={1} p={0} style={{backgroundColor: "#bbb", display: "inline-block"}}>
 												<Typography variant="caption" style={{margin: "0"}}>
 													<strong>{rule.attribute + " "}</strong>
 													{rule.operator}
 													<strong>{" " + rule.values}</strong>
 												</Typography>
 												<IconButton id="134" size="small" style={{margin: "0"}} onClick={event => removeRule(rule)}>
-													<EditIcon/>
+													<Edit />
 												</IconButton>
 											</Box>
 										))}
@@ -277,7 +274,7 @@ export default function AddRulePage() {
 																placeholder="Search values..."
 															>
 															</TextField>
-															<SearchIcon/>
+															<Search />
 														</Box>
 													</Grid>
 												</Grid>
@@ -285,9 +282,9 @@ export default function AddRulePage() {
 											<Grid item>
 												<Grid container direction="row">
 													<Grid item xs={6}>
-														<Box m={1}>
+														<Box style={{maxHeight: "250px", overflow: "auto"}} m={1}>
 															<List component="nav">
-																{data[selectedAttType][selectedAttribute]["values"].map(val => (
+																{values.map(val => (
 																	<ListItem key={val} button>
 																		<ListItemText primary={val}></ListItemText>
 																		<ListItemSecondaryAction>
@@ -295,7 +292,7 @@ export default function AddRulePage() {
 																				edge="end"
 																				onClick={event => valuePlusClick(event, val)}
 																			>
-																				<AddCircleIcon/>
+																				<AddCircle />
 																			</IconButton>
 																		</ListItemSecondaryAction>
 																	</ListItem>
@@ -304,7 +301,7 @@ export default function AddRulePage() {
 														</Box>
 													</Grid>
 													<Grid item xs={6}>
-														<Box m={1}>
+														<Box style={{maxHeight: "250px", overflow: "auto"}} m={1}>
 															<List component="nav">
 																{addedValues.map(val => (
 																	<ListItem key={val} button>
@@ -314,7 +311,7 @@ export default function AddRulePage() {
 																				edge="end"
 																				onClick={event => valueMinusClick(event, val)}
 																			>
-																				<RemoveCircleIcon/>
+																				<RemoveCircle />
 																			</IconButton>
 																		</ListItemSecondaryAction>
 																	</ListItem>
