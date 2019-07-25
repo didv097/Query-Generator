@@ -16,7 +16,8 @@ import {
 	TextField,
 	ListItemText,
 	ListItemSecondaryAction,
-	IconButton
+	IconButton,
+	Modal
 } from '@material-ui/core';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import SearchIcon from '@material-ui/icons/Search';
@@ -34,6 +35,12 @@ for (let at in data) {
 		attributes[at].push(a);
 	}
 }
+let newRule = {
+	attType: "",
+	attribute: "",
+	operator: "",
+	value: ""
+};
 
 export default function AddRulePage() {
 
@@ -44,7 +51,8 @@ export default function AddRulePage() {
 	const [selectedOperator, setOperator] = React.useState("");
 	const [searchText, setSearchText] = React.useState("");
 	const [addedValues, setAddedValues] = React.useState("");
-	
+	const [modalOpened, setModalOpened] = React.useState(false);
+
 	const daysChanged = (event, d) => {
 		setDays(d);
 	}
@@ -90,9 +98,13 @@ export default function AddRulePage() {
 			})
 		);
 	}
+	const modalOK = () => {
+		setModalOpened(false);
+		setRules([...rules, newRule]);
+	}
 	
 	const addRule = () => {
-		const newRule = {
+		newRule = {
 			attType: selectedAttType,
 			attribute: selectedAttribute,
 			operator: selectedOperator,
@@ -101,7 +113,7 @@ export default function AddRulePage() {
 		if (rules.filter(r => {
 			return r.attribute === selectedAttribute;
 		}).length === 0) {
-			setRules([...rules, newRule]);
+			setModalOpened(true);
 		}
 	}
 	const removeRule = (rule) => {
@@ -208,7 +220,9 @@ export default function AddRulePage() {
 										{rules.map(rule => (
 											<Box key={rule.attribute} m={1} p={0} style={{backgroundColor: "#bbb", display: "inline-block"}}>
 												<Typography variant="caption" style={{margin: "0"}}>
-													{rule.attribute + " " + rule.operator + " " + rule.values}
+													<strong>{rule.attribute + " "}</strong>
+													{rule.operator}
+													<strong>{" " + rule.values}</strong>
 												</Typography>
 												<IconButton id="134" size="small" style={{margin: "0"}} onClick={event => removeRule(rule)}>
 													<EditIcon/>
@@ -355,6 +369,32 @@ export default function AddRulePage() {
 					<Box style={{backgroundColor: "gray"}} width="100%" height="700px" position="absolute" p={1}/>
 				</Grid>
 			</Grid>
+			<Modal
+				open={modalOpened}
+				// onClose={modalClosed}
+			>
+				<Paper
+					style={{textAlign: "center", height: "200px", width: "400px", position: "absolute", left: "50%", top: "50%", marginLeft: "-200px", marginTop: "-100px"}}
+				>
+					<Box m={5}>
+						<Grid container direction="column">
+							<Grid item>
+								<Typography style={{margin: "10px"}} variant="h6">Added Rule</Typography>
+							</Grid>
+							<Grid item>
+								<Typography style={{margin: "10px"}}>
+									<strong>{newRule.attribute + " "}</strong>
+									{newRule.operator}
+									<strong>{" " + newRule.values}</strong>
+								</Typography>
+							</Grid>
+							<Grid item>
+								<Button style={{margin: "10px", width: "100px"}} variant="contained" onClick={modalOK}>Ok</Button>
+							</Grid>
+						</Grid>
+					</Box>
+				</Paper>
+			</Modal>
 		</Box>
   )
 }
