@@ -351,9 +351,7 @@ export default function AddRulePage() {
 					</Grid>
 				</Grid>
 				<Grid item xs={2}>
-					<Box style={{backgroundColor: "gray"}} width="100%" height="700px" position="absolute" p={1}>
-						<h1>Report</h1>
-					</Box>
+					<Box style={{backgroundColor: "gray"}} width="100%" height="700px" position="absolute" p={1}/>
 				</Grid>
 			</Grid>
 		</Box>
