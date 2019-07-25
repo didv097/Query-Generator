@@ -126,13 +126,13 @@ export default function AddRulePage() {
 				<Grid item xs={10}>
 					<Box m={1} mb={5}>
 						<Box m={1} display="inline">
-							<Button variant="contained" size="small" color="default">
+							<Button variant="contained" size="small" color="default" href="/SegmentsPage">
 								<i className="material-icons">file_copy</i>
 								Segments
 							</Button>
 						</Box>
 						<Box m={1} display="inline">
-							<Button variant="contained" size="small" color="default">
+							<Button variant="contained" size="small" color="default" href="/">
 								<i className="material-icons">add</i>
 								New segment
 							</Button>
@@ -339,7 +339,8 @@ export default function AddRulePage() {
 											<Button
 												variant="contained"
 												color="primary"
-												disabled
+												disabled={rules.length === 0}
+												href="/SegmentDetailsPage"
 											>
 												Done
 											</Button>
