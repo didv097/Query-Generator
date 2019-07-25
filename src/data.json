@@ -12,7 +12,7 @@
 	},
 	"Impression attributes": {
 		"111": {
-			"values": ["123", "134", "156"],
+			"values": [],
 			"operators": ["is", "is not"]
 		},
 		"222": {

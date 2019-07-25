@@ -51,11 +51,13 @@ export default function AddRulePage() {
 	const [rules, setRules] = React.useState([]);
 	const [selectedAttType, setAttType] = React.useState("");
 	const [selectedAttribute, setAttribute] = React.useState("")
+	const [valueStr, setValueStr] = React.useState("");
 	const [selectedOperator, setOperator] = React.useState("");
 	const [searchText, setSearchText] = React.useState("");
 	const [values, setValues] = React.useState([]);
-	const [addedValues, setAddedValues] = React.useState("");
+	let [selectedValues, setSelectedValues] = React.useState([]);
 	const [modalOpened, setModalOpened] = React.useState(false);
+	const [freeInput, setFreeInput] = React.useState(false);
 
 	const daysChanged = (event, d) => {
 		setDays(d);
@@ -64,25 +66,33 @@ export default function AddRulePage() {
 		setAttType(isExpanded ? attType : "");
 		setAttribute("");
 		setOperator("");
-		setAddedValues([]);
+		setSelectedValues([]);
 		setSearchText("");
 	}
 	const attributeItemClicked = (event, val) => {
 		setAttribute(val);
 		setOperator(data[selectedAttType][val]["operators"][0]);
-		setValues(data[selectedAttType][val]["values"]);
-		setAddedValues([]);
+		if (data[selectedAttType][val]["values"].length === 0) {
+			setFreeInput(true);
+			setValues([]);
+			setValueStr("");
+		} else {
+			setFreeInput(false);
+			setValues(data[selectedAttType][val]["values"]);
+			setValueStr("");
+		}
+		setSelectedValues([]);
 		setSearchText("");
 	}
 	const valuePlusClicked = (event, val) => {
-		if (addedValues.indexOf(val) === -1) {
-			setAddedValues([
-				...addedValues, val
+		if (selectedValues.indexOf(val) === -1) {
+			setSelectedValues([
+				...selectedValues, val
 			]);
 		}
 	}
 	const valueMinusClicked = (event, val) => {
-		setAddedValues(addedValues.filter(v => {
+		setSelectedValues(selectedValues.filter(v => {
 			return val !== v;
 		}))
 	}
@@ -90,6 +100,9 @@ export default function AddRulePage() {
 		setOperator(event.target.value);
 	}
 	const searchChanged = event => {
+		if (freeInput) {
+			return;
+		}
 		const newVal = event.target.value;
 		setSearchText(newVal);
 		setValues(
@@ -98,10 +111,13 @@ export default function AddRulePage() {
 			})
 		);
 	}
+	const valueStrChanged = event => {
+		setValueStr(event.target.value);
+	}
 	const modalOKClicked = () => {
 		setModalOpened(false);
 		setRules([...rules, newRule]);
-		setAddedValues([]);
+		setSelectedValues([]);
 	}
 	
 	const addRule = () => {
@@ -110,13 +126,9 @@ export default function AddRulePage() {
 			attType: selectedAttType,
 			attribute: selectedAttribute,
 			operator: selectedOperator,
-			values: addedValues
+			values: freeInput ? valueStr.replace(/ /g, "").split(",") : selectedValues
 		};
-		// if (rules.filter(r => {
-		// 	return r.attribute === selectedAttribute;
-		// }).length === 0) {
-			setModalOpened(true);
-		// }
+		setModalOpened(true);
 	}
 	const removeRule = (rule) => {
 		setRules(rules.filter(r => {
@@ -125,7 +137,13 @@ export default function AddRulePage() {
 		setAttType(rule.attType);
 		setAttribute(rule.attribute);
 		setOperator(rule.operator);
-		setAddedValues(rule.values);
+		if (data[rule.attType][rule.attribute]["values"].length === 0) {
+			setFreeInput(true);
+			setValueStr(rule.values.join());
+		} else {
+			setFreeInput(false);
+			setSelectedValues(rule.values);
+		}
 		setSearchText("");
 	}
 	
@@ -214,7 +232,7 @@ export default function AddRulePage() {
 								) : (
 									<Box m={1}>
 										{rules.map(rule => (
-											<Box key={rule} m={1} p={0} style={{backgroundColor: "#bbb", display: "inline-block"}}>
+											<Box key={rule.index} m={1} p={0} style={{backgroundColor: "#bbb", display: "inline-block"}}>
 												<Typography variant="caption" style={{margin: "0"}}>
 													<strong>{rule.attribute + " "}</strong>
 													{rule.operator}
@@ -279,6 +297,18 @@ export default function AddRulePage() {
 												</Grid>
 											</Grid>
 											<Grid item>
+											{freeInput ? (
+												<Box style={{width: "100%", height: "100%"}}>
+													<TextField
+														fullWidth
+														multiline
+														variant="outlined"
+														value={valueStr}
+														onChange={valueStrChanged}
+														rows="10"
+													/>
+												</Box>
+											) : (
 												<Grid container direction="row">
 													<Grid item xs={6}>
 														<Box style={{maxHeight: "250px", overflow: "auto"}} m={1}>
@@ -302,7 +332,7 @@ export default function AddRulePage() {
 													<Grid item xs={6}>
 														<Box style={{maxHeight: "250px", overflow: "auto"}} m={1}>
 															<List component="nav">
-																{addedValues.map(val => (
+																{selectedValues.map(val => (
 																	<ListItem key={val} button>
 																		<ListItemText primary={val}/>
 																		<ListItemSecondaryAction>
@@ -319,6 +349,7 @@ export default function AddRulePage() {
 														</Box>
 													</Grid>
 												</Grid>
+											)}
 											</Grid>
 										</Grid>
 									</Box>
@@ -336,7 +367,11 @@ export default function AddRulePage() {
 										<Box m={1}>
 											<Button
 												variant="contained"
-												disabled={selectedAttribute === "" || selectedOperator === "" || addedValues.length === 0}
+												disabled={
+													selectedAttribute === "" ||
+														selectedOperator === "" ||
+														(selectedValues.length === 0 && valueStr === "")
+												}
 												onClick={addRule}
 											>
 												<i className="material-icons">add</i>
