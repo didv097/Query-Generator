@@ -47,7 +47,6 @@ let newRule = {
 };
 
 export default function AddRulePage() {
-
 	const [days, setDays] = React.useState(90);
 	const [rules, setRules] = React.useState([]);
 	const [selectedAttType, setAttType] = React.useState("");
@@ -61,28 +60,28 @@ export default function AddRulePage() {
 	const daysChanged = (event, d) => {
 		setDays(d);
 	}
-	const expansionChange = attType => (event, isExpanded) => {
+	const expansionChanged = attType => (event, isExpanded) => {
 		setAttType(isExpanded ? attType : "");
 		setAttribute("");
 		setOperator("");
 		setAddedValues([]);
 		setSearchText("");
 	}
-	const attributeItemClick = (event, val) => {
+	const attributeItemClicked = (event, val) => {
 		setAttribute(val);
 		setOperator(data[selectedAttType][val]["operators"][0]);
 		setValues(data[selectedAttType][val]["values"]);
 		setAddedValues([]);
 		setSearchText("");
 	}
-	const valuePlusClick = (event, val) => {
+	const valuePlusClicked = (event, val) => {
 		if (addedValues.indexOf(val) === -1) {
 			setAddedValues([
 				...addedValues, val
 			]);
 		}
 	}
-	const valueMinusClick = (event, val) => {
+	const valueMinusClicked = (event, val) => {
 		setAddedValues(addedValues.filter(v => {
 			return val !== v;
 		}))
@@ -99,7 +98,7 @@ export default function AddRulePage() {
 			})
 		);
 	}
-	const modalOK = () => {
+	const modalOKClicked = () => {
 		setModalOpened(false);
 		setRules([...rules, newRule]);
 		setAddedValues([]);
@@ -179,7 +178,7 @@ export default function AddRulePage() {
 								<Box justifyContent="flex-start" m={1}>
 									<Typography>DATA</Typography>
 									{attTypes.map(attType => (
-										<ExpansionPanel key={attType} expanded={selectedAttType === attType} onChange={expansionChange(attType)}>
+										<ExpansionPanel key={attType} expanded={selectedAttType === attType} onChange={expansionChanged(attType)}>
 											<ExpansionPanelSummary
 												expandIcon={<ExpandMore />}
 											>
@@ -192,7 +191,7 @@ export default function AddRulePage() {
 															key={att}
 															button
 															selected = {selectedAttribute === att}
-															onClick = {event => attributeItemClick(event, att)}
+															onClick = {event => attributeItemClicked(event, att)}
 														>
 															{att}
 														</ListItem>
@@ -290,7 +289,7 @@ export default function AddRulePage() {
 																		<ListItemSecondaryAction>
 																			<IconButton
 																				edge="end"
-																				onClick={event => valuePlusClick(event, val)}
+																				onClick={event => valuePlusClicked(event, val)}
 																			>
 																				<AddCircle />
 																			</IconButton>
@@ -309,7 +308,7 @@ export default function AddRulePage() {
 																		<ListItemSecondaryAction>
 																			<IconButton
 																				edge="end"
-																				onClick={event => valueMinusClick(event, val)}
+																				onClick={event => valueMinusClicked(event, val)}
 																			>
 																				<RemoveCircle />
 																			</IconButton>
@@ -386,7 +385,7 @@ export default function AddRulePage() {
 								</Typography>
 							</Grid>
 							<Grid item>
-								<Button style={{margin: "10px", width: "100px"}} variant="contained" onClick={modalOK}>Ok</Button>
+								<Button style={{margin: "10px", width: "100px"}} variant="contained" onClick={modalOKClicked}>Ok</Button>
 							</Grid>
 						</Grid>
 					</Box>
