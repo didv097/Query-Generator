@@ -34,7 +34,6 @@ for (let at in data) {
 		attributes[at].push(a);
 	}
 }
-console.log(attributes)
 
 export default function AddRulePage() {
 
@@ -54,11 +53,13 @@ export default function AddRulePage() {
 		setAttribute("");
 		setOperator("");
 		setAddedValues([]);
+		setSearchText("");
 	}
 	const attributeItemClick = (event, val) => {
 		setAttribute(val);
 		setOperator("");
 		setAddedValues([]);
+		setSearchText("");
 	}
 	const valuePlusClick = (event, val) => {
 		if (addedValues.indexOf(val) === -1) {
@@ -66,11 +67,13 @@ export default function AddRulePage() {
 				...addedValues, val
 			]);
 		}
+		setSearchText("");
 	}
 	const valueMinusClick = (event, val) => {
 		setAddedValues(addedValues.filter(v => {
 			return val !== v;
 		}))
+		setSearchText("");
 	}
 	const operatorChanged = event => {
 		setOperator(event.target.value);
@@ -78,9 +81,12 @@ export default function AddRulePage() {
 	const searchChanged = event => {
 		const newVal = event.target.value;
 		setSearchText(newVal);
+		// if (newVal === "") {
+		// 	return;
+		// }
 		setAddedValues(
 			data[selectedAttType][selectedAttribute]["values"].filter(v => {
-				return newVal.length === 0 ? false : v.toLowerCase().indexOf(newVal.toLowerCase()) !== -1;
+				return newVal === "" ? false : v.toLowerCase().indexOf(newVal.toLowerCase()) !== -1;
 			})
 		);
 	}
@@ -106,6 +112,7 @@ export default function AddRulePage() {
 		setAttribute(rule.attribute);
 		setOperator(rule.operator);
 		setAddedValues(rule.values);
+		setSearchText("");
 	}
 	
 	return (
