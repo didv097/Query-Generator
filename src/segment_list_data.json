@@ -1,0 +1,597 @@
+{
+	"Segments": {
+		"3: Tween/Teens (13-17) [rwbdl9pbf]": {
+			"segment_rules": {
+				"Device Type": {
+					"values": ["Desktop", "Mobile"],
+					"operators": ["IN"]
+				},
+				"Age": {
+					"values": ["13-17", "18-25"],
+					"operators": ["NOT IN"]
+				},
+				"Province": {
+					"values": ["Ontario", "Quebec"],
+					"operators": ["IN"]
+				}
+			},
+			"last-modified": "2019-07-30",
+			"population": "123456",
+			"category": "Demographic",
+			"id": 12345
+		},
+		"1: Globe News Visitors [rn1cptv7y]": {
+			"segment_rules": {
+				"Site Section": {
+					"values": ["News", "Lifestyle"],
+					"operators": ["IN"]
+				},
+				"Province": {
+					"values": ["Ontario", "Quebec"],
+					"operators": ["NOT IN"]
+				}
+			},
+			"last-modified": "2019-07-26",
+			"population": "23156",
+			"category": "Site Behaviour",
+			"id": 12345
+		},
+		"3: Luxury High Net Worth [odi6pg3bs]": {
+			"segment_rules": {
+				"Article Keywords": {
+					"values": ["advertorial", "adv12345", "luxury"],
+					"operators": ["IN"]
+				},
+				"city": {
+					"values": ["Toronto", "Montreal", "Vancouver"],
+					"operators": ["NOT IN"]
+				}
+			},
+			"last-modified": "2019-07-26",
+			"population": "23156",
+			"category": "Economic / Financial",
+			"id": 12345
+		},
+		"3: Elderly People (65+) [rwbahs9pbf]": {
+			"segment_rules": {
+				"Device Type": {
+					"values": ["Mobile"],
+					"operators": ["NOT IN"]
+				},
+				"Age": {
+					"values": ["65+"],
+					"operators": ["IN"]
+				}
+			},
+			"last-modified": "2019-07-30",
+			"population": "123456",
+			"category": "Demographic",
+			"id": 12345
+		},
+		"1: The Literati [rn1cptv7y]": {
+			"segment_rules": {
+				"Site Section": {
+					"values": ["Politics", "Arts"],
+					"operators": ["IN"]
+				},
+				"Province": {
+					"values": ["Ontario", "Quebec"],
+					"operators": ["NOT IN"]
+				}
+			},
+			"last-modified": "2019-07-20",
+			"population": "23",
+			"category": "Site Behaviour",
+			"id": 12345
+		},
+		"3: Planning a Vacation [pd3khjg3bs]": {
+			"segment_rules": {
+				"Article Keywords": {
+					"values": ["skiing", "vacation", "resort"],
+					"operators": ["IN"]
+				},
+				"city": {
+					"values": ["Toronto", "Montreal", "Vancouver", "Calgary"],
+					"operators": ["IN"]
+				}
+			},
+			"last-modified": "2019-06-15",
+			"population": "23156",
+			"category": "Leisure",
+			"id": 12345
+		},
+		"3: Tweens (11-13) [rwbdl9pbf]": {
+			"segment_rules": {
+				"Device Type": {
+					"values": ["Desktop", "Mobile"],
+					"operators": ["IN"]
+				},
+				"Age": {
+					"values": ["13-17", "18-25"],
+					"operators": ["NOT IN"]
+				},
+				"Province": {
+					"values": ["Ontario", "Quebec"],
+					"operators": ["IN"]
+				}
+			},
+			"last-modified": "2019-07-30",
+			"population": "123456",
+			"category": "Demographic",
+			"id": 12345
+		},
+		"1: Globe Homepage Visitors [rn1cptv7y]": {
+			"segment_rules": {
+				"Site Section": {
+					"values": ["News", "Lifestyle"],
+					"operators": ["IN"]
+				},
+				"Province": {
+					"values": ["Ontario", "Quebec"],
+					"operators": ["NOT IN"]
+				}
+			},
+			"last-modified": "2018-07-26",
+			"population": "23156",
+			"category": "Site Behaviour",
+			"id": 12345
+		},
+		"3: Luxury Super High Net Worth [odi6pg3bs]": {
+			"segment_rules": {
+				"Article Keywords": {
+					"values": ["advertorial", "adv12345", "luxury"],
+					"operators": ["IN"]
+				},
+				"city": {
+					"values": ["Toronto", "Montreal", "Vancouver"],
+					"operators": ["NOT IN"]
+				}
+			},
+			"last-modified": "2019-07-26",
+			"population": "23156",
+			"category": "Economic / Financial",
+			"id": 12345
+		},
+		"3: Left Handed People (65+) [rwbahs9pbf]": {
+			"segment_rules": {
+				"Device Type": {
+					"values": ["Mobile"],
+					"operators": ["NOT IN"]
+				},
+				"Age": {
+					"values": ["65+"],
+					"operators": ["IN"]
+				}
+			},
+			"last-modified": "2019-07-30",
+			"population": "123456",
+			"category": "Demographic",
+			"id": 12345
+		},
+		"1: The Illiterati [rn1cptv7y]": {
+			"segment_rules": {
+				"Site Section": {
+					"values": ["Politics", "Arts"],
+					"operators": ["IN"]
+				},
+				"Province": {
+					"values": ["Ontario", "Quebec"],
+					"operators": ["NOT IN"]
+				}
+			},
+			"last-modified": "2018-07-20",
+			"population": "23",
+			"category": "Site Behaviour",
+			"id": 12345
+		},
+		"3: Scheming a Vacation [pd3khjg3bs]": {
+			"segment_rules": {
+				"Article Keywords": {
+					"values": ["skiing", "vacation", "resort"],
+					"operators": ["IN"]
+				},
+				"city": {
+					"values": ["Toronto", "Montreal", "Vancouver", "Calgary"],
+					"operators": ["IN"]
+				}
+			},
+			"last-modified": "2019-06-15",
+			"population": "23156",
+			"category": "Leisure",
+			"id": 12345
+		},
+		"3: Millenials (21-49) [rwbdl9pbf]": {
+			"segment_rules": {
+				"Device Type": {
+					"values": ["Desktop", "Mobile"],
+					"operators": ["IN"]
+				},
+				"Age": {
+					"values": ["13-17", "18-25"],
+					"operators": ["NOT IN"]
+				},
+				"Province": {
+					"values": ["Ontario", "Quebec"],
+					"operators": ["IN"]
+				}
+			},
+			"last-modified": "2017-05-31",
+			"population": "123456",
+			"category": "Demographic",
+			"id": 12345
+		},
+		"1: Globe Drive Visitors [rn1cptv7y]": {
+			"segment_rules": {
+				"Site Section": {
+					"values": ["News", "Lifestyle"],
+					"operators": ["IN"]
+				},
+				"Province": {
+					"values": ["Ontario", "Quebec"],
+					"operators": ["NOT IN"]
+				}
+			},
+			"last-modified": "2016-07-26",
+			"population": "23156",
+			"category": "Site Behaviour",
+			"id": 12345
+		},
+		"3: Obscenely High Net Worth [odi6pg3bs]": {
+			"segment_rules": {
+				"Article Keywords": {
+					"values": ["advertorial", "adv12345", "luxury"],
+					"operators": ["IN"]
+				},
+				"city": {
+					"values": ["Toronto", "Montreal", "Vancouver"],
+					"operators": ["NOT IN"]
+				}
+			},
+			"last-modified": "2016-07-26",
+			"population": "23156",
+			"category": "Economic / Financial",
+			"id": 12345
+		},
+		"3: Tall People (7 ft. +) [rwbahs9pbf]": {
+			"segment_rules": {
+				"Device Type": {
+					"values": ["Mobile"],
+					"operators": ["NOT IN"]
+				},
+				"Age": {
+					"values": ["65+"],
+					"operators": ["IN"]
+				}
+			},
+			"last-modified": "2019-01-31",
+			"population": "123456",
+			"category": "Demographic",
+			"id": 12345
+		},
+		"1: Creative Writers [rn1cptv7y]": {
+			"segment_rules": {
+				"Site Section": {
+					"values": ["Politics", "Arts"],
+					"operators": ["IN"]
+				},
+				"Province": {
+					"values": ["Ontario", "Quebec"],
+					"operators": ["NOT IN"]
+				}
+			},
+			"last-modified": "2019-07-20",
+			"population": "23",
+			"category": "Site Behaviour",
+			"id": 12345
+		},
+		"3: Avoiding a Vacation [pd3khjg3bs]": {
+			"segment_rules": {
+				"Article Keywords": {
+					"values": ["skiing", "vacation", "resort"],
+					"operators": ["IN"]
+				},
+				"city": {
+					"values": ["Toronto", "Montreal", "Vancouver", "Calgary"],
+					"operators": ["IN"]
+				}
+			},
+			"last-modified": "2019-06-15",
+			"population": "23156",
+			"category": "Leisure",
+			"id": 12345
+		},
+		"3: 24 Year Olds (24) [rwbdl9pbf]": {
+			"segment_rules": {
+				"Device Type": {
+					"values": ["Desktop", "Mobile"],
+					"operators": ["IN"]
+				},
+				"Age": {
+					"values": ["13-17", "18-25"],
+					"operators": ["NOT IN"]
+				},
+				"Province": {
+					"values": ["Ontario", "Quebec"],
+					"operators": ["IN"]
+				}
+			},
+			"last-modified": "2019-07-30",
+			"population": "123456",
+			"category": "Demographic",
+			"id": 12345
+		},
+		"1: Globe Sports Visitors [rn1cptv7y]": {
+			"segment_rules": {
+				"Site Section": {
+					"values": ["News", "Lifestyle"],
+					"operators": ["IN"]
+				},
+				"Province": {
+					"values": ["Ontario", "Quebec"],
+					"operators": ["NOT IN"]
+				}
+			},
+			"last-modified": "2019-07-25",
+			"population": "23156",
+			"category": "Site Behaviour",
+			"id": 12345
+		},
+		"3: Astronomically High Net Worth [odi6pg3bs]": {
+			"segment_rules": {
+				"Article Keywords": {
+					"values": ["advertorial", "adv12345", "luxury"],
+					"operators": ["IN"]
+				},
+				"city": {
+					"values": ["Toronto", "Montreal", "Vancouver"],
+					"operators": ["NOT IN"]
+				}
+			},
+			"last-modified": "2019-07-26",
+			"population": "23156",
+			"category": "Economic / Financial",
+			"id": 12345
+		},
+		"3: Short People (< 3 ft.) [rwbahs9pbf]": {
+			"segment_rules": {
+				"Device Type": {
+					"values": ["Mobile"],
+					"operators": ["NOT IN"]
+				},
+				"Age": {
+					"values": ["65+"],
+					"operators": ["IN"]
+				}
+			},
+			"last-modified": "2019-07-30",
+			"population": "123456",
+			"category": "Demographic",
+			"id": 12345
+		},
+		"1: Plaigiarists [rn1cptv7y]": {
+			"segment_rules": {
+				"Site Section": {
+					"values": ["Politics", "Arts"],
+					"operators": ["IN"]
+				},
+				"Province": {
+					"values": ["Ontario", "Quebec"],
+					"operators": ["NOT IN"]
+				}
+			},
+			"last-modified": "2019-07-20",
+			"population": "23",
+			"category": "Site Behaviour",
+			"id": 12345
+		},
+		"3: Planning a Permanent Vacation [pd3khjg3bs]": {
+			"segment_rules": {
+				"Article Keywords": {
+					"values": ["skiing", "vacation", "resort"],
+					"operators": ["IN"]
+				},
+				"city": {
+					"values": ["Toronto", "Montreal", "Vancouver", "Calgary"],
+					"operators": ["IN"]
+				}
+			},
+			"last-modified": "2019-06-15",
+			"population": "23156",
+			"category": "Leisure",
+			"id": 12345
+		},
+		"3: Not 31 Year Olds [rwbdl9pbf]": {
+			"segment_rules": {
+				"Age": {
+					"values": ["31"],
+					"operators": ["NOT IN"]
+				}
+			},
+			"last-modified": "2019-07-30",
+			"population": "123456",
+			"category": "Demographic",
+			"id": 12345
+		},
+		"1: Globe Canada Visitors [rn1cptv7y]": {
+			"segment_rules": {
+				"Site Section": {
+					"values": ["News", "Lifestyle"],
+					"operators": ["IN"]
+				},
+				"Province": {
+					"values": ["Ontario", "Quebec"],
+					"operators": ["NOT IN"]
+				}
+			},
+			"last-modified": "2019-04-26",
+			"population": "23156",
+			"category": "Site Behaviour",
+			"id": 12345
+		},
+		"3: Luxury Aspirational [odi6pg3bs]": {
+			"segment_rules": {
+				"Article Keywords": {
+					"values": ["advertorial", "adv12345", "luxury"],
+					"operators": ["IN"]
+				},
+				"city": {
+					"values": ["Toronto", "Montreal", "Vancouver"],
+					"operators": ["NOT IN"]
+				}
+			},
+			"last-modified": "2019-07-26",
+			"population": "23156",
+			"category": "Economic / Financial",
+			"id": 12345
+		},
+		"3: Unnaturally Elderly People (115+) [rwbahs9pbf]": {
+			"segment_rules": {
+				"Device Type": {
+					"values": ["Mobile"],
+					"operators": ["NOT IN"]
+				},
+				"Age": {
+					"values": ["65+"],
+					"operators": ["IN"]
+				}
+			},
+			"last-modified": "2018-04-30",
+			"population": "123456",
+			"category": "Demographic",
+			"id": 12345
+		},
+		"1: Highschool Poets [rn1cptv7y]": {
+			"segment_rules": {
+				"Site Section": {
+					"values": ["Politics", "Arts"],
+					"operators": ["IN"]
+				},
+				"Province": {
+					"values": ["Ontario", "Quebec"],
+					"operators": ["NOT IN"]
+				}
+			},
+			"last-modified": "2019-07-20",
+			"population": "23",
+			"category": "Site Behaviour",
+			"id": 12345
+		},
+		"3: Planning on Planning a Vacation [pd3khjg3bs]": {
+			"segment_rules": {
+				"Article Keywords": {
+					"values": ["skiing", "vacation", "resort"],
+					"operators": ["IN"]
+				},
+				"city": {
+					"values": ["Toronto", "Montreal", "Vancouver", "Calgary"],
+					"operators": ["IN"]
+				}
+			},
+			"last-modified": "2019-06-15",
+			"population": "23156",
+			"category": "Leisure",
+			"id": 12345
+		},
+		"3: Clever Dogs with Jobs [rwbdl9pbf]": {
+			"segment_rules": {
+				"Device Type": {
+					"values": ["Desktop", "Mobile"],
+					"operators": ["IN"]
+				},
+				"Age": {
+					"values": ["13-17", "18-25"],
+					"operators": ["NOT IN"]
+				},
+				"Province": {
+					"values": ["Ontario", "Quebec"],
+					"operators": ["IN"]
+				}
+			},
+			"last-modified": "2019-07-30",
+			"population": "123456",
+			"category": "Demographic",
+			"id": 12345
+		},
+		"1: Globe Opinion Visitors [rn1cptv7y]": {
+			"segment_rules": {
+				"Site Section": {
+					"values": ["News", "Lifestyle"],
+					"operators": ["IN"]
+				},
+				"Province": {
+					"values": ["Ontario", "Quebec"],
+					"operators": ["NOT IN"]
+				}
+			},
+			"last-modified": "2019-07-26",
+			"population": "23156",
+			"category": "Site Behaviour",
+			"id": 12345
+		},
+		"3: Bitcoin Millionaires [odi6pg3bs]": {
+			"segment_rules": {
+				"Article Keywords": {
+					"values": ["advertorial", "adv12345", "luxury"],
+					"operators": ["IN"]
+				},
+				"city": {
+					"values": ["Toronto", "Montreal", "Vancouver"],
+					"operators": ["NOT IN"]
+				}
+			},
+			"last-modified": "2018-07-26",
+			"population": "23156",
+			"category": "Economic / Financial",
+			"id": 12345
+		},
+		"3: Spry For Their Age [rwbahs9pbf]": {
+			"segment_rules": {
+				"Device Type": {
+					"values": ["Mobile"],
+					"operators": ["NOT IN"]
+				},
+				"Age": {
+					"values": ["65+"],
+					"operators": ["IN"]
+				}
+			},
+			"last-modified": "2018-05-31",
+			"population": "123456",
+			"category": "Demographic",
+			"id": 12345
+		},
+		"1: Every Art School Student [rn1cptv7y]": {
+			"segment_rules": {
+				"Site Section": {
+					"values": ["Politics", "Arts"],
+					"operators": ["IN"]
+				},
+				"Province": {
+					"values": ["Ontario", "Quebec"],
+					"operators": ["NOT IN"]
+				}
+			},
+			"last-modified": "2019-05-20",
+			"population": "23",
+			"category": "Site Behaviour",
+			"id": 12345
+		},
+		"3: The Person Standing Behind You [pd3khjg3bs]": {
+			"segment_rules": {
+				"Article Keywords": {
+					"values": ["skiing", "vacation", "resort"],
+					"operators": ["IN"]
+				},
+				"city": {
+					"values": ["Toronto", "Montreal", "Vancouver", "Calgary"],
+					"operators": ["IN"]
+				}
+			},
+			"last-modified": "2017-06-15",
+			"population": "23156",
+			"category": "Leisure",
+			"id": 12345
+		}
+	}
+
+}

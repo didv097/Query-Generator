@@ -16,6 +16,8 @@ import {
 	ListItemSecondaryAction,
 	MenuItem,
 	TextField,
+	Input,
+	InputAdornment,
 	IconButton,
 	Modal
 } from '@material-ui/core';
@@ -27,7 +29,8 @@ import {
 	Edit
 } from '@material-ui/icons'
 
-import data from '../data.json'
+import data from '../data.json';
+import segCat from '../segment_categories.json';
 const attTypes = [];
 const attributes = {};
 for (let at in data) {
@@ -45,19 +48,23 @@ let newRule = {
 	operator: "",
 	value: ""
 };
+const categoryNames = segCat["Segment Category"];
 
 export default function AddRulePage() {
 	const [days, setDays] = React.useState(90);
 	const [rules, setRules] = React.useState([]);
 	const [selectedAttType, setAttType] = React.useState("");
 	const [selectedAttribute, setAttribute] = React.useState("")
-	const [valueStr, setValueStr] = React.useState("");
 	const [selectedOperator, setOperator] = React.useState("");
 	const [searchText, setSearchText] = React.useState("");
 	const [values, setValues] = React.useState([]);
-	let [selectedValues, setSelectedValues] = React.useState([]);
-	const [modalOpened, setModalOpened] = React.useState(false);
+	const [selectedValues, setSelectedValues] = React.useState([]);
+	const [valueStr, setValueStr] = React.useState("");
+	const [modalState, setModalState] = React.useState(0);
 	const [freeInput, setFreeInput] = React.useState(false);
+	const [categoryName, setCategoryName] = React.useState(categoryNames[0]);
+	const [expirationDate, setExpirationDate] = React.useState(new Date().toISOString().slice(0, 10));
+	const [description, setDescription] = React.useState("");
 
 	const daysChanged = (event, d) => {
 		setDays(d);
@@ -114,12 +121,27 @@ export default function AddRulePage() {
 	const valueStrChanged = event => {
 		setValueStr(event.target.value);
 	}
+	const doneClicked = () => {
+		setModalState(2);
+	}
 	const modalOKClicked = () => {
-		setModalOpened(false);
+		setModalState(0);
 		setRules([...rules, newRule]);
 		setSelectedValues([]);
+		setValueStr("");
 	}
-	
+	const categoryNameChanged = event => {
+		setCategoryName(event.target.value);
+	}
+	const expirationDateChanged = event => {
+		setExpirationDate(event.target.value)
+	}
+	const descriptionChanged = event => {
+		setDescription(event.target.value)
+	}
+	const onCancelClicked = () => {
+		setModalState(0);
+	}
 	const addRule = () => {
 		newRule = {
 			index: prevRuleIndex++,
@@ -128,7 +150,7 @@ export default function AddRulePage() {
 			operator: selectedOperator,
 			values: freeInput ? valueStr.replace(/ /g, "").split(",") : selectedValues
 		};
-		setModalOpened(true);
+		setModalState(1);
 	}
 	const removeRule = (rule) => {
 		setRules(rules.filter(r => {
@@ -142,6 +164,7 @@ export default function AddRulePage() {
 			setValueStr(rule.values.join());
 		} else {
 			setFreeInput(false);
+			setValues(data[rule.attType][rule.attribute]["values"]);
 			setSelectedValues(rule.values);
 		}
 		setSearchText("");
@@ -156,13 +179,11 @@ export default function AddRulePage() {
 				alignItems="flex-start"
 			>
 				<Grid item xs={10}>
-					<Box m={1} mb={5}>
-						<Box m={1} display="inline">
-							<Button variant="contained" size="small" color="default" href="/SegmentsPage">
-								<i className="material-icons">file_copy</i>
-								Segments
-							</Button>
-						</Box>
+					<Box m={2} mb={5}>
+						<Button href="/SegmentsPage">
+							<i className="material-icons">file_copy</i>
+							Segments
+						</Button>
 					</Box>
 					<Grid
 						container
@@ -203,7 +224,7 @@ export default function AddRulePage() {
 												{attType}
 											</ExpansionPanelSummary>
 											<ExpansionPanelDetails>
-												<List>
+												<List style={{width: "100%"}}>
 													{attributes[attType].map(att => (
 														<ListItem
 															key={att}
@@ -224,9 +245,9 @@ export default function AddRulePage() {
 						<Grid item xs={9} m={1}>
 							<Box justifyContent="flex-start" m={1} mb={3}>
 								<Typography>RULES</Typography>
-								<Paper style={{height: "70px"}}>
+								<Paper>
 								{rules.length === 0 ? (
-									<Box p={2}>
+									<Box p={4}>
 										<Typography style={{textAlign: "center"}}>Rules will appear here after being created in the ADD RULE section below</Typography>
 									</Box>
 								) : (
@@ -253,46 +274,49 @@ export default function AddRulePage() {
 
 								<Paper style={{height: "400px"}}>
 								{days === 0 || selectedAttribute === "" ? (
-									<Box style={{padding: "140px"}}>
+									<Box style={{padding: "40px", paddingTop: "170px"}}>
 										<Typography variant="h6" style={{textAlign: "center"}}>Select a time frame and data attribute from the left to begin</Typography>
 									</Box>
 								) : (
-									<Box p={2}>
-										<Grid container direction="column" spacing={1} m={2}>
+									<Box p={2} m={2}>
+										<Grid container direction="column" spacing={1}>
 											<Grid item xs>
-												<Box m={1}>
-													<Typography>{selectedAttribute}</Typography>
-												</Box>
+												<Typography>{selectedAttribute}</Typography>
 											</Grid>
 											<Grid item>
-												<Grid container direction="row" justify="flex-start" alignItems="flex-end">
+												<Grid
+													container
+													direction="row"
+													justify="flex-start"
+													alignItems="flex-end"
+													spacing={1}
+												>
 													<Grid item>
-														<Box m={1}>
-															<TextField
-																id="operator"
-																select
-																value={selectedOperator}
-																onChange={operatorChanged}
-															>
-																{data[selectedAttType][selectedAttribute]["operators"].map(op => (
-																	<MenuItem key={op} value={op}>
-																		<Typography>{op}</Typography>
-																	</MenuItem>
-																))}
-															</TextField>
-														</Box>
+														<TextField
+															id="operator"
+															select
+															value={selectedOperator}
+															onChange={operatorChanged}
+														>
+															{data[selectedAttType][selectedAttribute]["operators"].map(op => (
+																<MenuItem key={op} value={op}>
+																	<Typography>{op}</Typography>
+																</MenuItem>
+															))}
+														</TextField>
 													</Grid>
 													<Grid item>
-														<Box justifyContent="flex-start" m={1}>
-															<TextField
-																id="search"
-																value={searchText}
-																onChange={searchChanged}
-																placeholder="Search values..."
-															>
-															</TextField>
-															<Search />
-														</Box>
+														<Input
+															id="search"
+															value={searchText}
+															onChange={searchChanged}
+															placeholder="Search values..."
+															endAdornment={
+																<InputAdornment position="end">
+																	<Search/>
+																</InputAdornment>
+															}
+														/>
 													</Grid>
 												</Grid>
 											</Grid>
@@ -306,17 +330,17 @@ export default function AddRulePage() {
 														placeholder="Enter your comma separated list of values here ..."
 														value={valueStr}
 														onChange={valueStrChanged}
-														rows="10"
+														rows="12"
 													/>
 												</Box>
 											) : (
 												<Grid container direction="row">
 													<Grid item xs={6}>
-														<Box style={{maxHeight: "250px", overflow: "auto"}} m={1}>
+														<Box style={{maxHeight: "250px", overflow: "auto"}}>
 															<List component="nav">
 																{values.map(val => (
 																	<ListItem key={val} button>
-																		<ListItemText primary={val}></ListItemText>
+																		<ListItemText primary={val} />
 																		<ListItemSecondaryAction>
 																			<IconButton
 																				edge="end"
@@ -331,7 +355,7 @@ export default function AddRulePage() {
 														</Box>
 													</Grid>
 													<Grid item xs={6}>
-														<Box style={{maxHeight: "250px", overflow: "auto"}} m={1}>
+														<Box style={{maxHeight: "250px", overflow: "auto"}}>
 															<List component="nav">
 																{selectedValues.map(val => (
 																	<ListItem key={val} button>
@@ -367,12 +391,14 @@ export default function AddRulePage() {
 									<Grid item>
 										<Box m={1}>
 											<Button
-												variant="contained"
+												variant="outlined"
+												color="primary"
 												disabled={
 													selectedAttribute === "" ||
-														selectedOperator === "" ||
-														(selectedValues.length === 0 && valueStr === "")
+													selectedOperator === "" ||
+													(selectedValues.length === 0 && valueStr === "")
 												}
+												style={{width: "150px"}}
 												onClick={addRule}
 											>
 												<i className="material-icons">add</i>
@@ -386,7 +412,8 @@ export default function AddRulePage() {
 												variant="contained"
 												color="primary"
 												disabled={rules.length === 0}
-												href="/SegmentDetailsPage"
+												style={{width: "150px"}}
+												onClick={doneClicked}
 											>
 												Done
 											</Button>
@@ -397,18 +424,15 @@ export default function AddRulePage() {
 						</Grid>
 					</Grid>
 				</Grid>
-				<Grid item xs={2}>
-					<Box style={{backgroundColor: "gray"}} width="100%" height="700px" position="absolute" p={1}/>
-				</Grid>
+				<Grid item xs={2} />
 			</Grid>
 			<Modal
-				open={modalOpened}
-				// onClose={modalClosed}
+				open={modalState === 1}
 			>
 				<Paper
-					style={{textAlign: "center", height: "200px", width: "400px", position: "absolute", left: "50%", top: "50%", marginLeft: "-200px", marginTop: "-100px"}}
+					style={{textAlign: "center", width: "400px", position: "absolute", left: "50%", top: "50%", marginLeft: "-200px", marginTop: "-120px"}}
 				>
-					<Box m={5}>
+					<Box m={3}>
 						<Grid container direction="column">
 							<Grid item>
 								<Typography style={{margin: "10px"}} variant="h6">Added Rule</Typography>
@@ -422,6 +446,127 @@ export default function AddRulePage() {
 							</Grid>
 							<Grid item>
 								<Button style={{margin: "10px", width: "100px"}} variant="contained" onClick={modalOKClicked}>Ok</Button>
+							</Grid>
+						</Grid>
+					</Box>
+				</Paper>
+			</Modal>
+			<Modal
+				open={modalState === 2}
+			>
+				<Paper
+					style={{width: "600px", position: "absolute", left: "50%", top: "50%", marginLeft: "-300px", marginTop: "-350px"}}
+				>
+					<Box m={3}>
+						<Grid
+							container
+							direction="column"
+							spacing={2}
+						>
+							<Grid item>
+								<Box style={{maxWidth: "500px"}} m="auto">
+									<Grid
+										container
+										direction="column"
+										justify="flex-start"
+										alignItems="flex-start"
+										spacing={3}
+									>
+										<Grid item>
+											<Typography variant="h6">SEGMENT DETAILS</Typography>
+										</Grid>
+										<Grid item style={{width: "100%"}}>
+											<Typography>Name segment</Typography>
+											<Input fullWidth />
+										</Grid>
+										<Grid item style={{width: "100%"}}>
+											<Grid
+												container
+												direction="row"
+											>
+												<Grid item>
+													<Typography style={{marginBottom: "8px"}}>Category name</Typography>
+													<TextField
+														id="category-name"
+														select
+														value={categoryName}
+														onChange={categoryNameChanged}
+														style={{width: "200px"}}
+													>
+														{categoryNames.map(cat => (
+															<MenuItem key={cat} value={cat}>
+																<Typography>{cat}</Typography>
+															</MenuItem>
+														))}
+													</TextField>
+												</Grid>
+												<Grid item xs />
+												<Grid item>
+													<Typography style={{marginBottom: "8px"}}>Expiration date</Typography>
+													<Input
+														id="expiration-date"
+														type="date"
+														value={expirationDate}
+														onChange={expirationDateChanged}
+														style={{width: "200px"}}
+													/>
+												</Grid>
+											</Grid>
+										</Grid>
+										<Grid item style={{width: "100%"}}>
+											<Typography>Description</Typography>
+											<TextField
+												fullWidth
+												multiline
+												variant="outlined"
+												value={description}
+												onChange={descriptionChanged}
+												rows={5}
+											/>
+										</Grid>
+										<Grid item style={{width: "100%"}}>
+											<Typography>RULES</Typography>
+											{rules.map(rule => (
+												<Box key={rule.index} m={1} p={0} style={{backgroundColor: "#bbb", display: "inline-block"}}>
+													<Typography variant="caption" style={{margin: "0"}}>
+														<strong>{rule.attribute + " "}</strong>
+														{rule.operator}
+														<strong>{" " + rule.values}</strong>
+													</Typography>
+												</Box>
+											))}
+										</Grid>
+										<Grid item style={{width: "100%", marginTop: "20px"}}>
+											<Grid
+												container
+												direction="row"
+												justify="flex-end"
+												alignContent="flex-end"
+												spacing={2}
+											>
+												<Grid item>
+													<Button
+														variant="outlined"
+														onClick={onCancelClicked}
+														style={{width: "120px"}}
+													>
+														Cancel
+													</Button>
+												</Grid>
+												<Grid item>
+													<Button
+														variant="contained"
+														color="primary"
+														style={{width: "120px"}}
+														href="/SegmentsPage"
+													>
+														Submit
+													</Button>
+												</Grid>
+											</Grid>
+										</Grid>
+									</Grid>
+								</Box>
 							</Grid>
 						</Grid>
 					</Box>
