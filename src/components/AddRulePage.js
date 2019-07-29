@@ -15,8 +15,8 @@ import {
 	ListItemText,
 	ListItemSecondaryAction,
 	MenuItem,
-	TextField,
 	Input,
+	TextField,
 	InputAdornment,
 	IconButton,
 	Modal
@@ -259,7 +259,7 @@ export default function AddRulePage() {
 													{rule.operator}
 													<strong>{" " + rule.values}</strong>
 												</Typography>
-												<IconButton id="134" size="small" style={{margin: "0"}} onClick={event => removeRule(rule)}>
+												<IconButton size="small" style={{margin: "0"}} onClick={() => removeRule(rule)}>
 													<Edit />
 												</IconButton>
 											</Box>
@@ -293,7 +293,6 @@ export default function AddRulePage() {
 												>
 													<Grid item>
 														<TextField
-															id="operator"
 															select
 															value={selectedOperator}
 															onChange={operatorChanged}
@@ -307,7 +306,6 @@ export default function AddRulePage() {
 													</Grid>
 													<Grid item>
 														<Input
-															id="search"
 															value={searchText}
 															onChange={searchChanged}
 															placeholder="Search values..."
@@ -487,7 +485,6 @@ export default function AddRulePage() {
 												<Grid item>
 													<Typography style={{marginBottom: "8px"}}>Category name</Typography>
 													<TextField
-														id="category-name"
 														select
 														value={categoryName}
 														onChange={categoryNameChanged}
@@ -504,7 +501,6 @@ export default function AddRulePage() {
 												<Grid item>
 													<Typography style={{marginBottom: "8px"}}>Expiration date</Typography>
 													<Input
-														id="expiration-date"
 														type="date"
 														value={expirationDate}
 														onChange={expirationDateChanged}
