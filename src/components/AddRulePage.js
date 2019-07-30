@@ -169,7 +169,10 @@ export default function AddRulePage() {
 		}
 		setSearchText("");
 	}
-	
+	React.useEffect(() => {
+		// Update all states
+		// console.log(rules);
+	})
 	return (
 		<Box>
 			<Grid
