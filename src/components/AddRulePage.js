@@ -174,7 +174,7 @@ export default function AddRulePage(props) {
 			attType: selectedAttType,
 			attribute: selectedAttribute,
 			operator: selectedOperator,
-			values: freeInput ? valueStr/*.replace(/ /g, "").split(",")*/ : selectedValues
+			values: freeInput ? valueStr : selectedValues
 		};
 		setModalState(1);
 	}
