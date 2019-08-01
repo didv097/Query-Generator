@@ -54,6 +54,10 @@ const categoryNames = segCat["Segment Category"];
 let rulesFromList = [];
 let editMode = false;
 
+function getAttType(att) {
+	return "Page view attributes";
+}
+
 export default function AddRulePage(props) {
 	const [days, setDays] = React.useState(90);
 	const [rules, setRules] = React.useState(rulesFromList);
@@ -79,7 +83,7 @@ export default function AddRulePage(props) {
 				for (let att in segments[name]["segment_rules"]) {
 					rulesFromList.push({
 						index: prevRuleIndex++,
-						attType: "Page view attributes",
+						attType: getAttType(att),
 						attribute: att,
 						operator: segments[name]["segment_rules"][att]["operators"][0],
 						values: segments[name]["segment_rules"][att]["values"]
