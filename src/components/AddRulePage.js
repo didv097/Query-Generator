@@ -27,10 +27,12 @@ import {
 	AddCircle,
 	RemoveCircle,
 	Edit
-} from '@material-ui/icons'
+} from '@material-ui/icons';
 
 import data from '../data.json';
 import segCat from '../segment_categories.json';
+import segdata from '../segment_list_data.json';
+
 const attTypes = [];
 const attributes = {};
 for (let at in data) {
@@ -46,13 +48,15 @@ let newRule = {
 	attType: "",
 	attribute: "",
 	operator: "",
-	value: ""
+	values: ""
 };
 const categoryNames = segCat["Segment Category"];
+let rulesFromList = [];
+let editMode = false;
 
-export default function AddRulePage() {
+export default function AddRulePage(props) {
 	const [days, setDays] = React.useState(90);
-	const [rules, setRules] = React.useState([]);
+	const [rules, setRules] = React.useState(rulesFromList);
 	const [selectedAttType, setAttType] = React.useState("");
 	const [selectedAttribute, setAttribute] = React.useState("")
 	const [selectedOperator, setOperator] = React.useState("");
@@ -62,9 +66,31 @@ export default function AddRulePage() {
 	const [valueStr, setValueStr] = React.useState("");
 	const [modalState, setModalState] = React.useState(0);
 	const [freeInput, setFreeInput] = React.useState(false);
+	const [segmentName, setSegmentName] = React.useState("");
 	const [categoryName, setCategoryName] = React.useState(categoryNames[0]);
-	const [expirationDate, setExpirationDate] = React.useState(new Date().toISOString().slice(0, 10));
 	const [description, setDescription] = React.useState("");
+
+	const segmentID = Number(props.match.params.id);
+	if (segmentID !== undefined && segmentID > 0 && rules.length === 0) {
+		editMode = true;
+		let segments = segdata["Segments"];
+		for (let name in segments) {
+			if (segments[name]["id"] === segmentID) {
+				for (let att in segments[name]["segment_rules"]) {
+					rulesFromList.push({
+						index: prevRuleIndex++,
+						attType: "Page view attributes",
+						attribute: att,
+						operator: segments[name]["segment_rules"][att]["operators"][0],
+						values: segments[name]["segment_rules"][att]["values"]
+					});
+				}
+				setSegmentName(name);
+				setCategoryName(segments[name]["category"]);
+				break;
+			}
+		}
+	}
 
 	const daysChanged = (event, d) => {
 		setDays(d);
@@ -76,7 +102,7 @@ export default function AddRulePage() {
 		setSelectedValues([]);
 		setSearchText("");
 	}
-	const attributeItemClicked = (event, val) => {
+	const attributeItemClicked = (val) => {
 		setAttribute(val);
 		setOperator(data[selectedAttType][val]["operators"][0]);
 		if (data[selectedAttType][val]["values"].length === 0) {
@@ -91,14 +117,14 @@ export default function AddRulePage() {
 		setSelectedValues([]);
 		setSearchText("");
 	}
-	const valuePlusClicked = (event, val) => {
+	const valuePlusClicked = val => {
 		if (selectedValues.indexOf(val) === -1) {
 			setSelectedValues([
 				...selectedValues, val
 			]);
 		}
 	}
-	const valueMinusClicked = (event, val) => {
+	const valueMinusClicked = val => {
 		setSelectedValues(selectedValues.filter(v => {
 			return val !== v;
 		}))
@@ -130,11 +156,11 @@ export default function AddRulePage() {
 		setSelectedValues([]);
 		setValueStr("");
 	}
+	const segmentNameChanged = event => {
+		setSegmentName(event.target.value);
+	}
 	const categoryNameChanged = event => {
 		setCategoryName(event.target.value);
-	}
-	const expirationDateChanged = event => {
-		setExpirationDate(event.target.value)
 	}
 	const descriptionChanged = event => {
 		setDescription(event.target.value)
@@ -148,20 +174,21 @@ export default function AddRulePage() {
 			attType: selectedAttType,
 			attribute: selectedAttribute,
 			operator: selectedOperator,
-			values: freeInput ? valueStr.replace(/ /g, "").split(",") : selectedValues
+			values: freeInput ? valueStr/*.replace(/ /g, "").split(",")*/ : selectedValues
 		};
 		setModalState(1);
 	}
-	const removeRule = (rule) => {
+	const removeRule = rule => {
 		setRules(rules.filter(r => {
 			return rule.index !== r.index;
 		}))
 		setAttType(rule.attType);
 		setAttribute(rule.attribute);
 		setOperator(rule.operator);
-		if (data[rule.attType][rule.attribute]["values"].length === 0) {
+		console.log(typeof(rule.values))
+		if (typeof(rule.values) === "string") {
 			setFreeInput(true);
-			setValueStr(rule.values.join());
+			setValueStr(rule.values);
 		} else {
 			setFreeInput(false);
 			setValues(data[rule.attType][rule.attribute]["values"]);
@@ -172,7 +199,8 @@ export default function AddRulePage() {
 	React.useEffect(() => {
 		// Update all states
 		// console.log(rules);
-	})
+	});
+
 	return (
 		<Box>
 			<Grid
@@ -233,7 +261,7 @@ export default function AddRulePage() {
 															key={att}
 															button
 															selected = {selectedAttribute === att}
-															onClick = {event => attributeItemClicked(event, att)}
+															onClick = {event => attributeItemClicked(att)}
 														>
 															{att}
 														</ListItem>
@@ -345,7 +373,7 @@ export default function AddRulePage() {
 																		<ListItemSecondaryAction>
 																			<IconButton
 																				edge="end"
-																				onClick={event => valuePlusClicked(event, val)}
+																				onClick={event => valuePlusClicked(val)}
 																			>
 																				<AddCircle />
 																			</IconButton>
@@ -364,7 +392,7 @@ export default function AddRulePage() {
 																		<ListItemSecondaryAction>
 																			<IconButton
 																				edge="end"
-																				onClick={event => valueMinusClicked(event, val)}
+																				onClick={event => valueMinusClicked(val)}
 																			>
 																				<RemoveCircle />
 																			</IconButton>
@@ -416,7 +444,7 @@ export default function AddRulePage() {
 												style={{width: "150px"}}
 												onClick={doneClicked}
 											>
-												Done
+												{editMode ? "Update" : "Done"}
 											</Button>
 										</Box>
 									</Grid>
@@ -478,39 +506,26 @@ export default function AddRulePage() {
 										</Grid>
 										<Grid item style={{width: "100%"}}>
 											<Typography>Name segment</Typography>
-											<Input fullWidth />
+											<Input
+												fullWidth
+												value={segmentName}
+												onChange={segmentNameChanged}
+											/>
 										</Grid>
 										<Grid item style={{width: "100%"}}>
-											<Grid
-												container
-												direction="row"
+											<Typography style={{marginBottom: "8px"}}>Category name</Typography>
+											<TextField
+												select
+												value={categoryName}
+												onChange={categoryNameChanged}
+												style={{width: "200px"}}
 											>
-												<Grid item>
-													<Typography style={{marginBottom: "8px"}}>Category name</Typography>
-													<TextField
-														select
-														value={categoryName}
-														onChange={categoryNameChanged}
-														style={{width: "200px"}}
-													>
-														{categoryNames.map(cat => (
-															<MenuItem key={cat} value={cat}>
-																<Typography>{cat}</Typography>
-															</MenuItem>
-														))}
-													</TextField>
-												</Grid>
-												<Grid item xs />
-												<Grid item>
-													<Typography style={{marginBottom: "8px"}}>Expiration date</Typography>
-													<Input
-														type="date"
-														value={expirationDate}
-														onChange={expirationDateChanged}
-														style={{width: "200px"}}
-													/>
-												</Grid>
-											</Grid>
+												{categoryNames.map(cat => (
+													<MenuItem key={cat} value={cat}>
+														<Typography>{cat}</Typography>
+													</MenuItem>
+												))}
+											</TextField>
 										</Grid>
 										<Grid item style={{width: "100%"}}>
 											<Typography>Description</Typography>
@@ -573,4 +588,4 @@ export default function AddRulePage() {
 			</Modal>
 		</Box>
   )
-}
+};
