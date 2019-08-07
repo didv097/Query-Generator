@@ -33,15 +33,20 @@ import data from '../data.json';
 import segCat from '../segment_categories.json';
 import segdata from '../segment_list_data.json';
 
+import CountDisplay from './CountDisplay';
+
 const attTypes = [];
 const attributes = {};
+const filterNames = {};
 for (let at in data) {
 	attTypes.push(at);
 	attributes[at] = [];
 	for (let a in data[at]) {
 		attributes[at].push(a);
+		filterNames[a] = data[at][a].filter_name
 	}
 }
+
 let prevRuleIndex = 0;
 let newRule = {
 	index: -1,
@@ -53,10 +58,6 @@ let newRule = {
 const categoryNames = segCat["Segment Category"];
 let rulesFromList = [];
 let editMode = false;
-
-function getAttType(att) {
-	return "Page view attributes";
-}
 
 export default function AddRulePage(props) {
 	const [days, setDays] = React.useState(90);
@@ -73,6 +74,7 @@ export default function AddRulePage(props) {
 	const [segmentName, setSegmentName] = React.useState("");
 	const [categoryName, setCategoryName] = React.useState(categoryNames[0]);
 	const [description, setDescription] = React.useState("");
+	const [selectedFilterName, setFilterName] = React.useState("") // My crap
 
 	const segmentID = Number(props.match.params.id);
 	if (segmentID !== undefined && segmentID > 0 && rules.length === 0) {
@@ -83,7 +85,7 @@ export default function AddRulePage(props) {
 				for (let att in segments[name]["segment_rules"]) {
 					rulesFromList.push({
 						index: prevRuleIndex++,
-						attType: getAttType(att),
+						attType: "Page view attributes",
 						attribute: att,
 						operator: segments[name]["segment_rules"][att]["operators"][0],
 						values: segments[name]["segment_rules"][att]["values"]
@@ -102,12 +104,14 @@ export default function AddRulePage(props) {
 	const expansionChanged = attType => (event, isExpanded) => {
 		setAttType(isExpanded ? attType : "");
 		setAttribute("");
+		setFilterName("");
 		setOperator("");
 		setSelectedValues([]);
 		setSearchText("");
 	}
 	const attributeItemClicked = (val) => {
 		setAttribute(val);
+		setFilterName(filterNames[val]);
 		setOperator(data[selectedAttType][val]["operators"][0]);
 		if (data[selectedAttType][val]["values"].length === 0) {
 			setFreeInput(true);
@@ -176,6 +180,7 @@ export default function AddRulePage(props) {
 		newRule = {
 			index: prevRuleIndex++,
 			attType: selectedAttType,
+			filter_name: selectedFilterName,
 			attribute: selectedAttribute,
 			operator: selectedOperator,
 			values: freeInput ? valueStr : selectedValues
@@ -457,7 +462,9 @@ export default function AddRulePage(props) {
 						</Grid>
 					</Grid>
 				</Grid>
-				<Grid item xs={2} />
+				<Grid item xs={2}>
+					<CountDisplay rules={rules}/>
+				</Grid>
 			</Grid>
 			<Modal
 				open={modalState === 1}
