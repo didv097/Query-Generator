@@ -462,8 +462,8 @@ export default function AddRulePage(props) {
 						</Grid>
 					</Grid>
 				</Grid>
-				<Grid item xs={2}>
-					<CountDisplay rules={rules}/>
+				<Grid item xs={2} style={{background: "lightgrey"}}>
+					<CountDisplay rules={rules} days={days} />
 				</Grid>
 			</Grid>
 			<Modal
