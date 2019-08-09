@@ -218,7 +218,7 @@ export default function AddRulePage(props) {
 				justify="center"
 				alignItems="flex-start"
 			>
-				<Grid item xs={10}>
+				<Grid item xs={9}>
 					<Box m={2} mb={5}>
 						<Button href="/SegmentsPage">
 							<i className="material-icons">file_copy</i>
@@ -462,7 +462,7 @@ export default function AddRulePage(props) {
 						</Grid>
 					</Grid>
 				</Grid>
-				<Grid item xs={2} style={{background: "lightgrey"}}>
+				<Grid item xs={3} style={{background: "lightgrey"}}>
 					<CountDisplay rules={rules} days={days} />
 				</Grid>
 			</Grid>
