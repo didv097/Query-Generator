@@ -2,7 +2,10 @@ import React from 'react';
 import { Query } from 'react-apollo';
 import gql from 'graphql-tag';
 import {
-	PieChart, Pie, Cell, ResponsiveContainer
+	PieChart,
+	Pie,
+	Cell,
+	ResponsiveContainer
 } from 'recharts';
 import {
 	Grid,
@@ -116,8 +119,14 @@ export default function CountDisplay(props) {
 							{count === totalCount ? null : (
 								<div>
 									<Typography variant="caption"><b>Segment</b></Typography><br/>
-									<Typography variant="caption">{count.uids} Users</Typography><br/>
-									<Typography variant="caption">{count.visits} Visits</Typography><br/>
+									<div style={{display: "flex"}}>
+										<Typography variant="caption">{count.uids} Users</Typography>
+										<div style={{width: "10px", height: "10px", background: "#003466", margin: "auto", marginLeft: "4px"}} />
+									</div>
+									<div style={{display: "flex"}}>
+										<Typography variant="caption">{count.visits} Visits</Typography><br/>
+										<div style={{width: "10px", height: "10px", background: "#3399FE", margin: "auto", marginLeft: "4px"}} />
+									</div>
 									<Typography variant="caption">{(count.visits / count.uids).toFixed(2)} V/U</Typography>
 								</div>
 							)}
@@ -165,8 +174,14 @@ export default function CountDisplay(props) {
 							{count === totalCount ? null : (
 								<div>
 									<Typography variant="caption"><b>Segment</b></Typography><br/>
-									<Typography variant="caption">{count.impressions} Impressions</Typography><br/>
-									<Typography variant="caption">{count.pageviews} Page Views</Typography><br/>
+									<div style={{display: "flex"}}>
+										<Typography variant="caption">{count.impressions} Impressions</Typography><br/>
+										<div style={{width: "10px", height: "10px", background: "#003466", margin: "auto", marginLeft: "4px"}} />
+									</div>
+									<div style={{display: "flex"}}>
+										<Typography variant="caption">{count.pageviews} Pg Views</Typography><br/>
+										<div style={{width: "10px", height: "10px", background: "#3399FE", margin: "auto", marginLeft: "4px"}} />
+									</div>
 									<Typography variant="caption">{(count.impressions / count.pageviews).toFixed(2)} I/PV</Typography>
 								</div>
 							)}
@@ -174,7 +189,7 @@ export default function CountDisplay(props) {
 							<Grid item xs={6}>
 								<Typography variant="caption"><b>Population</b></Typography><br/>
 								<Typography variant="caption">{totalCount.impressions} Impressions</Typography><br/>
-								<Typography variant="caption">{totalCount.pageviews} Page Views</Typography><br/>
+								<Typography variant="caption">{totalCount.pageviews} Pg Views</Typography><br/>
 								<Typography variant="caption">{(totalCount.impressions / totalCount.pageviews).toFixed(2)} I/PV</Typography>
 							</Grid>
 						</Grid>
