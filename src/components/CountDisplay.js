@@ -1,14 +1,12 @@
 import React from 'react';
-import { Query } from 'react-apollo';
-import gql from 'graphql-tag';
 import {
 	PieChart, Pie, Cell, ResponsiveContainer
 } from 'recharts';
 import {
-	Grid,
-	Box,
-	Typography
+	Grid, Box, Typography
 } from '@material-ui/core';
+import { Query } from 'react-apollo';
+import gql from 'graphql-tag';
 
 let totalCount = null;
 const today = new Date();
