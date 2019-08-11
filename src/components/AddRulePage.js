@@ -59,9 +59,19 @@ const categoryNames = segCat["Segment Category"];
 let rulesFromList = [];
 let editMode = false;
 
+function getAttributeType(att) {
+	for (let typ in attTypes) {
+		if (attributes[attTypes[typ]].indexOf(att) >= 0) {
+			return attTypes[typ];
+		}
+	}
+	console.log("No such attribute : " + att);
+	return null;
+}
+
 export default function AddRulePage(props) {
 	const [days, setDays] = React.useState(90);
-	const [rules, setRules] = React.useState(rulesFromList);
+	const [rules, setRules] = React.useState([]);
 	const [selectedAttType, setAttType] = React.useState("");
 	const [selectedAttribute, setAttribute] = React.useState("")
 	const [selectedOperator, setOperator] = React.useState("");
@@ -77,7 +87,7 @@ export default function AddRulePage(props) {
 	const [selectedFilterName, setFilterName] = React.useState("") // My crap
 
 	const segmentID = Number(props.match.params.id);
-	if (segmentID !== undefined && segmentID > 0 && rules.length === 0) {
+	if (segmentID !== undefined && segmentID > 0 && editMode === false) {
 		editMode = true;
 		let segments = segdata["Segments"];
 		for (let name in segments) {
@@ -85,14 +95,17 @@ export default function AddRulePage(props) {
 				for (let att in segments[name]["segment_rules"]) {
 					rulesFromList.push({
 						index: prevRuleIndex++,
-						attType: "Page view attributes",
+						attType: getAttributeType(att),
 						attribute: att,
+						filter_name: filterNames[att],
 						operator: segments[name]["segment_rules"][att]["operators"][0],
 						values: segments[name]["segment_rules"][att]["values"]
 					});
 				}
 				setSegmentName(name);
 				setCategoryName(segments[name]["category"]);
+				setRules(rulesFromList);
+				console.log(rulesFromList)
 				break;
 			}
 		}
@@ -183,18 +196,17 @@ export default function AddRulePage(props) {
 			filter_name: selectedFilterName,
 			attribute: selectedAttribute,
 			operator: selectedOperator,
-			values: freeInput ? valueStr : selectedValues
+			values: freeInput ? valueStr.split(",") : selectedValues
 		};
 		setModalState(1);
 	}
 	const removeRule = rule => {
 		setRules(rules.filter(r => {
 			return rule.index !== r.index;
-		}))
+		}));
 		setAttType(rule.attType);
 		setAttribute(rule.attribute);
 		setOperator(rule.operator);
-		console.log(typeof(rule.values))
 		if (typeof(rule.values) === "string") {
 			setFreeInput(true);
 			setValueStr(rule.values);

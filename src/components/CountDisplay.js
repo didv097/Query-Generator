@@ -19,12 +19,36 @@ const formatDate = function(d) {
 	return `"` + d.getFullYear() + "-" + ("0" + (d.getMonth() + 1)).slice(-2) + "-" + ("0" + d.getDate()).slice(-2) + `"`;
 }
 
+const query = `
+	query GetCounts {
+		reportCounts(
+			filter: {device_type: {NIN: ""}}, 
+			fixedDateRange: {start_date: ` + formatDate(pastDate) + `, end_date: ` + formatDate(today) + `}
+		){
+			uids 
+			pageviews 
+			impressions 
+			visits
+		}
+	}
+`;
+const url = "http://localhost:4000/graphql";
+const opts = {
+  method: "POST",
+  headers: { "Content-Type": "application/json" },
+  body: JSON.stringify({ query })
+};
+fetch(url, opts)
+  .then(res => res.json())
+  .then(res => {
+		totalCount = res.data.reportCounts;
+	});
+
 export default function CountDisplay(props) {
 
 	const [rules, setRules] = React.useState([]);
 	const [days, setDays] = React.useState(90);
-	const [query, setQuery] = React.useState(
-		gql(`
+	const [query, setQuery] = React.useState(gql(`
 		query GetCounts {
 			reportCounts(
 				filter: {device_type: {NIN: ""}}, 
@@ -69,9 +93,6 @@ export default function CountDisplay(props) {
 				if (loading) return <div>Fetching ...</div>
 				if (error) return <div>Error</div>
 
-				if (totalCount === null) {
-					totalCount = data.reportCounts;
-				}
 				const count = data.reportCounts;
 
 				return (
