@@ -258,6 +258,7 @@ export default function AddRulePage(props) {
 			.then(res => {
 				console.log( res);
 			});
+		window.location.href = "\SegmentsPage";
 	}
 	React.useEffect(() => {
 		// Update all states
