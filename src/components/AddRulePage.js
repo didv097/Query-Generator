@@ -7,9 +7,6 @@ import {
 	Button,
 	Chip,
 	Slider,
-	ExpansionPanel,
-	ExpansionPanelSummary,
-	ExpansionPanelDetails,
 	List,
 	ListItem,
 	ListItemText,
@@ -19,14 +16,16 @@ import {
 	TextField,
 	InputAdornment,
 	IconButton,
-	Modal
+	Modal,
+	Collapse
 } from '@material-ui/core';
 import {
 	ExpandMore,
 	Search,
 	AddCircle,
 	RemoveCircle,
-	Edit
+	Edit,
+	ExpandLess
 } from '@material-ui/icons';
 
 import data from '../data.json';
@@ -114,8 +113,8 @@ export default function AddRulePage(props) {
 	const daysChanged = (event, d) => {
 		setDays(d);
 	}
-	const expansionChanged = attType => (event, isExpanded) => {
-		setAttType(isExpanded ? attType : "");
+	const expansionChanged = attType => {
+		setAttType(attType === selectedAttType ? "" : attType);
 		setAttribute("");
 		setFilterName("");
 		setOperator("");
@@ -336,29 +335,30 @@ export default function AddRulePage(props) {
 								</Box>
 								<Box justifyContent="flex-start" m={1}>
 									<Typography>DATA</Typography>
-									{attTypes.map(attType => (
-										<ExpansionPanel key={attType} expanded={selectedAttType === attType} onChange={expansionChanged(attType)}>
-											<ExpansionPanelSummary
-												expandIcon={<ExpandMore />}
-											>
-												{attType}
-											</ExpansionPanelSummary>
-											<ExpansionPanelDetails>
-												<List style={{width: "100%"}}>
-													{attributes[attType].map(att => (
-														<ListItem
-															key={att}
-															button
-															selected = {selectedAttribute === att}
-															onClick = {event => attributeItemClicked(att)}
-														>
-															{att}
-														</ListItem>
-													))}
-												</List>
-											</ExpansionPanelDetails>
-										</ExpansionPanel>
-									))}
+									<List>
+										{attTypes.map(attType => (
+											<Box>
+												<ListItem button onClick={event => expansionChanged(attType)} style={{width: "100%", background: "lightgrey"}}>
+													<ListItemText primary={attType} />
+													{selectedAttType === attType ? <ExpandLess /> : <ExpandMore />}
+												</ListItem>
+												<Collapse in={selectedAttType === attType} timeout="auto" unmountOnExit>
+													<List style={{width: "100%"}}>
+														{attributes[attType].map(att => (
+															<ListItem
+																key={att}
+																button
+																selected = {selectedAttribute === att}
+																onClick = {event => attributeItemClicked(att)}
+															>
+																{att}
+															</ListItem>
+														))}
+													</List>
+												</Collapse>
+											</Box>
+										))}
+									</List>
 								</Box>
 							</Box>
 						</Grid>
