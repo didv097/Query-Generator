@@ -72,7 +72,7 @@ export default function CountDisplay(props) {
 				const f_vals = props.rules[i].values.map((i) => {
 					return `"` + i + `"`
 				}).join(',');
-				qRules.push(`${props.rules[i].filter_name}: {${props.rules[i].operator.replace('NOT IN', 'NIN')}: [${f_vals}]}`) 
+				qRules.push(`${props.rules[i].filterName}: {${props.rules[i].operator.replace('NOT IN', 'NIN')}: [${f_vals}]}`) 
 			}
 			qFilter = `filter: {${qRules.join(',')}}`;
 		} else {

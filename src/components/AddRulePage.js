@@ -52,6 +52,7 @@ let newRule = {
 	index: -1,
 	attType: "",
 	attribute: "",
+	filterName: "",
 	operator: "",
 	values: ""
 };
@@ -84,7 +85,7 @@ export default function AddRulePage(props) {
 	const [segmentName, setSegmentName] = React.useState("");
 	const [categoryName, setCategoryName] = React.useState(categoryNames[0]);
 	const [description, setDescription] = React.useState("");
-	const [selectedFilterName, setFilterName] = React.useState("") // My crap
+	const [selectedFilterName, setFilterName] = React.useState("");
 
 	const segmentID = Number(props.match.params.id);
 	if (segmentID !== undefined && segmentID > 0 && editMode === false) {
@@ -97,7 +98,7 @@ export default function AddRulePage(props) {
 						index: prevRuleIndex++,
 						attType: getAttributeType(att),
 						attribute: att,
-						filter_name: filterNames[att],
+						filterName: filterNames[att],
 						operator: segments[name]["segment_rules"][att]["operators"][0],
 						values: segments[name]["segment_rules"][att]["values"]
 					});
@@ -193,7 +194,7 @@ export default function AddRulePage(props) {
 		newRule = {
 			index: prevRuleIndex++,
 			attType: selectedAttType,
-			filter_name: selectedFilterName,
+			filterName: selectedFilterName,
 			attribute: selectedAttribute,
 			operator: selectedOperator,
 			values: freeInput ? valueStr.split(",") : selectedValues
@@ -206,6 +207,7 @@ export default function AddRulePage(props) {
 		}));
 		setAttType(rule.attType);
 		setAttribute(rule.attribute);
+		setFilterName(filterNames[rule.attribute]);
 		setOperator(rule.operator);
 		if (typeof(rule.values) === "string") {
 			setFreeInput(true);
@@ -221,7 +223,7 @@ export default function AddRulePage(props) {
 		let ret = `{\n`;
 		for (const idx in rules) {
 			const rule = rules[idx];
-			ret += rule.filter_name;
+			ret += rule.filterName;
 			ret += `: {\n`;
 			ret += rule.operator;
 			ret += `: `;
@@ -246,7 +248,6 @@ export default function AddRulePage(props) {
 				)
 			}
 		`;
-		console.log(query);
 		const url = "http://localhost:4000/graphql";
 		const opts = {
 			method: "POST",
@@ -261,7 +262,7 @@ export default function AddRulePage(props) {
 	}
 	React.useEffect(() => {
 		// Update all states
-		// console.log(rules);
+		console.log(rules);
 	});
 
 	return (
