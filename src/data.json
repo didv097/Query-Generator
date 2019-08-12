@@ -189,15 +189,5 @@
 		}
 	},
 	"Impression attributes": {
-		"111": {
-			"filter_name": "111",
-			"values": [],
-			"operators": ["is", "is not"]
-		},
-		"222": {
-			"filter_name": "222",
-			"values": ["234"],
-			"operators": ["is", "is"]
-		}
 	}
 }

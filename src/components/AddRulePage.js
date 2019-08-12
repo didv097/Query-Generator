@@ -106,7 +106,6 @@ export default function AddRulePage(props) {
 				setSegmentName(name);
 				setCategoryName(segments[name]["category"]);
 				setRules(rulesFromList);
-				console.log(rulesFromList)
 				break;
 			}
 		}
@@ -262,7 +261,7 @@ export default function AddRulePage(props) {
 	}
 	React.useEffect(() => {
 		// Update all states
-		console.log(rules);
+		// console.log(rules);
 	});
 
 	return (
