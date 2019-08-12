@@ -96,12 +96,11 @@ export default function CountDisplay(props) {
 				const count = data.reportCounts;
 
 				return (
-					<div>
-						<Box m={1}>
-							<Typography variant="caption"><b>DASHBOARD</b></Typography>
-							<br /><br />
-							<Typography variant="caption">As you create more rules, the dashboard will show the amount of real users and impressions you are targeting.</Typography>
-							<br /><br />
+					<Box m={1}>
+						<Typography variant="caption"><b>DASHBOARD</b></Typography>
+						<br /><br />
+						<Typography variant="caption">As you create more rules, the dashboard will show the amount of real users and impressions you are targeting.</Typography>
+						<br /><br />
 						<hr />
 						<ResponsiveContainer  width="100%" height={200}>
 							<PieChart>
@@ -212,8 +211,7 @@ export default function CountDisplay(props) {
 								<Typography variant="caption">{(totalCount.impressions / totalCount.pageviews).toFixed(2)} I/PV</Typography>
 							</Grid>
 						</Grid>
-						</Box>
-					</div>
+					</Box>
 				);
 			}}
 		</Query>

@@ -337,7 +337,7 @@ export default function AddRulePage(props) {
 									<Typography>DATA</Typography>
 									<List>
 										{attTypes.map(attType => (
-											<Box>
+											<Box key={attType}>
 												<ListItem button onClick={event => expansionChanged(attType)} style={{width: "100%", background: "lightgrey"}}>
 													<ListItemText primary={attType} />
 													{selectedAttType === attType ? <ExpandLess /> : <ExpandMore />}
