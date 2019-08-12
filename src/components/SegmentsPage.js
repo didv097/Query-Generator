@@ -309,7 +309,7 @@ export default function SegmentsPage() {
 					currentSegment === null ? (<Typography>No rules</Typography>) : (
 						rules = Object.getOwnPropertyNames(segments[currentSegment]["segment_rules"]), 
 						rules.map(rule => (
-							<Typography variant="caption">
+							<Typography key={rule} variant="caption">
 								<strong>{rule + " "}</strong>
 								{segments[currentSegment]["segment_rules"][rule]["operators"]}
 								<strong>{" " + segments[currentSegment]["segment_rules"][rule]["values"]}</strong>
