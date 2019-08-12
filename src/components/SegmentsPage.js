@@ -129,20 +129,46 @@ export default function SegmentsPage() {
 	}
 
 	return (
-		<Box m={2}>
+		<Box>
+			<Grid
+				container
+				direction="row"
+				justify="space-between"
+				alignItems="flex-start"
+				style={{backgroundColor: "#003466", height: "150px"}}
+			>
+				<Grid item>
+					<Grid
+						container
+						direction="column"
+						justify="space-between"
+						alignItems="flex-start"
+						style={{height: "150px"}}
+					>
+						<Grid item>
+							<Typography variant="h1" style={{color:"#3399FE"}}>ADC</Typography>
+						</Grid>
+						<Grid item>
+							<Button href="/">
+								<Typography variant="body1" style={{color:"#3399FE"}}>New Segment</Typography>
+							</Button>
+						</Grid>
+					</Grid>
+				</Grid>
+				<Grid item>
+					<Button>
+						<Typography variant="body2" style={{color:"#3399FE"}}>Logout</Typography>
+					</Button>
+				</Grid>
+			</Grid>
 			<Grid
 				container
 				direction="column"
 				justify="flex-start"
 				alignItems="flex-start"
 				spacing={5}
+				style={{margin: "0px"}}
 			>
-				<Grid item>
-					<Button href="/">
-						<i className="material-icons">add</i>
-						New segment
-					</Button>
-				</Grid>
 				<Grid item>
 					<Grid
 						container
