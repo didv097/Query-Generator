@@ -184,7 +184,7 @@ export default function AddRulePage(props) {
 		setCategoryName(event.target.value);
 	}
 	const descriptionChanged = event => {
-		setDescription(event.target.value)
+		setDescription(event.target.value);
 	}
 	const onCancelClicked = () => {
 		setModalState(0);
@@ -216,6 +216,48 @@ export default function AddRulePage(props) {
 			setSelectedValues(rule.values);
 		}
 		setSearchText("");
+	}
+	const rulesToString = () => {
+		let ret = `{\n`;
+		for (const idx in rules) {
+			const rule = rules[idx];
+			ret += rule.filter_name;
+			ret += `: {\n`;
+			ret += rule.operator;
+			ret += `: `;
+			for (const subidx in rule.values) {
+				ret += `"` + rule.values[subidx] + `",`;
+			}
+			ret = ret.substr(0, ret.length - 1) + `\n},\n`
+		}
+		ret = ret.substr(0, ret.length - 2) + `\n}`;
+		return ret;
+	}
+	const onSubmitClicked = () => {
+		rulesToString()
+		const query = `
+			mutation test1 {
+				CreateSegmentDefinition(
+					name: "` + segmentName + `",
+					category: "` + categoryName + `",
+					subcategory: "",
+					description: "` + description + `",
+					seg_def: ` + rulesToString() + `
+				)
+			}
+		`;
+		console.log(query);
+		const url = "http://localhost:4000/graphql";
+		const opts = {
+			method: "POST",
+			headers: { "Content-Type": "application/json" },
+			body: JSON.stringify({ query })
+		};
+		fetch(url, opts)
+			.then(res => res.json())
+			.then(res => {
+				console.log( res);
+			});
 	}
 	React.useEffect(() => {
 		// Update all states
@@ -595,7 +637,8 @@ export default function AddRulePage(props) {
 														variant="contained"
 														color="primary"
 														style={{width: "120px"}}
-														href="/SegmentsPage"
+														// href="/SegmentsPage"
+														onClick={onSubmitClicked}
 													>
 														Submit
 													</Button>
