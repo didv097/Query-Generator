@@ -270,16 +270,41 @@ export default function AddRulePage(props) {
 			<Grid
 				container
 				direction="row"
+				justify="space-between"
+				alignItems="flex-start"
+				style={{backgroundColor: "#003466", height: "150px"}}
+			>
+				<Grid item>
+					<Grid
+						container
+						direction="column"
+						justify="space-between"
+						alignItems="flex-start"
+						style={{height: "150px"}}
+					>
+						<Grid item>
+							<Typography variant="h1" style={{color:"#3399FE"}}>ADC</Typography>
+						</Grid>
+						<Grid item>
+							<Button href="/SegmentsPage">
+								<Typography variant="body1" style={{color:"#3399FE"}}>Segments</Typography>
+							</Button>
+						</Grid>
+					</Grid>
+				</Grid>
+				<Grid item>
+					<Button>
+						<Typography variant="body2" style={{color:"#3399FE"}}>Logout</Typography>
+					</Button>
+				</Grid>
+			</Grid>
+			<Grid
+				container
+				direction="row"
 				justify="center"
 				alignItems="flex-start"
 			>
 				<Grid item xs={9}>
-					<Box m={2} mb={5}>
-						<Button href="/SegmentsPage">
-							<i className="material-icons">file_copy</i>
-							Segments
-						</Button>
-					</Box>
 					<Grid
 						container
 						direction="row"
