@@ -12,18 +12,12 @@ import { Query } from 'react-apollo';
 import gql from 'graphql-tag';
 
 let totalCount = null;
-const today = new Date();
-let pastDate = new Date();
-pastDate.setDate(today.getDate() - 90);
-const formatDate = function(d) {
-	return `"` + d.getFullYear() + "-" + ("0" + (d.getMonth() + 1)).slice(-2) + "-" + ("0" + d.getDate()).slice(-2) + `"`;
-}
 
-const query = `
+const query_total = `
 	query GetCounts {
 		reportCounts(
 			filter: {device_type: {NIN: ""}}, 
-			fixedDateRange: {start_date: ` + formatDate(pastDate) + `, end_date: ` + formatDate(today) + `}
+			relativeDateRange: 90
 		){
 			uids 
 			pageviews 
@@ -36,7 +30,7 @@ const url = "http://localhost:4000/graphql";
 const opts = {
   method: "POST",
   headers: { "Content-Type": "application/json" },
-  body: JSON.stringify({ query })
+  body: JSON.stringify({ query: query_total })
 };
 fetch(url, opts)
   .then(res => res.json())
@@ -48,19 +42,7 @@ export default function CountDisplay(props) {
 
 	const [rules, setRules] = React.useState([]);
 	const [days, setDays] = React.useState(90);
-	const [query, setQuery] = React.useState(gql(`
-		query GetCounts {
-			reportCounts(
-				filter: {device_type: {NIN: ""}}, 
-				fixedDateRange: {start_date: ` + formatDate(pastDate) + `, end_date: ` + formatDate(today) + `}
-			){
-				uids 
-				pageviews 
-				impressions 
-				visits
-			}
-		}
-	`));
+	const [query, setQuery] = React.useState(gql(query_total));
 
 	if (rules !== props.rules || days !== props.days) {
 		setRules(props.rules);
@@ -78,9 +60,7 @@ export default function CountDisplay(props) {
 		} else {
 			qFilter = `filter: {device_type: {NIN: ""}}`;
 		}
-		pastDate = new Date();
-		pastDate.setDate(new Date().getDate() - props.days);
-		const qDateFilter = `fixedDateRange: {start_date: ` + formatDate(pastDate) + `, end_date: ` + formatDate(today) + `}`;
+		const qDateFilter = `relativeDateRange: ` + props.days;
 		const qFields = `{uids, pageviews, impressions, visits}`;
 
 		setQuery(gql`query GetCounts { reportCounts(${qFilter}, ${qDateFilter})${qFields} }`);

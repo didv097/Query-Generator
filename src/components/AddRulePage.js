@@ -27,22 +27,22 @@ import {
 	Edit,
 	ExpandLess
 } from '@material-ui/icons';
-
-import data from '../data.json';
-import segCat from '../segment_categories.json';
-import segdata from '../segment_list_data.json';
-
 import CountDisplay from './CountDisplay';
+import { Query } from 'react-apollo';
+import gql from 'graphql-tag';
+
+import attData from '../data.json';
+import segCat from '../segment_categories.json';
 
 const attTypes = [];
 const attributes = {};
 const filterNames = {};
-for (let at in data) {
+for (let at in attData) {
 	attTypes.push(at);
 	attributes[at] = [];
-	for (let a in data[at]) {
+	for (let a in attData[at]) {
 		attributes[at].push(a);
-		filterNames[a] = data[at][a].filter_name
+		filterNames[a] = attData[at][a].filter_name
 	}
 }
 
@@ -57,7 +57,7 @@ let newRule = {
 };
 const categoryNames = segCat["Segment Category"];
 let rulesFromList = [];
-let editMode = false;
+let editMode = -1; // -1: no, 0: loading, 1: yes
 
 function getAttributeType(att) {
 	for (let typ in attTypes) {
@@ -68,6 +68,32 @@ function getAttributeType(att) {
 	console.log("No such attribute : " + att);
 	return null;
 }
+
+function getAttributeFromFilter(fil) {
+	for (let a in filterNames) {
+		if (filterNames[a] === fil) {
+			return a;
+		}
+	}
+	console.log("No such filter : " + fil);
+	return null;
+}
+
+const query_segdef = gql(`
+	{
+		SegmentDefinitions {
+			id
+			name
+			is_active
+			category
+			rule
+			population {
+				calculated_on
+				calculated_population
+			}
+		}
+	}
+`);
 
 export default function AddRulePage(props) {
 	const [days, setDays] = React.useState(90);
@@ -86,28 +112,9 @@ export default function AddRulePage(props) {
 	const [description, setDescription] = React.useState("");
 	const [selectedFilterName, setFilterName] = React.useState("");
 
-	const segmentID = Number(props.match.params.id);
-	if (segmentID !== undefined && segmentID > 0 && editMode === false) {
-		editMode = true;
-		let segments = segdata["Segments"];
-		for (let name in segments) {
-			if (segments[name]["id"] === segmentID) {
-				for (let att in segments[name]["segment_rules"]) {
-					rulesFromList.push({
-						index: prevRuleIndex++,
-						attType: getAttributeType(att),
-						attribute: att,
-						filterName: filterNames[att],
-						operator: segments[name]["segment_rules"][att]["operators"][0],
-						values: segments[name]["segment_rules"][att]["values"]
-					});
-				}
-				setSegmentName(name);
-				setCategoryName(segments[name]["category"]);
-				setRules(rulesFromList);
-				break;
-			}
-		}
+	const segmentID = props.match.params.id;
+	if (segmentID !== undefined && editMode < 0) {
+		editMode = 0;
 	}
 
 	const daysChanged = (event, d) => {
@@ -124,14 +131,14 @@ export default function AddRulePage(props) {
 	const attributeItemClicked = (val) => {
 		setAttribute(val);
 		setFilterName(filterNames[val]);
-		setOperator(data[selectedAttType][val]["operators"][0]);
-		if (data[selectedAttType][val]["values"].length === 0) {
+		setOperator(attData[selectedAttType][val]["operators"][0]);
+		if (attData[selectedAttType][val]["values"].length === 0) {
 			setFreeInput(true);
 			setValues([]);
 			setValueStr("");
 		} else {
 			setFreeInput(false);
-			setValues(data[selectedAttType][val]["values"]);
+			setValues(attData[selectedAttType][val]["values"]);
 			setValueStr("");
 		}
 		setSelectedValues([]);
@@ -159,7 +166,7 @@ export default function AddRulePage(props) {
 		const newVal = event.target.value;
 		setSearchText(newVal);
 		setValues(
-			data[selectedAttType][selectedAttribute]["values"].filter(v => {
+			attData[selectedAttType][selectedAttribute]["values"].filter(v => {
 				return v.toLowerCase().indexOf(newVal.toLowerCase()) !== -1;
 			})
 		);
@@ -212,7 +219,7 @@ export default function AddRulePage(props) {
 			setValueStr(rule.values);
 		} else {
 			setFreeInput(false);
-			setValues(data[rule.attType][rule.attribute]["values"]);
+			setValues(attData[rule.attType][rule.attribute]["values"]);
 			setSelectedValues(rule.values);
 		}
 		setSearchText("");
@@ -253,431 +260,470 @@ export default function AddRulePage(props) {
 			body: JSON.stringify({ query })
 		};
 		fetch(url, opts)
-			.then(res => res.json())
-			.then(res => {
-				console.log( res);
-			});
+			.catch(e => {
+				console.log("Submit error : " + e);
+			})
 		window.location.href = "/SegmentsPage";
 	}
+
 	React.useEffect(() => {
 		// Update all states
 		// console.log(rules);
 	});
 
 	return (
-		<Box>
-			<Grid
-				container
-				direction="row"
-				justify="space-between"
-				alignItems="flex-start"
-				style={{backgroundColor: "#003466", height: "150px"}}
-			>
-				<Grid item>
+		<Query query={query_segdef}>
+		{({ loading, error, data }) => {
+			if (loading) return <div>Fetching ...</div>
+			if (error) return <div>Error</div>
+
+			if (editMode === 0) {
+				editMode = 1;
+				const segments = data.SegmentDefinitions;
+				for (let idx in segments) {
+					let temp;
+					if (segments[idx].id === segmentID) {
+						eval("temp = " + segments[idx].rule);
+						for (let subidx in temp) {
+							const temp1 = getAttributeFromFilter(subidx);
+							const temp2 = getAttributeType(temp1);
+							for (let op in temp[subidx]) {
+								rulesFromList.push({
+									index: prevRuleIndex++,
+									attType: temp2,
+									attribute: temp1,
+									filterName: subidx,
+									operator: op,
+									values: typeof temp[subidx][op] === "object" ? temp[subidx][op] : new Array(temp[subidx][op])
+								})
+							}
+						}
+						setSegmentName(segments[idx].name);
+						setCategoryName(segments[idx].category);
+						setRules(rulesFromList)
+						break;
+					}
+				}
+				return <div>No such segment : {segmentID}</div>
+			}
+
+			return (
+				<Box>
 					<Grid
 						container
-						direction="column"
+						direction="row"
 						justify="space-between"
 						alignItems="flex-start"
-						style={{height: "150px"}}
+						style={{backgroundColor: "#003466", height: "150px"}}
 					>
 						<Grid item>
-							<Typography variant="h1" style={{color:"#3399FE"}}>ADC</Typography>
+							<Grid
+								container
+								direction="column"
+								justify="space-between"
+								alignItems="flex-start"
+								style={{height: "150px"}}
+							>
+								<Grid item>
+									<Typography variant="h1" style={{color:"#3399FE"}}>ADC</Typography>
+								</Grid>
+								<Grid item>
+									<Button href="/SegmentsPage">
+										<Typography variant="body1" style={{color:"#3399FE"}}>Segments</Typography>
+									</Button>
+								</Grid>
+							</Grid>
 						</Grid>
 						<Grid item>
-							<Button href="/SegmentsPage">
-								<Typography variant="body1" style={{color:"#3399FE"}}>Segments</Typography>
+							<Button>
+								<Typography variant="body2" style={{color:"#3399FE"}}>Logout</Typography>
 							</Button>
 						</Grid>
 					</Grid>
-				</Grid>
-				<Grid item>
-					<Button>
-						<Typography variant="body2" style={{color:"#3399FE"}}>Logout</Typography>
-					</Button>
-				</Grid>
-			</Grid>
-			<Grid
-				container
-				direction="row"
-				justify="center"
-				alignItems="flex-start"
-			>
-				<Grid item xs={9}>
 					<Grid
 						container
 						direction="row"
 						justify="center"
 						alignItems="flex-start"
 					>
-						<Grid item xs={3}>
-							<Box justifyContent="flex-start" m={1}>
-								<Box justifyContent="flex-start" m={1} mb={3}>
-									<Typography>TIME</Typography>
-									<Chip label={days === 0 ? "No time selected": "Past " + days + " days"} />
-									<Grid container spacing={1}>
-										<Grid item>
-											<Typography variant="caption">0 days</Typography>
-										</Grid>
-										<Grid item xs>
-											<Slider
-												aria-labelledby="continuous-slider"
-												value={days}
-												min={0}
-												max={90}
-												onChange={daysChanged}
-											/>
-										</Grid>
-										<Grid item>
-											<Typography variant="caption">90 days</Typography>
-										</Grid>
-									</Grid>
-								</Box>
-								<Box justifyContent="flex-start" m={1}>
-									<Typography>DATA</Typography>
-									<List>
-										{attTypes.map(attType => (
-											<Box key={attType}>
-												<ListItem button onClick={event => expansionChanged(attType)} style={{width: "100%", background: "lightgrey"}}>
-													<ListItemText primary={attType} />
-													{selectedAttType === attType ? <ExpandLess /> : <ExpandMore />}
-												</ListItem>
-												<Collapse in={selectedAttType === attType} timeout="auto" unmountOnExit>
-													<List style={{width: "100%"}}>
-														{attributes[attType].map(att => (
-															<ListItem
-																key={att}
-																button
-																selected = {selectedAttribute === att}
-																onClick = {event => attributeItemClicked(att)}
-															>
-																{att}
-															</ListItem>
-														))}
-													</List>
-												</Collapse>
-											</Box>
-										))}
-									</List>
-								</Box>
-							</Box>
-						</Grid>
-						<Grid item xs={9} m={1}>
-							<Box justifyContent="flex-start" m={1} mb={3}>
-								<Typography>RULES</Typography>
-								<Paper>
-								{rules.length === 0 ? (
-									<Box p={4}>
-										<Typography style={{textAlign: "center"}}>Rules will appear here after being created in the ADD RULE section below</Typography>
-									</Box>
-								) : (
-									<Box m={1}>
-										{rules.map(rule => (
-											<Box key={rule.index} m={1} p={0} style={{backgroundColor: "#bbb", display: "inline-block"}}>
-												<Typography variant="caption" style={{margin: "0"}}>
-													<strong>{rule.attribute + " "}</strong>
-													{rule.operator}
-													<strong>{" " + rule.values}</strong>
-												</Typography>
-												<IconButton size="small" style={{margin: "0"}} onClick={() => removeRule(rule)}>
-													<Edit />
-												</IconButton>
-											</Box>
-										))}
-									</Box>
-								)}
-									
-								</Paper>
-							</Box>
-							<Box justifyContent="flex-start" m={1}>
-								<Typography>ADD RULE</Typography>
-
-								<Paper style={{height: "400px"}}>
-								{days === 0 || selectedAttribute === "" ? (
-									<Box style={{padding: "40px", paddingTop: "170px"}}>
-										<Typography variant="h6" style={{textAlign: "center"}}>Select a time frame and data attribute from the left to begin</Typography>
-									</Box>
-								) : (
-									<Box p={2} m={2}>
-										<Grid container direction="column" spacing={1}>
-											<Grid item xs>
-												<Typography>{selectedAttribute}</Typography>
-											</Grid>
-											<Grid item>
-												<Grid
-													container
-													direction="row"
-													justify="flex-start"
-													alignItems="flex-end"
-													spacing={1}
-												>
-													<Grid item>
-														<TextField
-															select
-															value={selectedOperator}
-															onChange={operatorChanged}
-														>
-															{data[selectedAttType][selectedAttribute]["operators"].map(op => (
-																<MenuItem key={op} value={op}>
-																	<Typography>{op}</Typography>
-																</MenuItem>
-															))}
-														</TextField>
-													</Grid>
-													<Grid item>
-														<Input
-															value={searchText}
-															onChange={searchChanged}
-															placeholder="Search values..."
-															endAdornment={
-																<InputAdornment position="end">
-																	<Search/>
-																</InputAdornment>
-															}
-														/>
-													</Grid>
+						<Grid item xs={9}>
+							<Grid
+								container
+								direction="row"
+								justify="center"
+								alignItems="flex-start"
+							>
+								<Grid item xs={3}>
+									<Box justifyContent="flex-start" m={1}>
+										<Box justifyContent="flex-start" m={1} mb={3}>
+											<Typography>TIME</Typography>
+											<Chip label={days === 0 ? "No time selected": "Past " + days + " days"} />
+											<Grid container spacing={1}>
+												<Grid item>
+													<Typography variant="caption">0 days</Typography>
+												</Grid>
+												<Grid item xs>
+													<Slider
+														aria-labelledby="continuous-slider"
+														value={days}
+														min={0}
+														max={90}
+														onChange={daysChanged}
+													/>
+												</Grid>
+												<Grid item>
+													<Typography variant="caption">90 days</Typography>
 												</Grid>
 											</Grid>
+										</Box>
+										<Box justifyContent="flex-start" m={1}>
+											<Typography>DATA</Typography>
+											<List>
+												{attTypes.map(attType => (
+													<Box key={attType}>
+														<ListItem button onClick={event => expansionChanged(attType)} style={{width: "100%", background: "lightgrey"}}>
+															<ListItemText primary={attType} />
+															{selectedAttType === attType ? <ExpandLess /> : <ExpandMore />}
+														</ListItem>
+														<Collapse in={selectedAttType === attType} timeout="auto" unmountOnExit>
+															<List style={{width: "100%"}}>
+																{attributes[attType].map(att => (
+																	<ListItem
+																		key={att}
+																		button
+																		selected = {selectedAttribute === att}
+																		onClick = {event => attributeItemClicked(att)}
+																	>
+																		{att}
+																	</ListItem>
+																))}
+															</List>
+														</Collapse>
+													</Box>
+												))}
+											</List>
+										</Box>
+									</Box>
+								</Grid>
+								<Grid item xs={9} m={1}>
+									<Box justifyContent="flex-start" m={1} mb={3}>
+										<Typography>RULES</Typography>
+										<Paper>
+										{rules.length === 0 ? (
+											<Box p={4}>
+												<Typography style={{textAlign: "center"}}>Rules will appear here after being created in the ADD RULE section below</Typography>
+											</Box>
+										) : (
+											<Box m={1}>
+												{rules.map(rule => (
+													<Box key={rule.index} m={1} p={0} style={{backgroundColor: "#bbb", display: "inline-block"}}>
+														<Typography variant="caption" style={{margin: "0"}}>
+															<strong>{rule.attribute + " "}</strong>
+															{rule.operator}
+															<strong>{" " + rule.values}</strong>
+														</Typography>
+														<IconButton size="small" style={{margin: "0"}} onClick={() => removeRule(rule)}>
+															<Edit />
+														</IconButton>
+													</Box>
+												))}
+											</Box>
+										)}
+											
+										</Paper>
+									</Box>
+									<Box justifyContent="flex-start" m={1}>
+										<Typography>ADD RULE</Typography>
+
+										<Paper style={{height: "400px"}}>
+										{days === 0 || selectedAttribute === "" ? (
+											<Box style={{padding: "40px", paddingTop: "170px"}}>
+												<Typography variant="h6" style={{textAlign: "center"}}>Select a time frame and data attribute from the left to begin</Typography>
+											</Box>
+										) : (
+											<Box p={2} m={2}>
+												<Grid container direction="column" spacing={1}>
+													<Grid item xs>
+														<Typography>{selectedAttribute}</Typography>
+													</Grid>
+													<Grid item>
+														<Grid
+															container
+															direction="row"
+															justify="flex-start"
+															alignItems="flex-end"
+															spacing={1}
+														>
+															<Grid item>
+																<TextField
+																	select
+																	value={selectedOperator}
+																	onChange={operatorChanged}
+																>
+																	{attData[selectedAttType][selectedAttribute]["operators"].map(op => (
+																		<MenuItem key={op} value={op}>
+																			<Typography>{op}</Typography>
+																		</MenuItem>
+																	))}
+																</TextField>
+															</Grid>
+															<Grid item>
+																<Input
+																	value={searchText}
+																	onChange={searchChanged}
+																	placeholder="Search values..."
+																	endAdornment={
+																		<InputAdornment position="end">
+																			<Search/>
+																		</InputAdornment>
+																	}
+																/>
+															</Grid>
+														</Grid>
+													</Grid>
+													<Grid item>
+													{freeInput ? (
+														<Box style={{width: "100%", height: "100%"}}>
+															<TextField
+																fullWidth
+																multiline
+																variant="outlined"
+																placeholder="Enter your comma separated list of values here ..."
+																value={valueStr}
+																onChange={valueStrChanged}
+																rows="12"
+															/>
+														</Box>
+													) : (
+														<Grid container direction="row">
+															<Grid item xs={6}>
+																<Box style={{maxHeight: "250px", overflow: "auto"}}>
+																	<List component="nav">
+																		{values.map(val => (
+																			<ListItem key={val} button>
+																				<ListItemText primary={val} />
+																				<ListItemSecondaryAction>
+																					<IconButton
+																						edge="end"
+																						onClick={event => valuePlusClicked(val)}
+																					>
+																						<AddCircle />
+																					</IconButton>
+																				</ListItemSecondaryAction>
+																			</ListItem>
+																		))}
+																	</List>
+																</Box>
+															</Grid>
+															<Grid item xs={6}>
+																<Box style={{maxHeight: "250px", overflow: "auto"}}>
+																	<List component="nav">
+																		{selectedValues.map(val => (
+																			<ListItem key={val} button>
+																				<ListItemText primary={val}/>
+																				<ListItemSecondaryAction>
+																					<IconButton
+																						edge="end"
+																						onClick={event => valueMinusClicked(val)}
+																					>
+																						<RemoveCircle />
+																					</IconButton>
+																				</ListItemSecondaryAction>
+																			</ListItem>
+																		))}
+																	</List>
+																</Box>
+															</Grid>
+														</Grid>
+													)}
+													</Grid>
+												</Grid>
+											</Box>
+										)}
+										</Paper>
+									</Box>
+									<Box justifyContent="flex-start" m={1}>
+										<Grid
+											container
+											direction="row"
+											justify="flex-end"
+											alignContent="flex-end"
+										>
 											<Grid item>
-											{freeInput ? (
-												<Box style={{width: "100%", height: "100%"}}>
+												<Box m={1}>
+													<Button
+														variant="outlined"
+														color="primary"
+														disabled={
+															selectedAttribute === "" ||
+															selectedOperator === "" ||
+															(selectedValues.length === 0 && valueStr === "")
+														}
+														style={{width: "150px"}}
+														onClick={addRule}
+													>
+														<i className="material-icons">add</i>
+														Add Rule
+													</Button>
+												</Box>
+											</Grid>
+											<Grid item>
+												<Box m={1}>
+													<Button
+														variant="contained"
+														color="primary"
+														disabled={rules.length === 0}
+														style={{width: "150px"}}
+														onClick={doneClicked}
+													>
+														{editMode ? "Update" : "Done"}
+													</Button>
+												</Box>
+											</Grid>
+										</Grid>
+									</Box>
+								</Grid>
+							</Grid>
+						</Grid>
+						<Grid item xs={3} style={{background: "lightgrey"}}>
+							<CountDisplay rules={rules} days={days} />
+						</Grid>
+					</Grid>
+					<Modal
+						open={modalState === 1}
+					>
+						<Paper
+							style={{textAlign: "center", width: "400px", position: "absolute", left: "50%", top: "50%", marginLeft: "-200px", marginTop: "-120px"}}
+						>
+							<Box m={3}>
+								<Grid container direction="column">
+									<Grid item>
+										<Typography style={{margin: "10px"}} variant="h6">Added Rule</Typography>
+									</Grid>
+									<Grid item>
+										<Typography style={{margin: "10px"}}>
+											<strong>{newRule.attribute + " "}</strong>
+											{newRule.operator}
+											<strong>{" " + newRule.values}</strong>
+										</Typography>
+									</Grid>
+									<Grid item>
+										<Button style={{margin: "10px", width: "100px"}} variant="contained" onClick={modalOKClicked}>Ok</Button>
+									</Grid>
+								</Grid>
+							</Box>
+						</Paper>
+					</Modal>
+					<Modal
+						open={modalState === 2}
+					>
+						<Paper
+							style={{width: "600px", position: "absolute", left: "50%", top: "50%", marginLeft: "-300px", marginTop: "-350px"}}
+						>
+							<Box m={3}>
+								<Grid
+									container
+									direction="column"
+									spacing={2}
+								>
+									<Grid item>
+										<Box style={{maxWidth: "500px"}} m="auto">
+											<Grid
+												container
+												direction="column"
+												justify="flex-start"
+												alignItems="flex-start"
+												spacing={3}
+											>
+												<Grid item>
+													<Typography variant="h6">SEGMENT DETAILS</Typography>
+												</Grid>
+												<Grid item style={{width: "100%"}}>
+													<Typography>Name segment</Typography>
+													<Input
+														fullWidth
+														value={segmentName}
+														onChange={segmentNameChanged}
+													/>
+												</Grid>
+												<Grid item style={{width: "100%"}}>
+													<Typography style={{marginBottom: "8px"}}>Category name</Typography>
+													<TextField
+														select
+														value={categoryName}
+														onChange={categoryNameChanged}
+														style={{width: "200px"}}
+													>
+														{categoryNames.map(cat => (
+															<MenuItem key={cat} value={cat}>
+																<Typography>{cat}</Typography>
+															</MenuItem>
+														))}
+													</TextField>
+												</Grid>
+												<Grid item style={{width: "100%"}}>
+													<Typography>Description</Typography>
 													<TextField
 														fullWidth
 														multiline
 														variant="outlined"
-														placeholder="Enter your comma separated list of values here ..."
-														value={valueStr}
-														onChange={valueStrChanged}
-														rows="12"
+														value={description}
+														onChange={descriptionChanged}
+														rows={5}
 													/>
-												</Box>
-											) : (
-												<Grid container direction="row">
-													<Grid item xs={6}>
-														<Box style={{maxHeight: "250px", overflow: "auto"}}>
-															<List component="nav">
-																{values.map(val => (
-																	<ListItem key={val} button>
-																		<ListItemText primary={val} />
-																		<ListItemSecondaryAction>
-																			<IconButton
-																				edge="end"
-																				onClick={event => valuePlusClicked(val)}
-																			>
-																				<AddCircle />
-																			</IconButton>
-																		</ListItemSecondaryAction>
-																	</ListItem>
-																))}
-															</List>
+												</Grid>
+												<Grid item style={{width: "100%"}}>
+													<Typography>RULES</Typography>
+													{rules.map(rule => (
+														<Box key={rule.index} m={1} p={0} style={{backgroundColor: "#bbb", display: "inline-block"}}>
+															<Typography variant="caption" style={{margin: "0"}}>
+																<strong>{rule.attribute + " "}</strong>
+																{rule.operator}
+																<strong>{" " + rule.values}</strong>
+															</Typography>
 														</Box>
-													</Grid>
-													<Grid item xs={6}>
-														<Box style={{maxHeight: "250px", overflow: "auto"}}>
-															<List component="nav">
-																{selectedValues.map(val => (
-																	<ListItem key={val} button>
-																		<ListItemText primary={val}/>
-																		<ListItemSecondaryAction>
-																			<IconButton
-																				edge="end"
-																				onClick={event => valueMinusClicked(val)}
-																			>
-																				<RemoveCircle />
-																			</IconButton>
-																		</ListItemSecondaryAction>
-																	</ListItem>
-																))}
-															</List>
-														</Box>
+													))}
+												</Grid>
+												<Grid item style={{width: "100%", marginTop: "20px"}}>
+													<Grid
+														container
+														direction="row"
+														justify="flex-end"
+														alignContent="flex-end"
+														spacing={2}
+													>
+														<Grid item>
+															<Button
+																variant="outlined"
+																onClick={onCancelClicked}
+																style={{width: "120px"}}
+															>
+																Cancel
+															</Button>
+														</Grid>
+														<Grid item>
+															<Button
+																variant="contained"
+																color="primary"
+																style={{width: "120px"}}
+																// href="/SegmentsPage"
+																onClick={onSubmitClicked}
+															>
+																Submit
+															</Button>
+														</Grid>
 													</Grid>
 												</Grid>
-											)}
 											</Grid>
-										</Grid>
-									</Box>
-								)}
-								</Paper>
-							</Box>
-							<Box justifyContent="flex-start" m={1}>
-								<Grid
-									container
-									direction="row"
-									justify="flex-end"
-									alignContent="flex-end"
-								>
-									<Grid item>
-										<Box m={1}>
-											<Button
-												variant="outlined"
-												color="primary"
-												disabled={
-													selectedAttribute === "" ||
-													selectedOperator === "" ||
-													(selectedValues.length === 0 && valueStr === "")
-												}
-												style={{width: "150px"}}
-												onClick={addRule}
-											>
-												<i className="material-icons">add</i>
-												Add Rule
-											</Button>
-										</Box>
-									</Grid>
-									<Grid item>
-										<Box m={1}>
-											<Button
-												variant="contained"
-												color="primary"
-												disabled={rules.length === 0}
-												style={{width: "150px"}}
-												onClick={doneClicked}
-											>
-												{editMode ? "Update" : "Done"}
-											</Button>
 										</Box>
 									</Grid>
 								</Grid>
 							</Box>
-						</Grid>
-					</Grid>
-				</Grid>
-				<Grid item xs={3} style={{background: "lightgrey"}}>
-					<CountDisplay rules={rules} days={days} />
-				</Grid>
-			</Grid>
-			<Modal
-				open={modalState === 1}
-			>
-				<Paper
-					style={{textAlign: "center", width: "400px", position: "absolute", left: "50%", top: "50%", marginLeft: "-200px", marginTop: "-120px"}}
-				>
-					<Box m={3}>
-						<Grid container direction="column">
-							<Grid item>
-								<Typography style={{margin: "10px"}} variant="h6">Added Rule</Typography>
-							</Grid>
-							<Grid item>
-								<Typography style={{margin: "10px"}}>
-									<strong>{newRule.attribute + " "}</strong>
-									{newRule.operator}
-									<strong>{" " + newRule.values}</strong>
-								</Typography>
-							</Grid>
-							<Grid item>
-								<Button style={{margin: "10px", width: "100px"}} variant="contained" onClick={modalOKClicked}>Ok</Button>
-							</Grid>
-						</Grid>
-					</Box>
-				</Paper>
-			</Modal>
-			<Modal
-				open={modalState === 2}
-			>
-				<Paper
-					style={{width: "600px", position: "absolute", left: "50%", top: "50%", marginLeft: "-300px", marginTop: "-350px"}}
-				>
-					<Box m={3}>
-						<Grid
-							container
-							direction="column"
-							spacing={2}
-						>
-							<Grid item>
-								<Box style={{maxWidth: "500px"}} m="auto">
-									<Grid
-										container
-										direction="column"
-										justify="flex-start"
-										alignItems="flex-start"
-										spacing={3}
-									>
-										<Grid item>
-											<Typography variant="h6">SEGMENT DETAILS</Typography>
-										</Grid>
-										<Grid item style={{width: "100%"}}>
-											<Typography>Name segment</Typography>
-											<Input
-												fullWidth
-												value={segmentName}
-												onChange={segmentNameChanged}
-											/>
-										</Grid>
-										<Grid item style={{width: "100%"}}>
-											<Typography style={{marginBottom: "8px"}}>Category name</Typography>
-											<TextField
-												select
-												value={categoryName}
-												onChange={categoryNameChanged}
-												style={{width: "200px"}}
-											>
-												{categoryNames.map(cat => (
-													<MenuItem key={cat} value={cat}>
-														<Typography>{cat}</Typography>
-													</MenuItem>
-												))}
-											</TextField>
-										</Grid>
-										<Grid item style={{width: "100%"}}>
-											<Typography>Description</Typography>
-											<TextField
-												fullWidth
-												multiline
-												variant="outlined"
-												value={description}
-												onChange={descriptionChanged}
-												rows={5}
-											/>
-										</Grid>
-										<Grid item style={{width: "100%"}}>
-											<Typography>RULES</Typography>
-											{rules.map(rule => (
-												<Box key={rule.index} m={1} p={0} style={{backgroundColor: "#bbb", display: "inline-block"}}>
-													<Typography variant="caption" style={{margin: "0"}}>
-														<strong>{rule.attribute + " "}</strong>
-														{rule.operator}
-														<strong>{" " + rule.values}</strong>
-													</Typography>
-												</Box>
-											))}
-										</Grid>
-										<Grid item style={{width: "100%", marginTop: "20px"}}>
-											<Grid
-												container
-												direction="row"
-												justify="flex-end"
-												alignContent="flex-end"
-												spacing={2}
-											>
-												<Grid item>
-													<Button
-														variant="outlined"
-														onClick={onCancelClicked}
-														style={{width: "120px"}}
-													>
-														Cancel
-													</Button>
-												</Grid>
-												<Grid item>
-													<Button
-														variant="contained"
-														color="primary"
-														style={{width: "120px"}}
-														// href="/SegmentsPage"
-														onClick={onSubmitClicked}
-													>
-														Submit
-													</Button>
-												</Grid>
-											</Grid>
-										</Grid>
-									</Grid>
-								</Box>
-							</Grid>
-						</Grid>
-					</Box>
-				</Paper>
-			</Modal>
-		</Box>
+						</Paper>
+					</Modal>
+				</Box>
+			);
+		}}
+		</Query>
   )
 };
