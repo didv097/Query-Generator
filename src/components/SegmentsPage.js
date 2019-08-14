@@ -40,7 +40,7 @@ let loadingData = true;
 const filterNames = {};
 for (let at in attData) {
 	for (let a in attData[at]) {
-		filterNames[a] = attData[at][a].filter_name
+		filterNames[a] = attData[at][a].filter_name;
 	}
 }
 
@@ -83,7 +83,7 @@ function getRulesFromSegment(s) {
 				filterName: subidx,
 				operator: op,
 				values: typeof temp[subidx][op] === "object" ? temp[subidx][op] : new Array(temp[subidx][op])
-			})
+			});
 		}
 	}
 	return rul;
@@ -145,7 +145,7 @@ export default function SegmentsPage() {
 		}
 		let newDir = "asc";
 		if (sortBy === col) {
-			newDir = sortDirection === "asc" ? "desc" : "asc"
+			newDir = sortDirection === "asc" ? "desc" : "asc";
 			setSortDirection(newDir);
 		} else {
 			setSortBy(col);
@@ -265,7 +265,8 @@ export default function SegmentsPage() {
 							<Table>
 								<TableHead>
 									<TableRow>
-										{tableFields.map(field => (
+									{
+										tableFields.map(field => (
 											<TableCell key={field} align="left">
 												<TableSortLabel
 													active={sortBy === field}
@@ -275,7 +276,8 @@ export default function SegmentsPage() {
 													{field}
 												</TableSortLabel>
 											</TableCell>
-										))}
+										))
+									}
 										
 										<TableCell></TableCell>
 										<TableCell></TableCell>

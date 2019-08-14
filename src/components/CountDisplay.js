@@ -68,7 +68,6 @@ export default function CountDisplay(props) {
 		const qFields = `{uids, pageviews, impressions, visits}`;
 
 		setQuery(gql`query GetCounts { reportCounts(${qFilter}, ${qDateFilter})${qFields} }`);
-
 	}
 
 	return(

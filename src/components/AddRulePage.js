@@ -42,7 +42,7 @@ for (let at in attData) {
 	attributes[at] = [];
 	for (let a in attData[at]) {
 		attributes[at].push(a);
-		filterNames[a] = attData[at][a].filter_name
+		filterNames[a] = attData[at][a].filter_name;
 	}
 }
 
@@ -313,7 +313,7 @@ export default function AddRulePage(props) {
 									filterName: subidx,
 									operator: op,
 									values: typeof temp[subidx][op] === "object" ? temp[subidx][op] : new Array(temp[subidx][op])
-								})
+								});
 							}
 						}
 						setSegmentName(segments[idx].name);
