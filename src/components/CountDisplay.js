@@ -51,10 +51,14 @@ export default function CountDisplay(props) {
 		let qFilter;
 		if (props.rules.length > 0) {
 			for (let i in props.rules) {
-				const f_vals = props.rules[i].values.map((i) => {
+				let f_vals;
+				f_vals = props.rules[i].values.map((i) => {
 					return `"` + i + `"`
 				}).join(',');
-				qRules.push(`${props.rules[i].filterName}: {${props.rules[i].operator.replace('NOT IN', 'NIN')}: [${f_vals}]}`) 
+				if (props.rules[i].values.length > 1) {
+					f_vals = `[` + f_vals + `]`;
+				}
+				qRules.push(`${props.rules[i].filterName}: {${props.rules[i].operator.replace('NOT IN', 'NIN')}: ${f_vals}}`) 
 			}
 			qFilter = `filter: {${qRules.join(',')}}`;
 		} else {
@@ -70,8 +74,8 @@ export default function CountDisplay(props) {
 	return(
 		<Query query={query} >
 			{({ loading, error, data }) => {
-				if (loading) return <div>Fetching ...</div>
-				if (error) return <div>Error</div>
+				if (loading) return <div>Fetching ...</div>;
+				if (error) return <div>Error</div>;
 
 				const count = data.reportCounts;
 

@@ -274,8 +274,8 @@ export default function AddRulePage(props) {
 	return (
 		<Query query={query_segdef}>
 		{({ loading, error, data }) => {
-			if (loading) return <div>Fetching ...</div>
-			if (error) return <div>Error</div>
+			if (loading) return <div>Fetching ...</div>;
+			if (error) return <div>Error</div>;
 
 			if (editMode === 0) {
 				editMode = 1;
@@ -304,7 +304,15 @@ export default function AddRulePage(props) {
 						break;
 					}
 				}
-				return <div>No such segment : {segmentID}</div>
+				return (
+					<Box m={2}>
+						<h1>No such segment</h1>
+						<Button href="/" variant="outlined">
+							<i className="material-icons">home</i>
+							Go to home
+						</Button>
+					</Box>
+				);
 			}
 
 			return (
@@ -576,7 +584,7 @@ export default function AddRulePage(props) {
 														style={{width: "150px"}}
 														onClick={doneClicked}
 													>
-														{editMode ? "Update" : "Done"}
+														{editMode > 0 ? "Update" : "Done"}
 													</Button>
 												</Box>
 											</Grid>
