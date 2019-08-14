@@ -66,7 +66,7 @@ function getAttributeType(att) {
 		}
 	}
 	console.log("No such attribute : " + att);
-	return null;
+	return att;
 }
 
 function getAttributeFromFilter(fil) {
@@ -76,7 +76,7 @@ function getAttributeFromFilter(fil) {
 		}
 	}
 	console.log("No such filter : " + fil);
-	return null;
+	return fil;
 }
 
 const query_segdef = gql(`
@@ -241,29 +241,47 @@ export default function AddRulePage(props) {
 		return ret;
 	}
 	const onSubmitClicked = () => {
-		rulesToString()
-		const query = `
-			mutation test1 {
-				CreateSegmentDefinition(
-					name: "` + segmentName + `",
-					category: "` + categoryName + `",
-					subcategory: "",
-					description: "` + description + `",
-					seg_def: ` + rulesToString() + `
-				)
-			}
-		`;
+		let mutation;
+		if (editMode > 0) {
+			mutation = `
+				mutation UpdateSegment {
+					UpdateSegmentDefinitionById(
+						id: "` + segmentID + `",
+						name: "` + segmentName + `",
+						category: "` + categoryName + `",
+						subcategory: "",
+						description: "` + description + `",
+						seg_def: ` + rulesToString() + `,
+						is_active: "Y",
+					)
+				}
+			`;
+		} else {
+			mutation = `
+				mutation CreateSegment {
+					CreateSegmentDefinition(
+						name: "` + segmentName + `",
+						category: "` + categoryName + `",
+						subcategory: "",
+						description: "` + description + `",
+						seg_def: ` + rulesToString() + `
+					)
+				}
+			`;
+		}
 		const url = "http://localhost:4000/graphql";
 		const opts = {
 			method: "POST",
 			headers: { "Content-Type": "application/json" },
-			body: JSON.stringify({ query })
+			body: JSON.stringify({ mutation })
 		};
 		fetch(url, opts)
+			.then(() => {
+				window.location.href = "/SegmentsPage";
+			})
 			.catch(e => {
 				console.log("Submit error : " + e);
 			})
-		window.location.href = "/SegmentsPage";
 	}
 
 	React.useEffect(() => {

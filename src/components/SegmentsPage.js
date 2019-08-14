@@ -115,8 +115,7 @@ export default function SegmentsPage() {
 		setAnchorEl(null);
 	}
 	const formatDate = ds => {
-		const monStr = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
-		return monStr[parseInt(ds.slice(5, 7)) - 1] + " " + ds.slice(8, 10) + ", " + ds.slice(0, 4);
+		return ds;
 	}
 	const formatPopulation = p => {
 		if (p >= 1000000000) {
@@ -319,7 +318,7 @@ export default function SegmentsPage() {
 													)
 												}
 											</TableCell>
-											<TableCell align="left">{(seg.last_modified)}</TableCell>
+											<TableCell align="left">{formatDate(seg.last_modified)}</TableCell>
 											<TableCell align="left">{formatPopulation(seg.population)}</TableCell>
 											<TableCell align="left">{seg.category}</TableCell>
 											<TableCell>
