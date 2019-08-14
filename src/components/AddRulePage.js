@@ -732,7 +732,6 @@ export default function AddRulePage(props) {
 																variant="contained"
 																color="primary"
 																style={{width: "120px"}}
-																// href="/SegmentsPage"
 																onClick={onSubmitClicked}
 															>
 																Submit
