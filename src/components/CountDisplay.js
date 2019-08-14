@@ -11,6 +11,8 @@ import {
 import { Query } from 'react-apollo';
 import gql from 'graphql-tag';
 
+import ops from '../operator.json';
+
 let totalCount = null;
 
 const query_total = `
@@ -58,7 +60,7 @@ export default function CountDisplay(props) {
 				if (props.rules[i].values.length > 1) {
 					f_vals = `[` + f_vals + `]`;
 				}
-				qRules.push(`${props.rules[i].filterName}: {${props.rules[i].operator.replace('NOT IN', 'NIN')}: ${f_vals}}`) 
+				qRules.push(`${props.rules[i].filterName}: {${ops[props.rules[i].operator]}: ${f_vals}}`) 
 			}
 			qFilter = `filter: {${qRules.join(',')}}`;
 		} else {

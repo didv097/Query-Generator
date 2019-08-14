@@ -115,7 +115,7 @@ export default function SegmentsPage() {
 		setAnchorEl(null);
 	}
 	const formatDate = ds => {
-		return ds;
+		return ds.substr(0, 19);
 	}
 	const formatPopulation = p => {
 		if (p >= 1000000000) {

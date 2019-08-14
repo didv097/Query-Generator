@@ -33,6 +33,7 @@ import gql from 'graphql-tag';
 
 import attData from '../data.json';
 import segCat from '../segment_categories.json';
+import ops from '../operator.json';
 
 const attTypes = [];
 const attributes = {};
@@ -230,7 +231,7 @@ export default function AddRulePage(props) {
 			const rule = rules[idx];
 			ret += rule.filterName;
 			ret += `: {\n`;
-			ret += rule.operator.replace('NOT IN', 'NIN');
+			ret += ops[rule.operator];
 			ret += `: `;
 			if (rule.values.length > 1) {
 				ret += `[`;
