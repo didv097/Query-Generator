@@ -230,7 +230,7 @@ export default function AddRulePage(props) {
 			const rule = rules[idx];
 			ret += rule.filterName;
 			ret += `: {\n`;
-			ret += rule.operator;
+			ret += rule.operator.replace('NOT IN', 'NIN');
 			ret += `: `;
 			if (rule.values.length > 1) {
 				ret += `[`;
@@ -281,11 +281,11 @@ export default function AddRulePage(props) {
 		const opts = {
 			method: "POST",
 			headers: { "Content-Type": "application/json" },
-			body: JSON.stringify({ mutation })
+			body: JSON.stringify({ query: mutation })
 		};
 		fetch(url, opts)
 			.then(() => {
-				// window.location.href = "/SegmentsPage";
+				window.location.href = "/SegmentsPage";
 			})
 			.catch(e => {
 				console.log("Submit error : " + e);
