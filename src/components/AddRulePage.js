@@ -232,10 +232,17 @@ export default function AddRulePage(props) {
 			ret += `: {\n`;
 			ret += rule.operator;
 			ret += `: `;
+			if (rule.values.length > 1) {
+				ret += `[`;
+			}
 			for (const subidx in rule.values) {
 				ret += `"` + rule.values[subidx] + `",`;
 			}
-			ret = ret.substr(0, ret.length - 1) + `\n},\n`
+			ret = ret.substr(0, ret.length - 1);
+			if (rule.values.length > 1) {
+				ret += `]`;
+			}
+			ret += `\n},\n`
 		}
 		ret = ret.substr(0, ret.length - 2) + `\n}`;
 		return ret;
@@ -269,6 +276,7 @@ export default function AddRulePage(props) {
 				}
 			`;
 		}
+		console.log(mutation)
 		const url = "http://localhost:4000/graphql";
 		const opts = {
 			method: "POST",
@@ -277,7 +285,7 @@ export default function AddRulePage(props) {
 		};
 		fetch(url, opts)
 			.then(() => {
-				window.location.href = "/SegmentsPage";
+				// window.location.href = "/SegmentsPage";
 			})
 			.catch(e => {
 				console.log("Submit error : " + e);
