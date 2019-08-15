@@ -88,6 +88,7 @@ const query_segdef = gql(`
 			is_active
 			category
 			rule
+			description
 			population {
 				calculated_on
 				calculated_population
@@ -108,7 +109,7 @@ export default function AddRulePage(props) {
 	const [valueStr, setValueStr] = React.useState("");
 	const [modalState, setModalState] = React.useState(0);
 	const [freeInput, setFreeInput] = React.useState(false);
-	const [segmentName, setSegmentName] = React.useState("");
+	const [segmentName, setSegmentName] = React.useState("New Segment");
 	const [categoryName, setCategoryName] = React.useState(categoryNames[0]);
 	const [description, setDescription] = React.useState("");
 	const [selectedFilterName, setFilterName] = React.useState("");
@@ -321,12 +322,13 @@ export default function AddRulePage(props) {
 									attribute: temp1,
 									filterName: subidx,
 									operator: op,
-									values: typeof temp[subidx][op] === "object" ? temp[subidx][op] : new Array(temp[subidx][op])
+									values: typeof temp[subidx][op] === "object" ? temp[subidx][op] : new Array(temp[subidx][op]),
 								});
 							}
 						}
 						setSegmentName(segments[idx].name);
 						setCategoryName(segments[idx].category);
+						setDescription(segments[idx].description);
 						setRules(rulesFromList)
 						break;
 					}
@@ -366,6 +368,11 @@ export default function AddRulePage(props) {
 									<Button href="/SegmentsPage">
 										<Typography variant="body1" style={{color:"#3399FE"}}>Segments</Typography>
 									</Button>
+									{editMode > 0 ? (
+										<Button href="/">
+											<Typography variant="body1" style={{color:"#3399FE"}}>New Segment</Typography>
+										</Button>
+									) : (null)}
 								</Grid>
 							</Grid>
 						</Grid>
@@ -621,7 +628,7 @@ export default function AddRulePage(props) {
 							</Grid>
 						</Grid>
 						<Grid item xs={3} style={{background: "lightgrey"}}>
-							<CountDisplay rules={rules} days={days} />
+							<CountDisplay rules={rules} days={days} segName={segmentName} description={description} />
 						</Grid>
 					</Grid>
 					<Modal

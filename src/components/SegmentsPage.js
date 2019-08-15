@@ -18,8 +18,7 @@ import {
 	Modal,
 	List,
 	ListItem,
-	ListItemIcon,
-	Link
+	ListItemIcon
 } from '@material-ui/core';
 import {
 	Search,
@@ -55,7 +54,7 @@ const query_segdef = gql(`
 				calculated_on
 				calculated_population
 			}
-			created_on
+			modified_on
 		}
 	}
 `);
@@ -137,7 +136,7 @@ export default function SegmentsPage() {
 		setAnchorEl(null);
 	}
 	const viewAllRules = (rules) => {
-		setCurrentRules(rules)
+		setCurrentRules(rules);
 	}
 	const modalClose = () => {
 		setCurrentRules(null);
@@ -166,7 +165,7 @@ export default function SegmentsPage() {
 			});
 		} else if (col === "Last modified") {
 			searchResults.sort((a, b) => {
-				const ret = a.created_on.localeCompare(b.last_modified);
+				const ret = a.modified_on.localeCompare(b.last_modified);
 				return newDir === "asc" ? ret : -ret;
 			});
 		} else if (col === "Population") {
@@ -191,7 +190,7 @@ export default function SegmentsPage() {
 				segments = data.SegmentDefinitions;
 				for (let idx in segments) {
 					segments[idx].rules = getRulesFromSegment(segments[idx]);
-					segments[idx].last_modified = segments[idx].created_on;
+					segments[idx].last_modified = segments[idx].modified_on;
 					segments[idx].population = Number(segments[idx].population.calculated_population);
 				}
 				setSearchResults(segments);
