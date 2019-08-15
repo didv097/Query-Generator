@@ -84,8 +84,7 @@ export default function CountDisplay(props) {
 					<Box m={1}>
 						<Typography variant="h5" align="center"><b>{props.segName}</b></Typography>
 						<br />
-						<Typography variant="caption">{props.description}</Typography>
-						<br /><br />
+						<Typography variant="body2">{props.description}</Typography>
 						<hr />
 						<ResponsiveContainer  width="100%" height={200}>
 							<PieChart>

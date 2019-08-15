@@ -234,13 +234,12 @@ export default function SegmentsPage() {
 						direction="column"
 						justify="flex-start"
 						alignItems="flex-start"
-						spacing={2}
 						style={{padding: "16px"}}
 					>
-						<Grid item>
+						<Grid item style={{marginBottom: "16px"}}>
 							<Typography variant="h6">Segments</Typography>
 						</Grid>
-						<Grid item>
+						<Grid item style={{marginBottom: "16px"}}>
 							<Input
 								id="search"
 								value={searchText}
@@ -270,7 +269,6 @@ export default function SegmentsPage() {
 											</TableCell>
 										))
 									}
-										
 										<TableCell></TableCell>
 										<TableCell></TableCell>
 									</TableRow>
