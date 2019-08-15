@@ -94,7 +94,7 @@ export default function SegmentsPage() {
 	const [anchorEl, setAnchorEl] = React.useState(null);
 	const [searchResults, setSearchResults] = React.useState(segments);
 	const [currentRules, setCurrentRules] = React.useState(null);
-	const [editID, setEditID] = React.useState(null);
+	const [selectedID, setSelectedID] = React.useState(null);
 	const [sortBy, setSortBy] = React.useState("");
 	const [sortDirection, setSortDirection] = React.useState("asc");
 	const tableFields = ["Name", "Rules", "Last modified", "Population", "Category"];
@@ -109,7 +109,7 @@ export default function SegmentsPage() {
 	}
 	const moreClicked = (event, segID) => {
 		setAnchorEl(event.currentTarget);
-		setEditID(segID);
+		setSelectedID(segID);
 	}
 	const popClosed = () => {
 		setAnchorEl(null);
@@ -129,6 +129,9 @@ export default function SegmentsPage() {
 	}
 	const exportCSVClicked = () => {
 		setAnchorEl(null);
+	}
+	const editSegmentClicked = (id) => {
+		window.location.href = "/edit/" + id;
 	}
 	const deleteSegmentClicked = () => {
 		setAnchorEl(null);
@@ -331,7 +334,7 @@ export default function SegmentsPage() {
 						anchorEl={anchorEl}
 						onClose={popClosed}
 					>
-					{editID === null ? null : (
+					{selectedID === null ? null : (
 						<Paper>
 							<List>
 								<ListItem button onClick={exportCSVClicked}>
@@ -340,7 +343,7 @@ export default function SegmentsPage() {
 									</ListItemIcon>
 									Export .CSV
 								</ListItem>
-								<ListItem button component={Link} href={"/edit/" + editID}>
+								<ListItem button onClick={event => editSegmentClicked(selectedID)}>
 									<ListItemIcon>
 										<Edit/>
 									</ListItemIcon>
