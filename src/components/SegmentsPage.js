@@ -232,36 +232,26 @@ export default function SegmentsPage() {
 						direction="column"
 						justify="flex-start"
 						alignItems="flex-start"
-						spacing={5}
-						style={{margin: "0px"}}
+						spacing={2}
+						style={{padding: "16px"}}
 					>
 						<Grid item>
-							<Grid
-								container
-								direction="column"
-								justify="flex-start"
-								alignItems="flex-start"
-								spacing={1}
-							>
-								<Grid item>
-									<Typography variant="h6">Segments</Typography>
-								</Grid>
-								<Grid item>
-									<Input
-										id="search"
-										value={searchText}
-										onChange={searchChanged}
-										placeholder="Search values..."
-										endAdornment={
-											<InputAdornment position="end">
-												<Search/>
-											</InputAdornment>
-										}
-									/>
-								</Grid>
-							</Grid>
+							<Typography variant="h6">Segments</Typography>
 						</Grid>
-						<Grid item style={{width: "100%"}} >
+						<Grid item>
+							<Input
+								id="search"
+								value={searchText}
+								onChange={searchChanged}
+								placeholder="Search values..."
+								endAdornment={
+									<InputAdornment position="end">
+										<Search/>
+									</InputAdornment>
+								}
+							/>
+						</Grid>
+						<Grid item>
 							<Table>
 								<TableHead>
 									<TableRow>

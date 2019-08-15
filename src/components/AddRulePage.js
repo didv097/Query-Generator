@@ -231,7 +231,7 @@ export default function AddRulePage(props) {
 			const rule = rules[idx];
 			ret += rule.filterName;
 			ret += `: {\n`;
-			ret += ops[rule.operator];
+			ret += ops[rule.operator] === undefined ? rule.operator : ops[rule.operator];
 			ret += `: `;
 			if (rule.values.length > 1) {
 				ret += `[`;

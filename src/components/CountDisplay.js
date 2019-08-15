@@ -60,7 +60,7 @@ export default function CountDisplay(props) {
 				if (props.rules[i].values.length > 1) {
 					f_vals = `[` + f_vals + `]`;
 				}
-				qRules.push(`${props.rules[i].filterName}: {${ops[props.rules[i].operator]}: ${f_vals}}`) 
+				qRules.push(`${props.rules[i].filterName}: {${ops[props.rules[i].operator] === undefined ? props.rules[i].operator : ops[props.rules[i].operator]}: ${f_vals}}`) 
 			}
 			qFilter = `filter: {${qRules.join(',')}}`;
 		} else {
