@@ -82,7 +82,7 @@ export default function CountDisplay(props) {
 
 				return (
 					<Box m={1}>
-						<Typography variant="h5"><b>{props.segName}</b></Typography>
+						<Typography variant="h5" align="center"><b>{props.segName}</b></Typography>
 						<br />
 						<Typography variant="caption">{props.description}</Typography>
 						<br /><br />
@@ -117,28 +117,28 @@ export default function CountDisplay(props) {
 								</Pie>
 							</PieChart>
 						</ResponsiveContainer>
-						<Grid container>
+						<Grid container style={{width: "300px", margin: "auto"}}>
 							<Grid item xs={6}>
 							{count === totalCount ? null : (
 								<div>
-									<Typography variant="caption"><b>Segment</b></Typography><br/>
+									<Typography variant="body2"><b>Segment</b></Typography>
 									<div style={{display: "flex"}}>
-										<Typography variant="caption">{count.uids} Users</Typography>
-										<div style={{width: "10px", height: "10px", background: "#003466", margin: "auto", marginLeft: "4px"}} />
+										<Typography variant="body2">{count.uids} Users</Typography>
+										<div style={{width: "10px", height: "10px", background: "#003466", margin: "6px"}} />
 									</div>
 									<div style={{display: "flex"}}>
-										<Typography variant="caption">{count.visits} Visits</Typography><br/>
-										<div style={{width: "10px", height: "10px", background: "#3399FE", margin: "auto", marginLeft: "4px"}} />
+										<Typography variant="body2">{count.visits} Visits</Typography><br/>
+										<div style={{width: "10px", height: "10px", background: "#3399FE", margin: "6px"}} />
 									</div>
-									<Typography variant="caption">{(count.visits / count.uids).toFixed(2)} V/U</Typography>
+									<Typography variant="body2">{(count.visits / count.uids).toFixed(2)} V/U</Typography>
 								</div>
 							)}
 							</Grid>
 							<Grid item xs={6}>
-								<Typography variant="caption"><b>Population</b></Typography><br/>
-								<Typography variant="caption">{totalCount.uids} Users</Typography><br/>
-								<Typography variant="caption">{totalCount.visits} Visits</Typography><br/>
-								<Typography variant="caption">{(totalCount.visits / totalCount.uids).toFixed(2)} V/U</Typography>
+								<Typography variant="body2"><b>Population</b></Typography>
+								<Typography variant="body2">{totalCount.uids} Users</Typography>
+								<Typography variant="body2">{totalCount.visits} Visits</Typography>
+								<Typography variant="body2">{(totalCount.visits / totalCount.uids).toFixed(2)} V/U</Typography>
 							</Grid>
 						</Grid>
 						<hr />
@@ -172,28 +172,28 @@ export default function CountDisplay(props) {
 								</Pie>
 							</PieChart>
 						</ResponsiveContainer>
-						<Grid container>
+						<Grid container style={{width: "300px", margin: "auto"}}>
 							<Grid item xs={6}>
 							{count === totalCount ? null : (
 								<div>
-									<Typography variant="caption"><b>Segment</b></Typography><br/>
+									<Typography variant="body2"><b>Segment</b></Typography>
 									<div style={{display: "flex"}}>
-										<Typography variant="caption">{count.impressions} Impressions</Typography><br/>
-										<div style={{width: "10px", height: "10px", background: "#003466", margin: "auto", marginLeft: "4px"}} />
+										<Typography variant="body2">{count.impressions} Impressions</Typography>
+										<div style={{width: "10px", height: "10px", background: "#003466", margin: "6px"}} />
 									</div>
 									<div style={{display: "flex"}}>
-										<Typography variant="caption">{count.pageviews} Pg Views</Typography><br/>
-										<div style={{width: "10px", height: "10px", background: "#3399FE", margin: "auto", marginLeft: "4px"}} />
+										<Typography variant="body2">{count.pageviews} Pg Views</Typography>
+										<div style={{width: "10px", height: "10px", background: "#3399FE", margin: "6px"}} />
 									</div>
-									<Typography variant="caption">{(count.impressions / count.pageviews).toFixed(2)} I/PV</Typography>
+									<Typography variant="body2">{(count.impressions / count.pageviews).toFixed(2)} I/PV</Typography>
 								</div>
 							)}
 							</Grid>
 							<Grid item xs={6}>
-								<Typography variant="caption"><b>Population</b></Typography><br/>
-								<Typography variant="caption">{totalCount.impressions} Impressions</Typography><br/>
-								<Typography variant="caption">{totalCount.pageviews} Pg Views</Typography><br/>
-								<Typography variant="caption">{(totalCount.impressions / totalCount.pageviews).toFixed(2)} I/PV</Typography>
+								<Typography variant="body2"><b>Population</b></Typography>
+								<Typography variant="body2">{totalCount.impressions} Impressions</Typography>
+								<Typography variant="body2">{totalCount.pageviews} Pg Views</Typography>
+								<Typography variant="body2">{(totalCount.impressions / totalCount.pageviews).toFixed(2)} I/PV</Typography>
 							</Grid>
 						</Grid>
 					</Box>
