@@ -273,7 +273,8 @@ export default function AddRulePage(props) {
 						category: "` + categoryName + `",
 						subcategory: "",
 						description: "` + description + `",
-						seg_def: ` + rulesToString() + `
+						seg_def: ` + rulesToString() + `,
+						population: ``
 					)
 				}
 			`;

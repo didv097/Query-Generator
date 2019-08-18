@@ -132,8 +132,27 @@ export default function SegmentsPage() {
 	const editSegmentClicked = (id) => {
 		window.location.href = "/edit/" + id;
 	}
-	const deleteSegmentClicked = () => {
-		setAnchorEl(null);
+	const deleteSegmentClicked = (id) => {
+		const mutation = `
+			mutation DeleteSegment {
+				DeleteSegmentDefinitionById(
+					id: "` + id + `"
+				)
+			}
+		`;
+		const url = "http://localhost:4000/graphql";
+		const opts = {
+			method: "POST",
+			headers: { "Content-Type": "application/json" },
+			body: JSON.stringify({ query: mutation })
+		};
+		fetch(url, opts)
+			.then(() => {
+				window.location.href = "/SegmentsPage";
+			})
+			.catch(e => {
+				console.log("Submit error : " + e);
+			})
 	}
 	const viewAllRules = (rules) => {
 		setCurrentRules(rules);
@@ -346,7 +365,7 @@ export default function SegmentsPage() {
 									</ListItemIcon>
 									Edit segment
 								</ListItem>
-								<ListItem button onClick={deleteSegmentClicked}>
+								<ListItem button onClick={event => deleteSegmentClicked(selectedID)}>
 									<ListItemIcon>
 										<Delete/>
 									</ListItemIcon>
