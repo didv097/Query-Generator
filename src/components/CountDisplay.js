@@ -55,12 +55,12 @@ export default function CountDisplay(props) {
 			for (let i in props.rules) {
 				let f_vals;
 				f_vals = props.rules[i].values.map((i) => {
-					return `"` + i + `"`
+					return `"` + i + `"`;
 				}).join(',');
 				if (props.rules[i].values.length > 1) {
 					f_vals = `[` + f_vals + `]`;
 				}
-				qRules.push(`${props.rules[i].filterName}: {${ops[props.rules[i].operator] === undefined ? props.rules[i].operator : ops[props.rules[i].operator]}: ${f_vals}}`) 
+				qRules.push(`${props.rules[i].filterName}: {${ops[props.rules[i].operator] === undefined ? props.rules[i].operator : ops[props.rules[i].operator]}: ${f_vals}}`);
 			}
 			qFilter = `filter: {${qRules.join(',')}}`;
 		} else {

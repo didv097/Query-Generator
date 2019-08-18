@@ -80,6 +80,44 @@ function getAttributeFromFilter(fil) {
 	return fil;
 }
 
+let population = 0;
+
+function getPopulation(rules, days) {
+	let qRules = [];
+	let qFilter;
+	if (rules.length > 0) {
+		for (let i in rules) {
+			let f_vals;
+			f_vals = rules[i].values.map((i) => {
+				return `"` + i + `"`;
+			}).join(',');
+			if (rules[i].values.length > 1) {
+				f_vals = `[` + f_vals + `]`;
+			}
+			qRules.push(`${rules[i].filterName}: {${ops[rules[i].operator] === undefined ? rules[i].operator : ops[rules[i].operator]}: ${f_vals}}`);
+		}
+		qFilter = `filter: {${qRules.join(',')}}`;
+	} else {
+		qFilter = `filter: {device_type: {NIN: ""}}`;
+	}
+	const qDateFilter = `relativeDateRange: ` + days;
+	const qFields = `{uids, pageviews, impressions, visits}`;
+
+	const query_total = `query GetCounts { reportCounts(${qFilter}, ${qDateFilter})${qFields} }`;
+
+	const url = "http://localhost:4000/graphql";
+	const opts = {
+		method: "POST",
+		headers: { "Content-Type": "application/json" },
+		body: JSON.stringify({ query: query_total })
+	};
+	fetch(url, opts)
+		.then(res => res.json())
+		.then(res => {
+			population = res.data.reportCounts.uids;
+		});
+}
+
 const query_segdef = gql(`
 	{
 		SegmentDefinitions {
@@ -184,6 +222,7 @@ export default function AddRulePage(props) {
 		setRules([...rules, newRule]);
 		setSelectedValues([]);
 		setValueStr("");
+		getPopulation([...rules, newRule], days);
 	}
 	const segmentNameChanged = event => {
 		setSegmentName(event.target.value);
@@ -225,6 +264,9 @@ export default function AddRulePage(props) {
 			setSelectedValues(rule.values);
 		}
 		setSearchText("");
+		getPopulation(rules.filter(r => {
+			return rule.index !== r.index;
+		}), days);
 	}
 	const rulesToString = () => {
 		let ret = `{\n`;
@@ -244,7 +286,7 @@ export default function AddRulePage(props) {
 			if (rule.values.length > 1) {
 				ret += `]`;
 			}
-			ret += `\n},\n`
+			ret += `\n},\n`;
 		}
 		ret = ret.substr(0, ret.length - 2) + `\n}`;
 		return ret;
@@ -274,7 +316,7 @@ export default function AddRulePage(props) {
 						subcategory: "",
 						description: "` + description + `",
 						seg_def: ` + rulesToString() + `,
-						population: ``
+						population: ` + population + `
 					)
 				}
 			`;
@@ -330,7 +372,8 @@ export default function AddRulePage(props) {
 						setSegmentName(segments[idx].name);
 						setCategoryName(segments[idx].category);
 						setDescription(segments[idx].description);
-						setRules(rulesFromList)
+						setRules(rulesFromList);
+						getPopulation(rulesFromList, 90);
 						break;
 					}
 				}
