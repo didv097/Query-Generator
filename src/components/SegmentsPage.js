@@ -151,7 +151,7 @@ export default function SegmentsPage() {
 				window.location.href = "/SegmentsPage";
 			})
 			.catch(e => {
-				console.log("Submit error : " + e);
+				console.log("Delete error : " + e);
 			})
 	}
 	const viewAllRules = (rules) => {
@@ -357,19 +357,19 @@ export default function SegmentsPage() {
 									<ListItemIcon>
 										<GetApp/>
 									</ListItemIcon>
-									Export .CSV
+									<Typography variant="body2">Export .CSV</Typography>
 								</ListItem>
 								<ListItem button onClick={event => editSegmentClicked(selectedID)}>
 									<ListItemIcon>
 										<Edit/>
 									</ListItemIcon>
-									Edit segment
+									<Typography variant="body2">Edit segment</Typography>
 								</ListItem>
 								<ListItem button onClick={event => deleteSegmentClicked(selectedID)}>
 									<ListItemIcon>
 										<Delete/>
 									</ListItemIcon>
-									Delete segment
+									<Typography variant="body2">Delete segment</Typography>
 								</ListItem>
 							</List>
 						</Paper>

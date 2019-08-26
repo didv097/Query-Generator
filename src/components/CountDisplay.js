@@ -18,7 +18,7 @@ let totalCount = null;
 const query_total = `
 	query GetCounts {
 		reportCounts(
-			filter: {device_type: {NIN: ""}}, 
+			filter: {}, 
 			relativeDateRange: 90
 		){
 			uids 
