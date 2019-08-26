@@ -10,8 +10,8 @@ const AppRouter = () => (
 		<div>
 			<Switch>
 				<Route path="/" component={AddRulePage} exact={true} />
-				<Route path="/edit/:id" component={AddRulePage} />
 				<Route path="/SegmentsPage" component={SegmentsPage} />
+				<Route path="/edit/:id" component={AddRulePage} />
 				<Route component={NotFoundPage} />
 			</Switch>
 		</div>
