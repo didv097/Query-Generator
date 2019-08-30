@@ -26,7 +26,8 @@ import {
 	RemoveCircle,
 	Edit,
 	ExpandLess,
-	Add
+	Add,
+	Home
 } from '@material-ui/icons';
 import CountDisplay from './CountDisplay';
 import { Query } from 'react-apollo';
@@ -397,7 +398,7 @@ export default function AddRulePage(props) {
 					<Box m={2}>
 						<h1>No such segment</h1>
 						<Button href="/" variant="outlined">
-							<i className="material-icons">home</i>
+							<Home />
 							Go to home
 						</Button>
 					</Box>
