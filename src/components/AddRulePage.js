@@ -2,7 +2,6 @@ import React from 'react';
 import {
 	Grid,
 	Box,
-	Paper,
 	Typography,
 	Button,
 	Chip,
@@ -512,139 +511,138 @@ export default function AddRulePage(props) {
 								<Grid item xs={9} m={1}>
 									<Box justifyContent="flex-start" m={1} mb={3}>
 										<Typography>RULES</Typography>
-										<Paper>
-										{rules.length === 0 ? (
-											<Box p={4}>
-												<Typography style={{textAlign: "center"}}>Rules will appear here after being created in the ADD RULE section below</Typography>
-											</Box>
-										) : (
-											<Box m={1}>
-												{rules.map(rule => (
-													<Box key={rule.index} m={1} p={0} style={{backgroundColor: "#bbb", display: "inline-block"}}>
-														<Typography variant="caption" style={{margin: "0"}}>
-															<strong>{rule.attribute + " "}</strong>
-															{rule.operator}
-															<strong>{" " + rule.values}</strong>
-														</Typography>
-														<IconButton size="small" style={{margin: "0"}} onClick={() => removeRule(rule)}>
-															<Edit />
-														</IconButton>
-													</Box>
-												))}
-											</Box>
-										)}
-											
-										</Paper>
+										<Box style={{borderStyle: 'solid', borderWidth: 1, borderColor: 'lightgray'}}>
+											{rules.length === 0 ? (
+												<Box p={4}>
+													<Typography style={{textAlign: "center"}}>Rules will appear here after being created in the ADD RULE section below</Typography>
+												</Box>
+											) : (
+												<Box m={1}>
+													{rules.map(rule => (
+														<Box key={rule.index} m={1} p={0} style={{backgroundColor: "#bbb", display: "inline-block"}}>
+															<Typography variant="caption" style={{margin: "0"}}>
+																<strong>{rule.attribute + " "}</strong>
+																{rule.operator}
+																<strong>{" " + rule.values}</strong>
+															</Typography>
+															<IconButton size="small" style={{margin: "0"}} onClick={() => removeRule(rule)}>
+																<Edit />
+															</IconButton>
+														</Box>
+													))}
+												</Box>
+											)}
+										</Box>
 									</Box>
 									<Box justifyContent="flex-start" m={1}>
 										<Typography>ADD RULE</Typography>
 
-										<Paper style={{height: "400px"}}>
-										{days === 0 || selectedAttribute === "" ? (
-											<Box style={{padding: "40px", paddingTop: "170px"}}>
-												<Typography variant="h6" style={{textAlign: "center"}}>Select a time frame and data attribute from the left to begin</Typography>
-											</Box>
-										) : (
-											<Box p={2} m={2}>
-												<Grid container direction="column" spacing={1}>
-													<Grid item xs>
-														<Typography>{selectedAttribute}</Typography>
-													</Grid>
-													<Grid item>
-														<Grid
-															container
-															direction="row"
-															justify="flex-start"
-															alignItems="flex-end"
-															spacing={1}
-														>
-															<Grid item>
+										<Box style={{borderStyle: 'solid', borderWidth: 1, borderColor: 'lightgray', height: 400}}>
+											{days === 0 || selectedAttribute === "" ? (
+												<Box style={{padding: "40px", paddingTop: "170px"}}>
+													<Typography variant="h6" style={{textAlign: "center"}}>Select a time frame and data attribute from the left to begin</Typography>
+												</Box>
+											) : (
+												<Box p={2} m={2}>
+													<Grid container direction="column" spacing={1}>
+														<Grid item xs>
+															<Typography>{selectedAttribute}</Typography>
+														</Grid>
+														<Grid item>
+															<Grid
+																container
+																direction="row"
+																justify="flex-start"
+																alignItems="flex-end"
+																spacing={1}
+															>
+																<Grid item>
+																	<TextField
+																		select
+																		value={selectedOperator}
+																		onChange={operatorChanged}
+																	>
+																		{attData[selectedAttType][selectedAttribute]["operators"].map(op => (
+																			<MenuItem key={op} value={op}>
+																				<Typography>{op}</Typography>
+																			</MenuItem>
+																		))}
+																	</TextField>
+																</Grid>
+																<Grid item>
+																	<Input
+																		value={searchText}
+																		onChange={searchChanged}
+																		placeholder="Search values..."
+																		endAdornment={
+																			<InputAdornment position="end">
+																				<Search/>
+																			</InputAdornment>
+																		}
+																	/>
+																</Grid>
+															</Grid>
+														</Grid>
+														<Grid item>
+														{freeInput ? (
+															<Box style={{width: "100%", height: "100%"}}>
 																<TextField
-																	select
-																	value={selectedOperator}
-																	onChange={operatorChanged}
-																>
-																	{attData[selectedAttType][selectedAttribute]["operators"].map(op => (
-																		<MenuItem key={op} value={op}>
-																			<Typography>{op}</Typography>
-																		</MenuItem>
-																	))}
-																</TextField>
-															</Grid>
-															<Grid item>
-																<Input
-																	value={searchText}
-																	onChange={searchChanged}
-																	placeholder="Search values..."
-																	endAdornment={
-																		<InputAdornment position="end">
-																			<Search/>
-																		</InputAdornment>
-																	}
+																	fullWidth
+																	multiline
+																	variant="outlined"
+																	placeholder="Enter your comma separated list of values here ..."
+																	value={valueStr}
+																	onChange={valueStrChanged}
+																	rows="12"
 																/>
+															</Box>
+														) : (
+															<Grid container direction="row">
+																<Grid item xs={6}>
+																	<Box style={{maxHeight: "250px", overflow: "auto"}}>
+																		<List component="nav">
+																			{values.map(val => (
+																				<ListItem key={val} button>
+																					<ListItemText primary={val} />
+																					<ListItemSecondaryAction>
+																						<IconButton
+																							edge="end"
+																							onClick={event => valuePlusClicked(val)}
+																						>
+																							<AddCircle />
+																						</IconButton>
+																					</ListItemSecondaryAction>
+																				</ListItem>
+																			))}
+																		</List>
+																	</Box>
+																</Grid>
+																<Grid item xs={6}>
+																	<Box style={{maxHeight: "250px", overflow: "auto"}}>
+																		<List component="nav">
+																			{selectedValues.map(val => (
+																				<ListItem key={val} button>
+																					<ListItemText primary={val}/>
+																					<ListItemSecondaryAction>
+																						<IconButton
+																							edge="end"
+																							onClick={event => valueMinusClicked(val)}
+																						>
+																							<RemoveCircle />
+																						</IconButton>
+																					</ListItemSecondaryAction>
+																				</ListItem>
+																			))}
+																		</List>
+																	</Box>
+																</Grid>
 															</Grid>
+														)}
 														</Grid>
 													</Grid>
-													<Grid item>
-													{freeInput ? (
-														<Box style={{width: "100%", height: "100%"}}>
-															<TextField
-																fullWidth
-																multiline
-																variant="outlined"
-																placeholder="Enter your comma separated list of values here ..."
-																value={valueStr}
-																onChange={valueStrChanged}
-																rows="12"
-															/>
-														</Box>
-													) : (
-														<Grid container direction="row">
-															<Grid item xs={6}>
-																<Box style={{maxHeight: "250px", overflow: "auto"}}>
-																	<List component="nav">
-																		{values.map(val => (
-																			<ListItem key={val} button>
-																				<ListItemText primary={val} />
-																				<ListItemSecondaryAction>
-																					<IconButton
-																						edge="end"
-																						onClick={event => valuePlusClicked(val)}
-																					>
-																						<AddCircle />
-																					</IconButton>
-																				</ListItemSecondaryAction>
-																			</ListItem>
-																		))}
-																	</List>
-																</Box>
-															</Grid>
-															<Grid item xs={6}>
-																<Box style={{maxHeight: "250px", overflow: "auto"}}>
-																	<List component="nav">
-																		{selectedValues.map(val => (
-																			<ListItem key={val} button>
-																				<ListItemText primary={val}/>
-																				<ListItemSecondaryAction>
-																					<IconButton
-																						edge="end"
-																						onClick={event => valueMinusClicked(val)}
-																					>
-																						<RemoveCircle />
-																					</IconButton>
-																				</ListItemSecondaryAction>
-																			</ListItem>
-																		))}
-																	</List>
-																</Box>
-															</Grid>
-														</Grid>
-													)}
-													</Grid>
-												</Grid>
-											</Box>
-										)}
-										</Paper>
+												</Box>
+											)}
+										</Box>
 									</Box>
 									<Box justifyContent="flex-start" m={1}>
 										<Grid
@@ -696,8 +694,8 @@ export default function AddRulePage(props) {
 					<Modal
 						open={modalState === 1}
 					>
-						<Paper
-							style={{textAlign: "center", width: "400px", position: "absolute", left: "50%", top: "50%", marginLeft: "-200px", marginTop: "-120px"}}
+						<Box
+							style={{borderStyle: 'solid', borderWidth: 1, borderColor: 'lightgray', textAlign: "center", width: "400px", position: "absolute", left: "50%", top: "50%", marginLeft: "-200px", marginTop: "-120px", background: 'white'}}
 						>
 							<Box m={3}>
 								<Grid container direction="column">
@@ -716,14 +714,12 @@ export default function AddRulePage(props) {
 									</Grid>
 								</Grid>
 							</Box>
-						</Paper>
+						</Box>
 					</Modal>
 					<Modal
 						open={modalState === 2}
 					>
-						<Paper
-							style={{width: "600px", position: "absolute", left: "50%", top: "50%", marginLeft: "-300px", marginTop: "-350px"}}
-						>
+						<Box style={{borderStyle: 'solid', borderWidth: 1, borderColor: 'lightgray', width: "600px", position: "absolute", left: "50%", top: "50%", marginLeft: "-300px", marginTop: "-350px", background: 'white'}}>
 							<Box m={3}>
 								<Grid
 									container
@@ -822,7 +818,7 @@ export default function AddRulePage(props) {
 									</Grid>
 								</Grid>
 							</Box>
-						</Paper>
+						</Box>
 					</Modal>
 				</Box>
 			);

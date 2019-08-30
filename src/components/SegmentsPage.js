@@ -14,7 +14,6 @@ import {
 	TableCell,
 	TableSortLabel,
 	Popover,
-	Paper,
 	Modal,
 	List,
 	ListItem,
@@ -368,7 +367,7 @@ export default function SegmentsPage() {
 						onClose={popClosed}
 					>
 					{selectedID === null ? null : (
-						<Paper>
+						<Box style={{borderStyle: 'solid', borderWidth: 1, borderColor: 'lightgray'}}>
 							<List>
 								<ListItem button onClick={exportCSVClicked}>
 									<ListItemIcon>
@@ -389,7 +388,7 @@ export default function SegmentsPage() {
 									<Typography variant="body2">Delete segment</Typography>
 								</ListItem>
 							</List>
-						</Paper>
+						</Box>
 					)}		
 					</Popover>
 
@@ -397,11 +396,8 @@ export default function SegmentsPage() {
 						open={currentRules !== null}
 						onClose={modalClose}
 					>
-						<Paper
-							style={{textAlign: "center", width: "400px", position: "absolute", left: "50%", top: "50%", padding: "16px", marginLeft: "-200px", marginTop: "-100px"}}
-						>
-						{
-							currentRules === null ? (<Typography>No rules</Typography>) : (
+						<Box style={{borderStyle: 'solid', borderWidth: 1, borderColor: 'lightgray', textAlign: "center", width: "400px", position: "absolute", left: "50%", top: "50%", padding: "16px", marginLeft: "-200px", marginTop: "-100px", background: 'white'}}>
+							{currentRules === null ? (<Typography>No rules</Typography>) : (
 								currentRules.map(rule => (
 									<Typography key={rule.index} variant="caption">
 										<strong>{rule.attribute + " "}</strong>
@@ -410,9 +406,8 @@ export default function SegmentsPage() {
 										<br/>
 									</Typography>
 								))
-							)
-						}
-						</Paper>
+							)}
+						</Box>
 					</Modal>
 				</Box>
 			);
