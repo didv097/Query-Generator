@@ -1,5 +1,5 @@
 {
-	"User attributes": {
+	"User": {
 		"Account Type": {
 			"filter_name": "account_type",
 			"values": ["Anonymous User", "Registered User", "Premium User"],
@@ -8,27 +8,35 @@
 		"Country": {
 			"filter_name": "country",
 			"values": [
-				"KN", "SN", "LA", "ML", "AI", "BT", "JE", "PY", "SC", "DM", "KG", "AO", "LS", "MG", "CD", "PF", "SY", "GG", "GP", "LR", 
-				"TG", "MR", "DJ", "GM", "SD", "VI", "SO", "IR", "GE", "ZM", "LV", "AW", "BA", "IQ", "GY", "MK", "NI", "MN", "VC", "HN", 
-				"CW", "DZ", "AF", "NA", "CM", "SX", "AM", "ME", "MO", "VE", "AP", "CA", "US", "GB", "IN", "AU", "MX", "FR", "DE", "CN", 
-				"HK", "PH", "IT", "SG", "IE", "JP", "ES", "ZA", "NL", "NZ", "CH", "AE", "TH", "MY", "PT", "BR", "RW", "SI", "SK", "ET", 
-				"OM", "MU", "CY", "JO", "CU", "KH", "GH", "LU", "UY", "UG", "PR", "TC", "EE", "GT", "AG", "KZ", "AL", "LT", "LC", "BZ", 
-				"BH", "ZW", "BM", "BB", "PA", "DO", "EU", "CL", "AR", "TT", "EG", "HR", "PE", "QA", "HU", "BD", "EC", "UA", "RS", "MA", 
-				"LB", "BG", "LK", "IS", "KW", "NP", "TZ", "MT", "SE", "KR", "GR", "IL", "BE", "TW", "ID", "PK", "TR", "NO", "NG", "CO", 
-				"KE", "VN", "AT", "SA", "CR", "RU", "FI", "DK", "BS", "KY", "PL", "JM", "CZ", "RO", "SS", "SL", "WS", "GN", "FO", "BI", 
-				"MQ", "BJ", "TJ", "SZ", "BF", "GI", "YE", "AD", "NE", "SB", "GL", "GA", "NC", "VU", "CV", "LI", "RE", "CK", "TL", "MP", 
-				"BW", "TN", "GD", "SV", "BN", "MM", "FJ", "VG", "PS", "IM", "AZ", "MD", "BY", "BQ", "CI", "BO", "MZ", "GU", "UZ", "LY", 
-				"SR", "HT", "MW", "MC", "PG", "MV"
+				"CA", "US", "GB", "IN", "AU", "MX", "FR", "DE", "CN", "IT", "HK", "ZA", "Other"
 			],
 			"operators": ["IN", "NOT IN"]
 		},
-		"Region": {
-			"filter_name": "region",
+		"Province/Region": {
+			"filter_name": "region_name",
 			"values": [
-				"MD", "ME", "MI", "MN", "MO", "MS", "MT", "NB", "AB", "AE", "AK", "AL", "AR", "AZ", "BC", "CA", "PA", "PE", "QC", "RI", 
-				"SC", "SD", "SK", "TN", "ID", "IL", "IN", "KS", "KY", "LA", "MA", "MB", "NC", "ND", "NE", "NH", "NJ", "NL", "NM", "NS", 
-				"NT", "NU", "NV", "NY", "OH", "OK", "ON", "OR", "CO", "CT", "DC", "DE", "FL", "GA", "HI", "IA", "TX", "UT", "VA", "VT", 
-				"WA", "WI", "WV", "WY", "YT"
+				"Ontario", "Quebec", "Nova Scotia", "Manitoba", "Saskatchewan", "New Brunswick", "California", "Florida", "Newfoundland", "New York", "Texas",
+				"Illinois", "Washington", "Prince Edward Island", "Michigan", "New Jersey", "Massachusetts", "Arizona", "Virginia", "Georgia", "Pennsylvania",
+				"Ohio", "North Carolina", "Colorado", "Minnesota", "Missouri", "New South Wales", "Yukon Territory", "London", "Connecticut", "District of Columbia",
+				"Maryland", "Oregon", "Victoria", "Northwest Territories", "Wisconsin", "Utah", "South Carolina", "Tennessee", "Ile-de-France", "Indiana",
+				"Nevada", "Hawaii", "Maharashtra", "Gauteng", "Queensland", "Delaware", "Delhi", "Distrito Federal", "Karnataka", "Jalisco", "Tokyo", "Alabama",
+				"Dublin", "Dubai", "Auckland", "Iowa", "Louisiana", "Kentucky", "Attiki", "Oklahoma", "New Hampshire", "Western Australia", "Western Cape",
+				"Noord-Holland", "Punjab", "Tamil Nadu", "Andhra Pradesh", "Nordrhein-Westfalen", "Khon Kaen", "Nebraska", "Lagos", "Catalonia", "Beijing", "Maine",
+				"Kuala Lumpur", "Lombardia", "New Mexico", "Kansas", "Saint Andrew", "Quintana Roo", "T'ai-pei", "Seoul-t'ukpyolsi", "Madrid", "Montana", "Manila",
+				"Guangdong", "South Australia", "Lisboa", "Idaho", "Selangor", "Stockholms Lan", "West Bengal", "Rhode Island", "Vermont", "Provence-Alpes-Cote d'Azur",
+				"Shanghai", "Bayern", "Lazio", "Dajabon", "Essex", "Zurich", "Surrey", "KwaZulu-Natal", "Zuid-Holland", "Southern Finland", "Sao Paulo", "Uttar Pradesh",
+				"Hamilton", "Hertford", "Andalucia", "Hessen", "Coventry", "Abu Dhabi", "Arkansas", "Kent", "West Virginia", "An Giang", "Hovedstaden", "Wien", "Mississippi",
+				"Gujarat", "Oslo", "Manchester", "Jakarta Raya", "Nunavut", "Baden-Wurttemberg", "Tel Aviv", "Haryana", "Berlin", "Alaska", "Toscana", "Guanajuato",
+				"New Providence", "Southwark", "Saint Michael", "Birmingham", "Islington", "Distrito Especial", "Istanbul", "Lima", "Glasgow City", "Bucuresti",
+				"Brussels Hoofdstedelijk Gewest", "Dhaka", "Region Metropolitana", "San Jose", "Hampshire", "Westminster", "Geneve", "Oxfordshire", "Sindh", "Kerala",
+				"Wellington", "Mazowieckie", "Cambridgeshire", "Edinburgh", "Canterbury", "Leeds", "Moscow City", "Ad Dawhah", "Camden", "Mexico", "West Sussex", "Saint George",
+				"Thai Binh", "Languedoc-Roussillon", "Panama", "Bristol", "Rhone-Alpes", "Veneto", "Nottingham", "Budapest", "Ar Riyad", "Lancashire", "Greenwich",
+				"Nuevo Leon", "Quezon City", "Jiangsu", "Barnet", "Antioquia", "Australian Capital Territory", "Ash Sharqiyah", "Hlavni mesto Praha", "Norfolk",
+				"Rio de Janeiro", "Rajasthan", "North Dakota", "Campania", "Faro", "Al Qahirah", "Comunidad Valenciana", "Port-of-Spain", "East Sussex", "Cavite",
+				"Islamabad", "Chihuahua", "Wyoming", "Kensington and Chelsea", "Sonora", "Skane Lan", "South Dakota", "Emilia-Romagna", "Pichincha", "Hofuoborgarsvaoio",
+				"Camaguey", "Porto", "Antwerpen", "Liverpool", "Hamburg", "Western", "Nairobi Area", "Yucatan", "Utrecht", "Makkah", "Devon", "Ankara", "Kanagawa",
+				"Harrow", "Cheshire", "Aquitaine", "Vastra Gotaland", "Zhejiang", "Beyrouth", "Belfast", "Gloucestershire", "Niedersachsen", "Gelderland", "Hubei",
+				"Lincolnshire", "Al Kuwayt", "Northamptonshire", "Chandigarh", "Madhya Pradesh", "Sicilia", "Bromley", "Cardiff", "Osaka", "Brighton and Hove", "Sheffield"
 			],
 			"operators": ["IN", "NOT IN"]
 		},
@@ -41,153 +49,339 @@
 			"filter_name": "fsa",
 			"values": [],
 			"operators": ["IN", "NOT IN"]
-		}, 
+		},
+		"Account Age": {
+			"filter_name": "created_on",
+			"values": [],
+			"operators": ["IN", "NOT IN"]
+		},
+		"Advisory Panel": {
+			"filter_name": "adv_panel",
+			"values": ["YES", "NO"],
+			"operators": ["EQUALS"]
+		},
+		"GAM News Read Freq.": {
+			"filter_name": "fsa",
+			"values": ["3-4 Times a week", "Daily", "Never", "Occasionally", " Weekend"],
+			"operators": ["IN", "NOT IN"]
+		},
+		"GAM News Subscribe Freq.": {
+			"filter_name": "fsa",
+			"values": ["Do not Subscribe", "Friday-Saturday", "Monday-Friday", " Monday-Saturday", " Saturday Only"],
+			"operators": ["IN", "NOT IN"]
+		},
+		"GAM reader": {
+			"filter_name": "fsa",
+			"values": ["YES", "NO"],
+			"operators": ["EQUALS"]
+		},
+		"GAM subscriber": {
+			"filter_name": "fsa",
+			"values": ["YES", "NO"],
+			"operators": ["EQUALS"]
+		},
+		"Gender": {
+			"filter_name": "fsa",
+			"values": [],
+			"operators": ["IN", "NOT IN"]
+		},
+		"Income range": {
+			"filter_name": "fsa",
+			"values": [
+				"Under $59,999",
+				"$60,000 to $74,999",
+				"$75,000 to $99,999",
+				"$100,000 to $149,999",
+				"$150,000 to $249,999",
+				"$250,000 and over"
+			],
+			"operators": ["IN", "NOT IN"]
+		},
+		"Industry": {
+			"filter_name": "fsa",
+			"values": [],
+			"operators": ["IN", "NOT IN"]
+		},
+		"Interest": {
+			"filter_name": "fsa",
+			"values": ["Computer Accessories", "Health", "Sporting Goods", "Fashion/Style", "Wine", "Autos", "Consumer Electronics", "Personal Finance", "Real Estate", "Arts and Entertainment", "Travel", "Food/Groceries"],
+			"operators": ["IN", "NOT IN"]
+		},
+		"Job title": {
+			"filter_name": "fsa",
+			"values": [],
+			"operators": ["IN", "NOT IN"]
+		},
+		"Newsletter": {
+			"filter_name": "fsa",
+			"values": [],
+			"operators": ["IN", "NOT IN"]
+		},
+		"PRIZM": {
+			"filter_name": "fsa",
+			"values": [],
+			"operators": ["IN", "NOT IN"]
+		},
+		"Social provider": {
+			"filter_name": "fsa",
+			"values": [],
+			"operators": ["IN", "NOT IN"]
+		},
+		"Krux Segment": {
+			"filter_name": "krux_segment",
+			"values": ["1: 01 Cosmopolitan Elite [rzaqeu3v7]", "1: 02 Urbane Villagers [rzaqvywn4]", "1: 02 Urbane Villagers 90 % similar [sqawcossi]",
+				"1: 03 Arts & Affluence [rzarfwyvu]", "1: 04 Suburban Success [rzau35wew]", "1: 05 Asian Sophisticates [rzaw87fsc]", "1: 06 Kids & Careers [rzaxlsme2]",
+				"1: 06 Kids & Careers 90 % similar [sqav8cwh0]", "1: 07 Nouveaux Riches [rzax5rcza]", "1: 08 Boomerang City [rzayhwtj5]", "1: 09 Satellite Burbs [rzayv5bcy]",
+				"1: 09 Satellite Burbs 90 % similar [sqav3egst]", "1: 10 Empty Nests [rzazsxqad]", "1: 10 Empty Nests 90 % similar [sqawgrund]", "1: 11 Urban Digerati [rza0wz0ev]",
+				"1: 12 Street Scenes [rza1sa5q4]", "1: 14 Diversity Heights [rza234af7]", "1: 14 Diversity Heights 90 % similar [tleqsszda]", "1: 15 Heritage Hubs [rza3dr689]",
+				"1: 15 Heritage Hubs 90 % similar [toebgtkcf]", "1: 16 Pets & PCs [rza48s7ju]", "1: 17 Exurban Wonderland [rza5kdleh]", "1: 18 Management Material [rza5rjq5z]",
+				"1: 19 Grey Pride [rza56ekem]", "1: 21 Beau Mode [rzd68iyob]", "1: 22 Aging In Suburbia [rzd7pm8ed]", "1: 24 Fresh Air Families [rzd8nztzc]",
+				"1: 26 Second City Retirees [rzd9z7okn]", "1: 27 Diverse City [rzeysuuae]", "1: 27 Diverse City 90 % similar [tlergihl4]", "1: 28 Metro Multiculturals [rzey37kpp]",
+				"1: 28 Metro Multiculturals 90 % similar [tlers6z25]", "1: 29 Silver Linings [rze0o6n2z]", "1: 30 La Vie Est Belle [rze9rz2z9]", "1: 31 New World Symphony [rzx9hhh3n]",
+				"1: 32 Mini Van & Vin Rouge [rzx9ql197]", "1: 33 Heartland Retirees [rzx938mr4]", "1: 34 Rooms with a View [rzyadmzpd]", "1: 35 Country Acres [rzyaqsrcj]",
+				"1: 36 Exurban Homesteaders [rzyba8m4v]", "1: 37 Trucks & Trades [rzyr9li7r]", "1: 38 Grads & Pads [rzys9sjf0]", "1: 39 Our Time [rzyti79vr]",
+				"1: 40 Wide Open Spaces [rzytwml49]", "1: 41 Vieille Ecole [rzyuoq7bp]", "1: 42 Home Sweet Rows [rzyu5hivz]", "1: 42 Home Sweet Rows 90 % similar [toebl4uq6]",
+				"1: 44 Jeunes et Actifs [rzyv26fgw]", "1: 45 Jeunes d'Esprit [rzywke84g]", "1: 46 Villes Tranqilles [rzywxr79b]", "1: 48 Variete Suburbaine [rz2hzhw80]",
+				"1: 49 Enclaves Multiethniques [rz2il5cle]", "1: 50 Suburban Scramble [rz2iznisp]", "1: 51 Aging & Active [rz2ji7azv]", "1: 52 Striving Startups [rz2kip1u7]",
+				"1: 52 Striving Startups 90 % similar [tler443mk]", "1: 53 Outdoor Originals [rz2k02ucq]", "1: 54 Serenity Springs [rz2lg80ec]", "1: 55 La Vie Tranquilles [rz2lu5jru]",
+				"1: 58 Rustic Roads [rz2m2jew0]", "1: 59 Locataires en Banlieues [rz2nktk83]", "1: 60 Bon Vivants [rz2vs6936]", "1: 62 Terre a Terre [rz6l5wkvw]",
+				"1: 63 Lunch at Tim's [rz6mhnhqc]", "1: 64 Fete au Village [rz6mok18w]", "1: 66 Sunset Towers [rz6ofyxun]", "1: 67 Survivre en Ville [rz6o06f4a]",
+				"1: 68 Low Rise Renters [rz6pas1ka]", "1: Future of Farming Article Retargeting [sqnw2ytiv]", "1: AGLC Retargeting [tb1ie1ofm]", "1: Agriculture Interest [p3ph6091u]",
+				"1: Alcon Retargeting [t7kf8ezw9]", "1: Ard Outdoor Retargeting [sqbcqxzhw]", "1: BlackRock/iShares Context Terms [sv1zooba1]", "1: Blockchain Readers [scred63ob]",
+				"1: BMO ILSD Winter F18 Retargeting [shtzqck7k]", "1: BMW M8 Sponsored Content Retargeting [tju2gar3i]", "1: Book Lovers [o8ekj3vdk]",
+				"1: Burchell MacDougall Retargeting [r6wr9dytu]", "1: Business Education Readers [q76fau8w8]", "1: Business Transitions Keywords [qhk9uemdl]",
+				"1: Canada Alberta Job Grant 2019 Campaign [rg4hb6pis]", "1: Cannabis Stock Watchers [tu7ys7slt]", "1: Careers Newsletter Readers [sx87lraf8]",
+				"1: Carrick On Money Newsletter Readers [rs4cusxld]", "1: Casual Real Estate Readers [qqumhzzh5]", "1: Casual Stocks Visitors [otahuo13s]",
+				"1: CDW Education Context Terms [sgxf2pmhd]", "1: Central County Tourism Audience Retargeting [tqoh5i07z]", "1: Charity Interest [p29scii7o]",
+				"1: CIBC Aventura Context Terms [szsvl227y]", "1: CIBC Aventura Editorial Articles Retargeting [szsuxjo3e]", "1: CIBC Savings Campaign - Context Terms [tntg417il]",
+				"1: CIBC Savings Campaign Retargeting Users [tntjftmr6]", "1: Clear Compare Retargeting Users to  the Site [sj4e4kkyh]", "1: Climate Change Context Terms [ru0if5f1k]",
+				"1: CMA Retargeting [t9cbje3um]", "1: Commercial Banking Context Terms [rf0gmhu15]", "1: Commodities Vistors [rkmcr9ipk]",
+				"1: Concordia University Audience Retargeting [ttwi607hk]", "1: Cox and Palmer Retargeting [sncm3j1g1]", "1: Crossword Users [rwy2vw331]",
+				"1: Cyber Security Context Terms [tbhikcklv]", "1: Dell Decision Makers Editorial Content Casual Readers [sthplwy6m]",
+				"1: Dell Decision Makers Editorial Content Enthusiastic Readers [stel48c0f]", "1: Dell Decision Makers Editorial Page Retargeting [su5avuhj5]",
+				"1: Dell Right Decisions Sponsored Content Casual Readers [sthpqcm31]", "1: Dell Right Decisions Sponsored Content Enthusiastic Readers [steqk7npx]",
+				"1: Dell Right Decisions Sponsored Content Retargeting [su5bb8hl5]", "1: Dell Mid-Market Context Terms [su5uf1ifu]",
+				"1: Dell Q3 Mid Market Campaign Custom Targeting [te0jy6koh]", "1: Design & Decor Custom Keywords [ratjdagso]", "1: Design & Decor Custom Keywords 90 % Lookalike [twzd50lzn]",
+				"1: Design, Decor & Architecture Readers (Intenders) [pw6vidrww]", "1: Drive Facebook Readers [ob7ppmqjz]", "1: Drive Review In Market [rvccoj11p]",
+				"1: Duca Financial - Audience Exclusion [tufxksyav]", "1: EDC Retargeting [t3ouf22on]", "1: Edward Jones Campaign - Context Terms [tolynwrhq]",
+				"1: Energy / Resources & Commodities Visitors [rkqenn7bf]", "1: Energy & Resources Visitors [rknmnrasw]", "1: Energy Newsletter Readers [skwqjbzjb]",
+				"1: Entertainment & Art Lovers [o6urpv1qx]", "1: ETFs Visitors [rijcvkypz]", "1: Evening Update Newsletter Readers [sgd9kawxl]",
+				"1: Evolve (ACB, HIP & WEED) Stock Look-Ups [snbzfkzkh]", "1: Evolve (HMMJ) ETF Look-Ups [snb83pra8]", "1: Fashion & Lifestyle Keywords [p02lmr5z7]",
+				"1: Female Entrepreneurs [tl9z4njmu]", "1: Finance Enthusiasts [rdw0z6o0g]", "1: Foodies [o6uw2r733]", "1: GAM Shooting War Retargeting [t3ouhghiz]",
+				"1: Gastronomia Sponsored Content Retargeting [tjyhsk87g]", "1: Gen Y Money Readers [qlgb8xb4y]",
+				"1: Globe 18-24's [rwi1fv267]", "1: Globe 25-34's [rwi1qctp7]", "1: Globe 25-34's Females [r2lfuoxh5]", "1: Globe 35-49's [rwi1y58xd]",
+				"1: Globe 35-49's Lookalike [sls5547dx]", "1: Globe 50-64's [rwi19t4ia]", "1: Globe 50-64's Lookalike [sls6aitbr]", "1: Globe 65+ [rwi2l9v0h]",
+				"1: Globe & Mail Anonymous Users [rm9rkvhxs]", "1: Globe & Mail Frequent Readers [q76ctik54]", "1: Globe & Mail Premium Users [rm9rbfcsw]",
+				"1: Globe & Mail Readers [sarzizc1l]", "1: Globe & Mail Readers (PRG) [scnhjf6vb]", "1: Globe & Mail Readers (PRG) - split 50% - DBM [spmztxb1c]"
+			],
+			"operators": ["IN", "NOT IN"]
+		},
 		"Age": {
 			"filter_name": "age",
 			"values": ["< 18", "18 - 25", "26 - 35", "36 - 45", "46 - 55", "56 - 65", "65+"],
 			"operators": ["IN", "NOT IN"]
 		}
 	},
-	"Page view attributes": {
+	"Web Interaction": {
 		"Article Keywords": {
 			"filter_name": "keywords",
 			"values": [],
 			"operators": ["IN", "NOT IN"]
 		},
-		"Site Section": {
-			"filter_name": "section",
-			"values": [
-				"homepage","investing","canada","business","life","news","globeandmail","globerealestate","investor",
-				"search","puzzles","subscription","cannabis","technology","authors","opinion","sports","world","politics","arts",
-				"drive","robcannabispro","newsletters","featuredreports","about","pagenamenotfound","partners","incoming",
-				"globecorporatesales","publiceditor","multimedia","memberbenefits","privacyterms","globeproducts","feeds",
-				"community","video","portfolio","insidetheglobe","globemobile","electionadvertisingregistry"
-			  ],
+		"Article Headline": {
+			"filter_name": "headline",
+			"values": ["RED", "YELLOW", "GREEN"],
 			"operators": ["IN", "NOT IN"]
 		},
-		"Site Sub-Section 1": {
-			"filter_name": "subsection1",
-			"values": [
-				"education","music","artandarchitecture","subscriptionregister","baseball","style","theatreandperformance","world",
-				"funnelload","booksandmedia","tennis","economy","retirement","themarket","investoreducation","culture",
-				"globewealth","factsandarguments","drivereviews","homeandgarden","universalcrossword","recalgaryedmonton","markets",
-				"personalfinance","horoscopes","healthandfitness","basketball","cpc","toronto","uspolitics","britishcolumbia",
-				"alberta","national","investmentideas","careers","editorials","driveculture","commentary","television","retoronto",
-				"internationalbusiness","hockey","relationships","globalreporting","experiences","digitallab","globewe",
-				"editorialcode","privacypolicy","insidetheglobe","globe2go","workattheglobe","communityguidelines",
-				"subscriptionsuccess","gaming","subscriptionconfirm","subscribers","atlantic","quebec","subscriptionbilling",
-				"theroyalwedding","printlogin","globeinvestorblog","columnists","prairies","mortgagesandrates","drivenews",
-				"homeanddesign","football","robcommentary","sudokuclassic","autoshows","investigations","fundsandetfs",
-				"fashionandbeauty","print","thehotbutton","driveadventure","news","celebritynews","science","moresports",
-				"advisersview","alreadysubscribed","contact","olympics","ebooksguides","subscriptionprintlookup","holidayguide",
-				"summerliving","insidethemarket","subscriptionpayment","ontario","digitalculture","giving","newslettersubscribe",
-				"technews","thecanadianpress","subscriptionpromoentry","journalists","newsletterunsubscribe","topbusinessstories",
-				"awardsandfestivals","summerentertainment","vancouver","termsandconditions","onlinetools","nytproduct",
-				"gadgetsandgear","reviews","foodandwine","smallbusiness","firstperson","film","mobility","briefing","industrynews",
-				"travel","adv","globeadvisor","technology","crypticcrossword","politics","robmagazine","golf","streetwise","soccer",
-				"letters","books","revancouver","parenting","advappointmentnotices","mobile","globeontechnology","about",
-				"advtechnologysolutionsforsmb0217","subscriptionlogin","richcountrypoornations11factsaboutthegap","editorsletter",
-				"arcadvlife","arcadvbusiness","advpmcc1015","subscriptionconfirmation","my portfolio","businessvideo",
-				"newsandpolicy","dualoffer","investing","howtogetyourpolicereportthroughafreedomof","thetrustproject","faq",
-				"realestatevideo","videoontorontoislandsfloodingisbecominga","canada150","investorcommunity","disclaimer","bigdeals",
-				"help","streetwiseandrobinsightnewsletter","products","breakthrough","munkdebates","onlinebrokerrankings",
-				"accessibilitypolicy","licensingandpermissions","perkopolis","landingpage","innovatorsatwork","cameraclub",
-				"thecatalysts","businesstechnology","globeinvestortips","blog","globalsustainabilitypolicy","aroundtheindustry"
-			  ],
-			"operators": ["IN", "NOT IN"]
-		},
-		"Site Sub-Section 2": {
-			"filter_name": "subsection2",
-			"values": [
-				"etfs","propertyreport","healthadvisor","businesseducation","workplaceaward","fitness","europeanbusiness",
-				"destinations","sbmanaging","wine","newcars","sbgrowth","foodtrends","leadershiplab","recipes","asiapacificbusiness",
-				"startups","drivecommentary","restaurantreviews","prostation","sbmoney","bookreviews","growth","managing",
-				"careersleadership","advisornews","marketing","golfnews","globalcommerceinsider","gadgets","alerts","uspolitics",
-				"holidayrecipes","africanandmideastbusiness","drivetrends","thefutureofwork","nelsonmandela","retireqa",
-				"economicinsight","submissions","breakingcaste","submitabirthanddeathnotice","cpworld","interestrates","cpbusiness",
-				"entertaining","tradingshots","non-deliverable-area","elections","photoarchive","recalls","adv","cpbc","stockshT",
-				"marketblog","holidayentertaining","gamingnews","videomulticulturalismincanadaisaworkin","dataandvisualjournalists",
-				"albumreviews","lpgatour","advluxuryrealestate0619","spotted","advstemtosteam0419","inphotos","starmineawards",
-				"behindtheveil","cpsports","advinnovationandtech0419","kindergarten","robletters","thechinadiaries","driveasia",
-				"budget","resources","videokenirvingopensupabouthisbattlewith","my holdings","thechallenge","webnotificationsfaq",
-				"thistinytorontohousesoldfor370000over","travelnews","economylab","strategylab","top1000","retiretaxesandportfolios",
-				"canada150","theatrereviews","latinamericanbusiness","advisorfunds","gardening","mothersday","transcanadahighway",
-				"financialfacelift","recover","winereviews","backtoschool","beauty","classics","healthnavigator","valentinesday",
-				"goingglobal","billing","modal","retirehealth","canadianuniversityreport","retirefamily","ottawanotebook",
-				"resetpassword","researchreports","driveaccessories","design","tiff","communicationsettings","carrickonmoney",
-				"select-product","drivenorthamerica","thealist","globeonhockey","springcleaning","fathersday","columnists","worldcup",
-				"canadacompetes","secondreading","thenorth","retireworkinginretirement","giftguidesshopping","jobs",
-				"holidaysurvivalguide","privacy","retiretravel","leafsbeat","advsunnybrook","retirehousing","cpentertainment",
-				"worldview","carricktalksmoney","foreigncorrespondents","holidayhealth","cpontario","filmawards","offthestreets",
-				"controllerfreak","brain","advmscanada0519","payment","cpnational","finalshuttlelaunch","motorsports","pgatour",
-				"nestruckontheatre","manufacturing","contactinformationfordeathnotices","success","nunavut","executiveinsight",
-				"worldjuniors","cpalberta","driveeurope","globepoliticsinsider","advbestworkplacesincanada","stocks","insidethemarket",
-				"watchlist","Registration","householdfinances","commuting","retirement","portfolio","askahealthexpert","funds","health",
-				"login","indices","reviews","usbusiness","taxes","careeradvice","numbercruncher","home","energyandresources","genymoney",
-				"leadership","management","currencies","education","commodities","usedcars","talent","retireplanning","science",
-				"driveindustrynews","redline","postal-code","advisorstocks","filmreviews","activitiesandinterests","drivetechnology",
-				"topemployers","fashion","timetolead","money","architecture","advisoretfs","cannabisandtheworkplace","decor",
-				"financialroadmap","bestsellers","asianpacificbusiness","thelawpage","sbmarketing","appointmentnotices","retirelifestyle"
-			  ],
-			"operators": ["IN", "NOT IN"]
-		},
-		"Stock Ticker": {
-			"filter_name": "ticker",
+		"Article Colour": {
+			"filter_name": "article_colour",
 			"values": [],
-			"operators": ["IN", "NOT IN"]
-		},
-		"Visit Referrer": {
-			"filter_name": "visit_referrer",
-			"values": ["direct", "email", "internal", "social", "off-site referral", "search"],
-			"operators": ["IN", "NOT IN"]
-		},
-		"Marketing Campaign": {
-			"filter_name": "marketing_campaign",
-			"values": [],
-			"operators": ["IN", "NOT IN"]
-		},
-		"Marketing Medium": {
-			"filter_name": "marketing_medium",
-			"values": [
-				"ios_app", "my child will thrive village", "newsletter", "offsite", "print", "prospecting", "referral", 
-				"referrer%3a social network %2f media", "referrer: social network / me", "40digest.intl.carousel", "40digest.intl.home", 
-				"40digest.intl.rank", "cpc", "display", "feed", "feeds: rss/atom", "gi_footer", "gmail", "homestars", 
-				"e-mail: newsletters / e-blasts / etc.", "em", "email", "facebook", "onsite", "paid social", "partner referral", "paypal", 
-				"social media", "twitter", "video", "whitelist", "referrer: social network / media", "rob_footer", 
-				"self-compassion by kristin neff, ph.d.", "smarpshare", "social"
-			],
-			"operators": ["IN", "NOT IN"]
-		},
-		"Marketing Source": {
-			"filter_name": "marketing_source",
-			"values": [
-				"the globe and mail", "thegunblog.ca", "top business", "top business headlines", "top business headliness", "tvo", "twitter", 
-				"twitterfeed", "watershed watch email list", "wealthbar newsletter", "weekly news-round up", "western news", "whitelist", 
-				"wordfly", "youtube", "newsletter", "nl", "nuzzel", "organicsocial", "paypal_subscription", "physiotherapy.ca membership", 
-				"pocket", "pocket-newtab", "politics briefing", "politics%20briefing", "prosper canada subscriptions [all]", "push", "quora", 
-				"real estate", "report on small business", "globe life", "globe opinion", "globe opinion test", "globe style", "globe wine", 
-				"globe-article-social-promo-twitter", "globe-promo-social-linkedin", "hackernewsletter", "home", "hoover daily report", 
-				"house_ad", "hs_email", "june 2019 issue of gardening with mark and ben", "lao clippings distribution list", "life", 
-				"container", "cyberimpact", "daily bullet", "densediscovery", "digg", "display", "dlvr.it", "drive_articles", "email", 
-				"email banner", "energy", "eurasia group signal", "evening brief", "evening update", "exacttarget", "revue newsletter", 
-				"ryerson today contacts", "sailthru", "share", "shared article sent to user", "skies-daily-news-news-from-the-web", "social", 
-				"social media", "streetwise", "streetwises", "subscriber -  hill times publishing", "taboola", "tech, telecom", "template", 
-				"the crunch", "1 - members", "academica top ten", "advisor midday", "alliance", "amapceo members & friends", "amplify", 
-				"april 4 2019 e-news", "arcnewsletter", "cannabis", "cannabis professional", "capx briefing", "carrick on money", 
-				"casl compliant canada list", "consulting newsletter mailing list", "facebook", "facebook_group", "facebook_page", 
-				"facebookig", "faecbook", "fb", "feedburner", "globe advisor", "globe aliance", "globe alliance", "globe books", 
-				"globe careers", "globe drive", "globe investor", "globe investors", "linkedin", "longreads newsletters", "market update", 
-				"market updates", "master", "master email list #1", "medemail", "mediacom", "meetedgar", "morning brief", "morning update", 
-				"morning_brew", "movies", "municipal world daily", "nature briefing"
-			],
-			"operators": ["IN", "NOT IN"]
+			"operators": ["CONTAINS"]
 		},
 		"Device Type": {
 			"filter_name": "device_type",
 			"values": ["Desktop", "Mobile", "Tablet", "Other"],
 			"operators": ["IN", "NOT IN"]
+		},
+		"Time Spent": {
+			"filter_name": "timespent",
+			"values": [],
+			"operators": ["EQUALS"],
+			"filter_type": "having"
+		},
+		"Page Views": {
+			"filter_name": "pageviews",
+			"values": [],
+			"operators": ["EQUALS"],
+			"filter_type": "having"
+		},
+		"Visits": {
+			"filter_name": "visits",
+			"values": [],
+			"operators": ["EQUALS"],
+			"filter_type": "having"
+		},
+		"Page Type": {
+			"filter_name": "page_type",
+			"values": ["article", "section"],
+			"operators": ["IN", "NOT IN"]
+		},
+		"Site Section": {
+			"filter_name": "section",
+			"values": [
+				"homepage", "investing", "canada", "business", "life", "news", "globeandmail", "globerealestate", "investor",
+				"search", "puzzles", "subscription", "cannabis", "technology", "authors", "opinion", "sports", "world", "politics", "arts",
+				"drive", "robcannabispro", "newsletters", "featuredreports", "about", "pagenamenotfound", "partners", "incoming",
+				"globecorporatesales", "publiceditor", "multimedia", "memberbenefits", "privacyterms", "globeproducts", "feeds",
+				"community", "video", "portfolio", "insidetheglobe", "globemobile", "electionadvertisingregistry"
+			],
+			"operators": ["IN", "NOT IN"]
+		},
+		"Site Sub-Section 1": {
+			"filter_name": "subsection_1",
+			"values": [
+				"education", "music", "artandarchitecture", "subscriptionregister", "baseball", "style", "theatreandperformance", "world",
+				"funnelload", "booksandmedia", "tennis", "economy", "retirement", "themarket", "investoreducation", "culture",
+				"globewealth", "factsandarguments", "drivereviews", "homeandgarden", "universalcrossword", "recalgaryedmonton", "markets",
+				"personalfinance", "horoscopes", "healthandfitness", "basketball", "cpc", "toronto", "uspolitics", "britishcolumbia",
+				"alberta", "national", "investmentideas", "careers", "editorials", "driveculture", "commentary", "television", "retoronto",
+				"internationalbusiness", "hockey", "relationships", "globalreporting", "experiences", "digitallab", "globewe",
+				"editorialcode", "privacypolicy", "insidetheglobe", "globe2go", "workattheglobe", "communityguidelines",
+				"subscriptionsuccess", "gaming", "subscriptionconfirm", "subscribers", "atlantic", "quebec", "subscriptionbilling",
+				"theroyalwedding", "printlogin", "globeinvestorblog", "columnists", "prairies", "mortgagesandrates", "drivenews",
+				"homeanddesign", "football", "robcommentary", "sudokuclassic", "autoshows", "investigations", "fundsandetfs",
+				"fashionandbeauty", "print", "thehotbutton", "driveadventure", "news", "celebritynews", "science", "moresports",
+				"advisersview", "alreadysubscribed", "contact", "olympics", "ebooksguides", "subscriptionprintlookup", "holidayguide",
+				"summerliving", "insidethemarket", "subscriptionpayment", "ontario", "digitalculture", "giving", "newslettersubscribe",
+				"technews", "thecanadianpress", "subscriptionpromoentry", "journalists", "newsletterunsubscribe", "topbusinessstories",
+				"awardsandfestivals", "summerentertainment", "vancouver", "termsandconditions", "onlinetools", "nytproduct",
+				"gadgetsandgear", "reviews", "foodandwine", "smallbusiness", "firstperson", "film", "mobility", "briefing", "industrynews",
+				"travel", "adv", "globeadvisor", "technology", "crypticcrossword", "politics", "robmagazine", "golf", "streetwise", "soccer",
+				"letters", "books", "revancouver", "parenting", "advappointmentnotices", "mobile", "globeontechnology", "about",
+				"advtechnologysolutionsforsmb0217", "subscriptionlogin", "richcountrypoornations11factsaboutthegap", "editorsletter",
+				"arcadvlife", "arcadvbusiness", "advpmcc1015", "subscriptionconfirmation", "my portfolio", "businessvideo",
+				"newsandpolicy", "dualoffer", "investing", "howtogetyourpolicereportthroughafreedomof", "thetrustproject", "faq",
+				"realestatevideo", "videoontorontoislandsfloodingisbecominga", "canada150", "investorcommunity", "disclaimer", "bigdeals",
+				"help", "streetwiseandrobinsightnewsletter", "products", "breakthrough", "munkdebates", "onlinebrokerrankings",
+				"accessibilitypolicy", "licensingandpermissions", "perkopolis", "landingpage", "innovatorsatwork", "cameraclub",
+				"thecatalysts", "businesstechnology", "globeinvestortips", "blog", "globalsustainabilitypolicy", "aroundtheindustry"
+			],
+			"operators": ["IN", "NOT IN"]
+		},
+		"Site Sub-Section 2": {
+			"filter_name": "subsection_2",
+			"values": [
+				"etfs", "propertyreport", "healthadvisor", "businesseducation", "workplaceaward", "fitness", "europeanbusiness",
+				"destinations", "sbmanaging", "wine", "newcars", "sbgrowth", "foodtrends", "leadershiplab", "recipes", "asiapacificbusiness",
+				"startups", "drivecommentary", "restaurantreviews", "prostation", "sbmoney", "bookreviews", "growth", "managing",
+				"careersleadership", "advisornews", "marketing", "golfnews", "globalcommerceinsider", "gadgets", "alerts", "uspolitics",
+				"holidayrecipes", "africanandmideastbusiness", "drivetrends", "thefutureofwork", "nelsonmandela", "retireqa",
+				"economicinsight", "submissions", "breakingcaste", "submitabirthanddeathnotice", "cpworld", "interestrates", "cpbusiness",
+				"entertaining", "tradingshots", "non-deliverable-area", "elections", "photoarchive", "recalls", "adv", "cpbc", "stockshT",
+				"marketblog", "holidayentertaining", "gamingnews", "videomulticulturalismincanadaisaworkin", "dataandvisualjournalists",
+				"albumreviews", "lpgatour", "advluxuryrealestate0619", "spotted", "advstemtosteam0419", "inphotos", "starmineawards",
+				"behindtheveil", "cpsports", "advinnovationandtech0419", "kindergarten", "robletters", "thechinadiaries", "driveasia",
+				"budget", "resources", "videokenirvingopensupabouthisbattlewith", "my holdings", "thechallenge", "webnotificationsfaq",
+				"thistinytorontohousesoldfor370000over", "travelnews", "economylab", "strategylab", "top1000", "retiretaxesandportfolios",
+				"canada150", "theatrereviews", "latinamericanbusiness", "advisorfunds", "gardening", "mothersday", "transcanadahighway",
+				"financialfacelift", "recover", "winereviews", "backtoschool", "beauty", "classics", "healthnavigator", "valentinesday",
+				"goingglobal", "billing", "modal", "retirehealth", "canadianuniversityreport", "retirefamily", "ottawanotebook",
+				"resetpassword", "researchreports", "driveaccessories", "design", "tiff", "communicationsettings", "carrickonmoney",
+				"select-product", "drivenorthamerica", "thealist", "globeonhockey", "springcleaning", "fathersday", "columnists", "worldcup",
+				"canadacompetes", "secondreading", "thenorth", "retireworkinginretirement", "giftguidesshopping", "jobs",
+				"holidaysurvivalguide", "privacy", "retiretravel", "leafsbeat", "advsunnybrook", "retirehousing", "cpentertainment",
+				"worldview", "carricktalksmoney", "foreigncorrespondents", "holidayhealth", "cpontario", "filmawards", "offthestreets",
+				"controllerfreak", "brain", "advmscanada0519", "payment", "cpnational", "finalshuttlelaunch", "motorsports", "pgatour",
+				"nestruckontheatre", "manufacturing", "contactinformationfordeathnotices", "success", "nunavut", "executiveinsight",
+				"worldjuniors", "cpalberta", "driveeurope", "globepoliticsinsider", "advbestworkplacesincanada", "stocks", "insidethemarket",
+				"watchlist", "Registration", "householdfinances", "commuting", "retirement", "portfolio", "askahealthexpert", "funds", "health",
+				"login", "indices", "reviews", "usbusiness", "taxes", "careeradvice", "numbercruncher", "home", "energyandresources", "genymoney",
+				"leadership", "management", "currencies", "education", "commodities", "usedcars", "talent", "retireplanning", "science",
+				"driveindustrynews", "redline", "postal-code", "advisorstocks", "filmreviews", "activitiesandinterests", "drivetechnology",
+				"topemployers", "fashion", "timetolead", "money", "architecture", "advisoretfs", "cannabisandtheworkplace", "decor",
+				"financialroadmap", "bestsellers", "asianpacificbusiness", "thelawpage", "sbmarketing", "appointmentnotices", "retirelifestyle"
+			],
+			"operators": ["IN", "NOT IN"]
+		},
+		"Stock Ticker": {
+			"filter_name": "subsection_3",
+			"values": [],
+			"operators": ["IN", "NOT IN"]
+		},
+		"Visit Referrer": {
+			"filter_name": "referrer_type",
+			"values": ["direct", "email", "internal", "social", "off-site referral", "search"],
+			"operators": ["IN", "NOT IN"]
 		}
 	},
-	"Impression attributes": {
+	"Digital Advertising": {
+		"Advertiser": {
+			"filter_name": "advertiser_name",
+			"values": ["Canadian Opera Company (82563)", "Clublink (112083)", "Volvo Canada (111260)", "Mazda Canada (131827)", "Conwest (181558)", "Questrade Inc. (168697)",
+				"Romspen Investment Corporation (169471)", "Scotiabank (129374)", "Association de la presse francophone APF (181164)", "AGA KHAN MUSEUM (178789)", "Special Olympics (164631)",
+				"Paramount Pictures", "Tarragon Theatre (84870)", "Shorelines Casinos (181822)", "Concordia University (107373)", "Rocky Mountaineer (138337)", "Unicef (25116)",
+				"OrganiGram (181949)", "Homes and Land Canada Corp (172845)", "AGF Investments (160474)", "Ernst & Young (132337)", "Royal Sun Alliance (174258)", "Opera Atelier",
+				"Ford Lincoln Corporate (144551)", "TEST-DFP5", "Chanel Inc. (121494)", "Universal Pictures Canada (144751)", "Westoba Credit Union",
+				"Chartered Professional Accountants of Ontario (157319)", "McGill University (181005)", "Telus Mobility Consumer (168664)", "Nunavut Tourism (181233)", "GAM - House Ads Site",
+				"East Port Properties Limited (173916", "1dea Design + Media Inc (181831)", "Toronto General & Western Hospital Foundation (168026)", "Refinitiv (181806)", "Purolator",
+				"Kingsway Carpet and Blinds (163709)", "BDO Canada (85217)", "Cayman Islands (127734)", "Royal Ontario Museum (71638)", "Sun Life Financial (166518)", "Dell Canada (144627)",
+				"DevMcGill (180057)", "Fonds FTQ (178720)", "Art Gallery Ontario (52136)", "Centre Rockland (181907)"
+			],
+			"operators": ["IN", "NOT IN"]
+		},
+		"Order": {
+			"filter_name": "order_name",
+			"values": ["UofT Rotman", "Canada's Greenest Employers April 2018", "Purpose Investment 2019 - MJJ Promotion", "OrganiGram_FY19_HS_OGR_Canada_Consideration_DIS_CA_CPQCPB",
+				"Brim Financial 2019 Sponsor Content & Acquisition", "Adx Mobile-TGAM", "Visit Scotland - March 2019", "Qtrade Avisowealth 2019 Sponsored Content Campiagn",
+				"15-19-0047 Clublink Contra 2019 Program", "1111 Atwater Batimo - Performance Campaign - Feb - Mar 2019", "National Gallery of Canada - Dave Heath Exhibition",
+				"BDC Awareness Campaign Sept 2018-March 2019", "Shorelines Casinos - 2019 Mar/Apr ES", "Fonds FTQ Brand Awareness",
+				"Royal Bank RBAM - Royal Trust - 19_GAM_ETF_AW-ETF_CAM_EN", "764-19-00077 - Westoba Credit Union - Maxa Financial - March 2019", "East Port Properties 2019",
+				"AGO AGO0209 Impressionism February 18 2019", "Kingsway Carpets - Hunter Douglas Promo", "Prospect - 2019 The Worx Campaign", "Canadian Bankers Association Jan./June 2019",
+				"Microsoft Podcast series", "Horizons ETFs - Stock pages", "Special Reports - GAM Home Page Promo 2018", "CPA of Ontario - 2019 Spring Emerging CHA-COR-1",
+				"Ken Shaw Lexus 2019 Managed Performance Campaign", "Mawer Global Managed Fund Jan-Feb 2019 Performance", "Richemont Cartier Leather Bags",
+				"Cannabis Professional Free Trial_Globe and Mail", "Climate Change_March 2019_Special Report", "Purolator - The Globe and Mail Small Business Summit",
+				"Thousand Islands Tourism - CPC 2019", "Cayman Islands - Dive Campaign 2019", "Ritz CPC Campaign Feb.-Apr. 2019", "Public Mobile  7820-IR-3323 January 10 2019",
+				"Rotman EMBA Spring 2019", "Schulich MBA - Winter/Spring Campaign 2019", "International Women's Day - Special Report - Mar 2019",
+				"GLB | 1656 - RMAB - Chevrolet - BC -ROBC - MARCH | BONUS | Buyer Hosted", "Marketing | TBOT | WTC (World Trade Centre) TAP Program",
+				"ROM - Wildlife Photographer of the Year - Programmatic -Nov  - March  19", "Mark Motors Group Feb-Mar 2019", "DB 2019 CA HOTELS.COM Q1 OLV HTS BRD 014",
+				"Ricepoint LMQ-MA2-IO1 January 21 2019", "CDW 002 Lenovo Intel Transforming Productivity Q1 2019", "Mackenzie - Mass Affluent - I-TII-MAC-005 - Jan-Dec 2019",
+				"Stand Up to Cancer 2019", "GLB | Sun Life Advisor Audience March 11 2019", "Red Bull Wings for Life 2019", "NTD TV Shen Yun Pre-roll", "Marketing | GLOBE CRUISE",
+				"Northwest Territories Tourism I Sponsor Content I February_April 2019 Campaign", "CIBC TFSA | 2019_CIB_DEP_157_&_DEP_158_000000_000000_CIBCDeposits_ Saving_TFSA and RRSP_Display",
+				"Scalar Decisions Cyber Security Event  February 1 2019", "**TGAM | HOUSE ADS | ALL", "ADF - Rendez-vous de la francophonie - Feb-Mar 2019",
+				"DevMcGill - Humaniti Montreal", "Korean Air  - Jan - Mar 2019", "BMO Small Business program", "King's Landing Tesla", "Innovative Medicines Canada - March-April 2019",
+				"a1819-0756  NYU - rfp - SPS SP19 - Professional Writing - Feb-Mar 2019", "15-19-00045 - Universal Pictures - The Mustang - Mar 2019",
+				"ROM | The Royal Arts of Jodhpur | Feb - Sept 2019", "GAM Marketing - The Gathering Sponsored Content DRIVERS", "Richard Ivey Business Education Sponsorship March 2019",
+				"GLB | Telus Home Solutions | PureFibre Q1 | Feb 19 2019", "AGFBrand Spring Digital - Fixed Income Funds February 11 2019", "Capilano University _Globe Response March 2019 Campaign",
+				"Institute of Communications | Paid Post Sponsorship | May 2018 - May 2019", "Sotheby's SIRC_Jan 21 to Dec 31 2019", "Canada's  Best Diversity Employers March 2019", "Dell Mid-Market 2020_Q1 SMB MID MARKET MEDIA_CANADA_BAU_MB",
+				"Thompson Rivers University I Dec 2018 To Spring 2019 Campaign", "GLB 1658 - RMAB - GMC - Central | MARCH | ONTARIO | BONUS | Buyer Hosted",
+				"830-19-00099 - BDO Canada LLP - Expand in US - Performance - Mar-Apr 2019", "COC – Prospecting - Performance Campaign - Feb-June 2019", "Evolve ETF's Digital 2019",
+				"Schulich MMKG - Winter/Spring Campaign 2019", "Peter Munk Cardiac Centre | Native Content Series | Nov 2018 - May 2019", "Cox and Palmer 2019", "Conwest HUB (POCO) Feb-March 2019",
+				"Rotman MFin Spring 2019", "Rotman GEMBA-HLS Spring 2019", "O-1G5BJ-R1  TD 2019 RESL Native Content 19_D_RL_RMO_CA_AW_EN_NAT March 4 2019", "BC Securities Commission - 2019 Fraud",
+				"Scotiabank_PHD_GBB_PS9GBB004 Redeemable GIC CPQDHM_FY19", "Schulich MBAN - Winter/Spring Campaign 2019", "O-1HXYG  Aga Khan Museum The Moon March 1 2019",
+				"UNICEF Performance CPC Mar-Apr 2019", "Canadian Stage | CPC | Jan - Mar 2019", "GAM Marketing - TBOT - GTAs Next Economic Engine", "GLB | 1643 - RMAB - Cadillac - Central - MARCH | ONTARIO | BONUS | Buyer Hosted",
+				"Schulich IMBA - Winter/Spring Campaign 2019", "DELL 2020_Q1 SMB MF DISPLAY_CANADA_BAU_SMB", "Tarragon 2018/2019 Season Performance Campaign - June 2018 - May 2019"
+			],
+			"operators": ["IN", "NOT IN"]
+		},
+		"Category": {
+			"filter_name": "adunit_name",
+			"values": ["Luxury Automotive", "Travel", "Food and Drink", "IT Services", "Financial Services", "Retirement Planning", "Advocacy", "Media and Communications", "Art and Culture"],
+			"operators": ["IN", "NOT IN"]
+		},
+		"Ad Unit": {
+			"filter_name": "adunit_name",
+			"values": [],
+			"operators": ["IN", "NOT IN"]
+		},
+		"Ad Position": {
+			"filter_name": "ad_pos",
+			"values": [],
+			"operators": ["EQUALS"]
+		},
+		"Click-Thru": {
+			"filter_name": "adunit_name",
+			"values": ["True", "False"],
+			"operators": ["EQUALS"]
+		}
 	}
 }

@@ -17,7 +17,8 @@ import {
 	InputAdornment,
 	IconButton,
 	Modal,
-	Collapse 
+	Collapse,
+	CircularProgress
 } from '@material-ui/core';
 import {
 	ExpandMore,
@@ -25,7 +26,8 @@ import {
 	AddCircle,
 	RemoveCircle,
 	Edit,
-	ExpandLess
+	ExpandLess,
+	Add
 } from '@material-ui/icons';
 import CountDisplay from './CountDisplay';
 import { Query } from 'react-apollo';
@@ -255,9 +257,9 @@ export default function AddRulePage(props) {
 		setAttribute(rule.attribute);
 		setFilterName(filterNames[rule.attribute]);
 		setOperator(rule.operator);
-		if (typeof(rule.values) === "string") {
+		if (attData[rule.attType][rule.attribute]["values"].length === 0) {
 			setFreeInput(true);
-			setValueStr(rule.values);
+			setValueStr(rule.values.toString());
 		} else {
 			setFreeInput(false);
 			setValues(attData[rule.attType][rule.attribute]["values"]);
@@ -345,8 +347,23 @@ export default function AddRulePage(props) {
 	return (
 		<Query query={query_segdef}>
 		{({ loading, error, data }) => {
-			if (loading) return <div>Fetching ...</div>;
-			if (error) return <div>Error</div>;
+			if (loading) {
+				return (
+					<div>
+						<div style={{margin: "auto", height: 40, width: 40, marginTop: 300, marginBottom: 16}}>
+							<CircularProgress style={{margin: "auto"}} />
+						</div>
+						<Typography align="center">Loading ...</Typography>
+					</div>
+				);
+			}
+			if (error) {
+				return (
+					<div style={{marginTop: 350}}>
+						<Typography align="center">Error</Typography>
+					</div>
+				)
+			}
 
 			if (editMode === 0) {
 				editMode = 1;
@@ -389,7 +406,7 @@ export default function AddRulePage(props) {
 			}
 
 			return (
-				<Box>
+				<Box height="100vh">
 					<Grid
 						container
 						direction="row"
@@ -431,6 +448,7 @@ export default function AddRulePage(props) {
 						direction="row"
 						justify="center"
 						alignItems="flex-start"
+						style={{height: '700px'}}
 					>
 						<Grid item xs={9}>
 							<Grid
@@ -464,30 +482,30 @@ export default function AddRulePage(props) {
 										</Box>
 										<Box justifyContent="flex-start" m={1}>
 											<Typography>DATA</Typography>
-											<List>
-												{attTypes.map(attType => (
-													<Box key={attType}>
-														<ListItem button onClick={event => expansionChanged(attType)} style={{width: "100%", background: "lightgrey"}}>
-															<ListItemText primary={attType} />
-															{selectedAttType === attType ? <ExpandLess /> : <ExpandMore />}
-														</ListItem>
-														<Collapse in={selectedAttType === attType} timeout="auto" unmountOnExit>
-															<List style={{width: "100%"}}>
-																{attributes[attType].map(att => (
-																	<ListItem
-																		key={att}
-																		button
-																		selected = {selectedAttribute === att}
-																		onClick = {event => attributeItemClicked(att)}
-																	>
-																		{att}
-																	</ListItem>
-																))}
-															</List>
-														</Collapse>
-													</Box>
-												))}
-											</List>
+												<List style={{maxHeight: 500, overflow: "auto"}}>
+													{attTypes.map(attType => (
+														<Box key={attType}>
+															<ListItem button onClick={event => expansionChanged(attType)} style={{width: "100%", background: "lightgrey"}}>
+																<ListItemText primary={attType} />
+																{selectedAttType === attType ? <ExpandLess /> : <ExpandMore />}
+															</ListItem>
+															<Collapse in={selectedAttType === attType} timeout="auto" unmountOnExit>
+																<List style={{width: "100%"}}>
+																	{attributes[attType].map(att => (
+																		<ListItem
+																			key={att}
+																			button
+																			selected = {selectedAttribute === att}
+																			onClick = {event => attributeItemClicked(att)}
+																		>
+																			{att}
+																		</ListItem>
+																	))}
+																</List>
+															</Collapse>
+														</Box>
+													))}
+												</List>
 										</Box>
 									</Box>
 								</Grid>
@@ -648,7 +666,7 @@ export default function AddRulePage(props) {
 														style={{width: "150px"}}
 														onClick={addRule}
 													>
-														<i className="material-icons">add</i>
+														<Add />
 														Add Rule
 													</Button>
 												</Box>

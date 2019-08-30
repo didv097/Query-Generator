@@ -6,19 +6,22 @@ import {
 	ResponsiveContainer
 } from 'recharts';
 import {
-	Grid, Box, Typography
+	Grid,
+	Box,
+	Typography,
+	CircularProgress
 } from '@material-ui/core';
 import { Query } from 'react-apollo';
 import gql from 'graphql-tag';
 
 import ops from '../operator.json';
 
-let totalCount = null;
+let totalCount;
 
 const query_total = `
 	query GetCounts {
 		reportCounts(
-			filter: {}, 
+			filter: {device_type: {NIN: ""}}, 
 			relativeDateRange: 90
 		){
 			uids 
@@ -75,8 +78,23 @@ export default function CountDisplay(props) {
 	return(
 		<Query query={query} >
 			{({ loading, error, data }) => {
-				if (loading) return <div>Fetching ...</div>;
-				if (error) return <div>Error</div>;
+				if (loading) {
+					return (
+						<div style={{height: '400px'}}>
+							<div style={{margin: "auto", height: 40, width: 40, marginTop: 300, marginBottom: 16}}>
+								<CircularProgress style={{margin: "auto"}} />
+							</div>
+							<Typography align="center">Loading ...</Typography>
+						</div>
+					);
+				}
+				if (error) {
+					return (
+						<div style={{marginTop: 338, marginBottom: 338}}>
+							<Typography align="center">Error</Typography>
+						</div>
+					)
+				}
 
 				const count = data.reportCounts;
 

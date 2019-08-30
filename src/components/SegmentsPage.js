@@ -18,7 +18,8 @@ import {
 	Modal,
 	List,
 	ListItem,
-	ListItemIcon
+	ListItemIcon,
+	CircularProgress
 } from '@material-ui/core';
 import {
 	Search,
@@ -203,8 +204,24 @@ export default function SegmentsPage() {
 	return (
 		<Query query={query_segdef}>
 		{({ loading, error, data }) => {
-			if (loading) return <div>Fetching ...</div>;
-			if (error) return <div>Error</div>;
+			if (loading) {
+				return (
+					<div>
+						<div style={{margin: "auto", height: 40, width: 40, marginTop: 300, marginBottom: 16}}>
+							<CircularProgress style={{margin: "auto"}} />
+						</div>
+						<Typography align="center">Loading ...</Typography>
+					</div>
+				);
+			}
+			if (error) {
+				return (
+					<div style={{marginTop: 350}}>
+						<Typography align="center">Error</Typography>
+					</div>
+				)
+			}
+
 			if (loadingData) {
 				segments = data.SegmentDefinitions;
 				for (let idx in segments) {
