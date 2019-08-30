@@ -17,7 +17,7 @@ import {
 	InputAdornment,
 	IconButton,
 	Modal,
-	Collapse
+	Collapse 
 } from '@material-ui/core';
 import {
 	ExpandMore,
