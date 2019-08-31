@@ -35,7 +35,13 @@ import gql from 'graphql-tag';
 
 import attData from '../data.json';
 import segCat from '../segment_categories.json';
-import ops from '../operator.json';
+import io_qo from '../operator.json';
+// let qo_io = [], ios = [];
+// for (let op in io_qo) {
+// 	qo_io[io_qo[op]] = op;
+// 	ios.push(op);
+// }
+// console.log(qo_io)
 
 const attTypes = [];
 const attributes = {};
@@ -96,7 +102,7 @@ function getPopulation(rules, days) {
 			if (rules[i].values.length > 1) {
 				f_vals = `[` + f_vals + `]`;
 			}
-			qRules.push(`${rules[i].filterName}: {${ops[rules[i].operator] === undefined ? rules[i].operator : ops[rules[i].operator]}: ${f_vals}}`);
+			qRules.push(`${rules[i].filterName}: {${io_qo[rules[i].operator] === undefined ? rules[i].operator : io_qo[rules[i].operator]}: ${f_vals}}`);
 		}
 		qFilter = `filter: {${qRules.join(',')}}`;
 	} else {
@@ -276,7 +282,7 @@ export default function AddRulePage(props) {
 			const rule = rules[idx];
 			ret += rule.filterName;
 			ret += `: {\n`;
-			ret += ops[rule.operator] === undefined ? rule.operator : ops[rule.operator];
+			ret += io_qo[rule.operator] === undefined ? rule.operator : io_qo[rule.operator];
 			ret += `: `;
 			if (rule.values.length > 1) {
 				ret += `[`;
@@ -448,7 +454,6 @@ export default function AddRulePage(props) {
 						direction="row"
 						justify="center"
 						alignItems="flex-start"
-						style={{height: '700px'}}
 					>
 						<Grid item xs={9}>
 							<Grid
@@ -482,7 +487,7 @@ export default function AddRulePage(props) {
 										</Box>
 										<Box justifyContent="flex-start" m={1}>
 											<Typography>DATA</Typography>
-												<List style={{maxHeight: 500, overflow: "auto"}}>
+												<List style={{maxHeight: 500, overflow: "auto", borderStyle: 'solid', borderColor: 'lightgray', borderWidth: 1}}>
 													{attTypes.map(attType => (
 														<Box key={attType}>
 															<ListItem button onClick={event => expansionChanged(attType)} style={{width: "100%", background: "lightgrey"}}>
