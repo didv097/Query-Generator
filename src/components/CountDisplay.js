@@ -61,7 +61,7 @@ export default function CountDisplay(props) {
 					return `"${i}"`;
 				}).join(",");
 				if (props.rules[i].values.length > 1) {
-					f_vals = `[` + f_vals + `]`;
+					f_vals = `[${f_vals}]`;
 				}
 				qRules.push(`${props.rules[i].filterName}: {${ops[props.rules[i].operator] === undefined ? props.rules[i].operator : ops[props.rules[i].operator]}: ${f_vals}}`);
 			}
@@ -69,7 +69,7 @@ export default function CountDisplay(props) {
 		} else {
 			qFilter = `filter: {device_type: {NIN: ""}}`;
 		}
-		const qDateFilter = `relativeDateRange: ` + props.days;
+		const qDateFilter = `relativeDateRange: ${props.days}`;
 		const qFields = `{uids, pageviews, impressions, visits}`;
 
 		setQuery(gql`query GetCounts { reportCounts(${qFilter}, ${qDateFilter})${qFields} }`);

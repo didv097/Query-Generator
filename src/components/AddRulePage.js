@@ -91,7 +91,6 @@ function getAttributeFromFilter(fil) {
 let population = 0;
 
 function getPopulation(rules, days) {
-	console.log('get population')
 	let qRules = [];
 	let qFilter;
 	if (rules.length > 0) {
