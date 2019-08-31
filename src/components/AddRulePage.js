@@ -467,7 +467,7 @@ export default function AddRulePage(props) {
 											<Chip label={days === 0 ? "No time selected": `Past ${days} days`} />
 											<Grid container spacing={1}>
 												<Grid item>
-													<Typography variant="caption">0 days</Typography>
+													<Typography variant="caption" onClick={event => {setDays(0)}}>0 days</Typography>
 												</Grid>
 												<Grid item xs>
 													<Slider
@@ -479,7 +479,7 @@ export default function AddRulePage(props) {
 													/>
 												</Grid>
 												<Grid item>
-													<Typography variant="caption">90 days</Typography>
+													<Typography variant="caption" onClick={event => {setDays(90)}}>90 days</Typography>
 												</Grid>
 											</Grid>
 										</Box>
@@ -565,6 +565,7 @@ export default function AddRulePage(props) {
 																		select
 																		value={selectedOperator}
 																		onChange={operatorChanged}
+																		style={{width: 120}}
 																	>
 																		{attData[selectedAttType][selectedAttribute]["operators"].map(op => (
 																			<MenuItem key={op} value={op}>
@@ -573,18 +574,22 @@ export default function AddRulePage(props) {
 																		))}
 																	</TextField>
 																</Grid>
-																<Grid item>
-																	<Input
-																		value={searchText}
-																		onChange={searchChanged}
-																		placeholder="Search values..."
-																		endAdornment={
-																			<InputAdornment position="end">
-																				<Search/>
-																			</InputAdornment>
-																		}
-																	/>
-																</Grid>
+																{
+																	freeInput ? null : (
+																		<Grid item>
+																			<Input
+																				value={searchText}
+																				onChange={searchChanged}
+																				placeholder="Search values..."
+																				endAdornment={
+																					<InputAdornment position="end">
+																						<Search/>
+																					</InputAdornment>
+																				}
+																			/>
+																		</Grid>
+																	)
+																}
 															</Grid>
 														</Grid>
 														<Grid item>
