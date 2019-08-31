@@ -58,14 +58,14 @@ export default function CountDisplay(props) {
 			for (let i in props.rules) {
 				let f_vals;
 				f_vals = props.rules[i].values.map((i) => {
-					return `"` + i + `"`;
-				}).join(',');
+					return `"${i}"`;
+				}).join(",");
 				if (props.rules[i].values.length > 1) {
 					f_vals = `[` + f_vals + `]`;
 				}
 				qRules.push(`${props.rules[i].filterName}: {${ops[props.rules[i].operator] === undefined ? props.rules[i].operator : ops[props.rules[i].operator]}: ${f_vals}}`);
 			}
-			qFilter = `filter: {${qRules.join(',')}}`;
+			qFilter = `filter: {${qRules.join(",")}}`;
 		} else {
 			qFilter = `filter: {device_type: {NIN: ""}}`;
 		}
@@ -80,7 +80,7 @@ export default function CountDisplay(props) {
 			{({ loading, error, data }) => {
 				if (loading) {
 					return (
-						<div style={{height: '400px'}}>
+						<div style={{height: "400px"}}>
 							<div style={{margin: "auto", height: 40, width: 40, marginTop: 300, marginBottom: 16}}>
 								<CircularProgress style={{margin: "auto"}} />
 							</div>

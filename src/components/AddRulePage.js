@@ -74,7 +74,7 @@ function getAttributeType(att) {
 			return attTypes[typ];
 		}
 	}
-	console.log("No such attribute : " + att);
+	console.log(`No such attribute : ${att}`);
 	return att;
 }
 
@@ -84,31 +84,32 @@ function getAttributeFromFilter(fil) {
 			return a;
 		}
 	}
-	console.log("No such filter : " + fil);
+	console.log(`No such filter : ${fil}`);
 	return fil;
 }
 
 let population = 0;
 
 function getPopulation(rules, days) {
+	console.log('get population')
 	let qRules = [];
 	let qFilter;
 	if (rules.length > 0) {
 		for (let i in rules) {
 			let f_vals;
 			f_vals = rules[i].values.map((i) => {
-				return `"` + i + `"`;
-			}).join(',');
+				return `"${i}"`;
+			}).join(",");
 			if (rules[i].values.length > 1) {
-				f_vals = `[` + f_vals + `]`;
+				f_vals = `[${f_vals}]`;
 			}
 			qRules.push(`${rules[i].filterName}: {${io_qo[rules[i].operator] === undefined ? rules[i].operator : io_qo[rules[i].operator]}: ${f_vals}}`);
 		}
-		qFilter = `filter: {${qRules.join(',')}}`;
+		qFilter = `filter: {${qRules.join(",")}}`;
 	} else {
 		qFilter = `filter: {device_type: {NIN: ""}}`;
 	}
-	const qDateFilter = `relativeDateRange: ` + days;
+	const qDateFilter = `relativeDateRange: ${days}`;
 	const qFields = `{uids, pageviews, impressions, visits}`;
 
 	const query_total = `query GetCounts { reportCounts(${qFilter}, ${qDateFilter})${qFields} }`;
@@ -246,7 +247,7 @@ export default function AddRulePage(props) {
 	}
 	const addRule = () => {
 		newRule = {
-			index: prevRuleIndex++,
+			index: prevRuleIndex ++,
 			attType: selectedAttType,
 			filterName: selectedFilterName,
 			attribute: selectedAttribute,
@@ -280,15 +281,13 @@ export default function AddRulePage(props) {
 		let ret = `{\n`;
 		for (const idx in rules) {
 			const rule = rules[idx];
-			ret += rule.filterName;
-			ret += `: {\n`;
-			ret += io_qo[rule.operator] === undefined ? rule.operator : io_qo[rule.operator];
-			ret += `: `;
+			ret += `${rule.filterName}: {
+				${io_qo[rule.operator] === undefined ? rule.operator : io_qo[rule.operator]}: `;
 			if (rule.values.length > 1) {
 				ret += `[`;
 			}
 			for (const subidx in rule.values) {
-				ret += `"` + rule.values[subidx] + `",`;
+				ret += `"${rule.values[subidx]}",`;
 			}
 			ret = ret.substr(0, ret.length - 1);
 			if (rule.values.length > 1) {
@@ -296,7 +295,7 @@ export default function AddRulePage(props) {
 			}
 			ret += `\n},\n`;
 		}
-		ret = ret.substr(0, ret.length - 2) + `\n}`;
+		ret = `${ret.substr(0, ret.length - 1)}\n}`;
 		return ret;
 	}
 	const onSubmitClicked = () => {
@@ -305,12 +304,12 @@ export default function AddRulePage(props) {
 			mutation = `
 				mutation UpdateSegment {
 					UpdateSegmentDefinitionById(
-						id: "` + segmentID + `",
-						name: "` + segmentName + `",
-						category: "` + categoryName + `",
+						id: "${segmentID}",
+						name: "${segmentName}",
+						category: "${categoryName}",
 						subcategory: "",
-						description: "` + description + `",
-						seg_def: ` + rulesToString() + `,
+						description: "${description}",
+						seg_def: ${rulesToString()},
 						is_active: "Y",
 					)
 				}
@@ -319,12 +318,12 @@ export default function AddRulePage(props) {
 			mutation = `
 				mutation CreateSegment {
 					CreateSegmentDefinition(
-						name: "` + segmentName + `",
-						category: "` + categoryName + `",
+						name: "${segmentName}",
+						category: "${categoryName}",
 						subcategory: "",
-						description: "` + description + `",
-						seg_def: ` + rulesToString() + `,
-						population: ` + population + `
+						description: "${description}",
+						seg_def: ${rulesToString()},
+						population: ${population}
 					)
 				}
 			`;
@@ -341,7 +340,7 @@ export default function AddRulePage(props) {
 				window.location.href = "/SegmentsPage";
 			})
 			.catch(e => {
-				console.log("Submit error : " + e);
+				console.log(`Submit error : ${e}`);
 			})
 	}
 
@@ -377,13 +376,13 @@ export default function AddRulePage(props) {
 				for (let idx in segments) {
 					let temp;
 					if (segments[idx].id === segmentID) {
-						eval("temp = " + segments[idx].rule);
+						eval(`temp = ${segments[idx].rule}`);
 						for (let subidx in temp) {
 							const temp1 = getAttributeFromFilter(subidx);
 							const temp2 = getAttributeType(temp1);
 							for (let op in temp[subidx]) {
 								rulesFromList.push({
-									index: prevRuleIndex++,
+									index: prevRuleIndex ++,
 									attType: temp2,
 									attribute: temp1,
 									filterName: subidx,
@@ -466,7 +465,7 @@ export default function AddRulePage(props) {
 									<Box justifyContent="flex-start" m={1}>
 										<Box justifyContent="flex-start" m={1} mb={3}>
 											<Typography>TIME</Typography>
-											<Chip label={days === 0 ? "No time selected": "Past " + days + " days"} />
+											<Chip label={days === 0 ? "No time selected": `Past ${days} days`} />
 											<Grid container spacing={1}>
 												<Grid item>
 													<Typography variant="caption">0 days</Typography>
@@ -487,7 +486,7 @@ export default function AddRulePage(props) {
 										</Box>
 										<Box justifyContent="flex-start" m={1}>
 											<Typography>DATA</Typography>
-												<List style={{maxHeight: 500, overflow: "auto", borderStyle: 'solid', borderColor: 'lightgray', borderWidth: 1}}>
+												<List style={{maxHeight: 500, overflow: "auto", borderStyle: "solid", borderColor: "lightgray", borderWidth: 1}}>
 													{attTypes.map(attType => (
 														<Box key={attType}>
 															<ListItem button onClick={event => expansionChanged(attType)} style={{width: "100%", background: "lightgrey"}}>
@@ -517,7 +516,7 @@ export default function AddRulePage(props) {
 								<Grid item xs={9} m={1}>
 									<Box justifyContent="flex-start" m={1} mb={3}>
 										<Typography>RULES</Typography>
-										<Box style={{borderStyle: 'solid', borderWidth: 1, borderColor: 'lightgray'}}>
+										<Box style={{borderStyle: "solid", borderWidth: 1, borderColor: "lightgray"}}>
 											{rules.length === 0 ? (
 												<Box p={4}>
 													<Typography style={{textAlign: "center"}}>Rules will appear here after being created in the ADD RULE section below</Typography>
@@ -527,9 +526,9 @@ export default function AddRulePage(props) {
 													{rules.map(rule => (
 														<Box key={rule.index} m={1} p={0} style={{backgroundColor: "#bbb", display: "inline-block"}}>
 															<Typography variant="caption" style={{margin: "0"}}>
-																<strong>{rule.attribute + " "}</strong>
-																{rule.operator}
-																<strong>{" " + rule.values}</strong>
+																<strong>{rule.attribute}</strong>
+																{` ${rule.operator} `}
+																<strong>{rule.values.toString()}</strong>
 															</Typography>
 															<IconButton size="small" style={{margin: "0"}} onClick={() => removeRule(rule)}>
 																<Edit />
@@ -543,7 +542,7 @@ export default function AddRulePage(props) {
 									<Box justifyContent="flex-start" m={1}>
 										<Typography>ADD RULE</Typography>
 
-										<Box style={{borderStyle: 'solid', borderWidth: 1, borderColor: 'lightgray', height: 400}}>
+										<Box style={{borderStyle: "solid", borderWidth: 1, borderColor: "lightgray", height: 400}}>
 											{days === 0 || selectedAttribute === "" ? (
 												<Box style={{padding: "40px", paddingTop: "170px"}}>
 													<Typography variant="h6" style={{textAlign: "center"}}>Select a time frame and data attribute from the left to begin</Typography>
@@ -701,7 +700,7 @@ export default function AddRulePage(props) {
 						open={modalState === 1}
 					>
 						<Box
-							style={{borderStyle: 'solid', borderWidth: 1, borderColor: 'lightgray', textAlign: "center", width: "400px", position: "absolute", left: "50%", top: "50%", marginLeft: "-200px", marginTop: "-120px", background: 'white'}}
+							style={{borderStyle: "solid", borderWidth: 1, borderColor: "lightgray", textAlign: "center", width: "400px", position: "absolute", left: "50%", top: "50%", marginLeft: "-200px", marginTop: "-120px", background: "white"}}
 						>
 							<Box m={3}>
 								<Grid container direction="column">
@@ -710,9 +709,9 @@ export default function AddRulePage(props) {
 									</Grid>
 									<Grid item>
 										<Typography style={{margin: "10px"}}>
-											<strong>{newRule.attribute + " "}</strong>
-											{newRule.operator}
-											<strong>{" " + newRule.values}</strong>
+											<strong>{newRule.attribute}</strong>
+											{` ${newRule.operator} `}
+											<strong>{newRule.values.toString()}</strong>
 										</Typography>
 									</Grid>
 									<Grid item>
@@ -725,7 +724,7 @@ export default function AddRulePage(props) {
 					<Modal
 						open={modalState === 2}
 					>
-						<Box style={{borderStyle: 'solid', borderWidth: 1, borderColor: 'lightgray', width: "600px", position: "absolute", left: "50%", top: "50%", marginLeft: "-300px", marginTop: "-350px", background: 'white'}}>
+						<Box style={{borderStyle: "solid", borderWidth: 1, borderColor: "lightgray", width: "600px", position: "absolute", left: "50%", top: "50%", marginLeft: "-300px", marginTop: "-350px", background: "white"}}>
 							<Box m={3}>
 								<Grid
 									container
@@ -783,9 +782,9 @@ export default function AddRulePage(props) {
 													{rules.map(rule => (
 														<Box key={rule.index} m={1} p={0} style={{backgroundColor: "#bbb", display: "inline-block"}}>
 															<Typography variant="caption" style={{margin: "0"}}>
-																<strong>{rule.attribute + " "}</strong>
-																{rule.operator}
-																<strong>{" " + rule.values}</strong>
+																<strong>{rule.attribute}</strong>
+																{` ${rule.operator} `}
+																<strong>{rule.values.toString()}</strong>
 															</Typography>
 														</Box>
 													))}

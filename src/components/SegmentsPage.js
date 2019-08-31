@@ -65,19 +65,19 @@ function getAttributeFromFilter(fil) {
 			return a;
 		}
 	}
-	console.log("No such filter : " + fil);
+	console.log(`No such filter : ${fil}`);
 	return fil;
 }
 
 function getRulesFromSegment(s) {
 	let rul = [];
 	let temp;
-	eval("temp = " + s.rule);
+	eval(`temp = ${s.rule}`);
 	for (let subidx in temp) {
 		const temp1 = getAttributeFromFilter(subidx);
 		for (let op in temp[subidx]) {
 			rul.push({
-				index: ++rulIdx,
+				index: ++ rulIdx,
 				attribute: temp1,
 				filterName: subidx,
 				operator: op,
@@ -118,11 +118,11 @@ export default function SegmentsPage() {
 	}
 	const formatPopulation = p => {
 		if (p >= 1000000000) {
-			return Math.floor(p / 100000000)/10 + "b";
+			return `${Math.floor(p / 100000000)/10}b`;
 		} else if (p >= 1000000) {
-			return Math.floor(p / 100000)/10 + "m";
+			return `${Math.floor(p / 100000)/10}m`;
 		} else if (p >= 1000) {
-			return Math.floor(p / 100)/10 + "k";
+			return `${Math.floor(p / 100)/10}k`;
 		}
 		return p;
 	}
@@ -130,13 +130,13 @@ export default function SegmentsPage() {
 		setAnchorEl(null);
 	}
 	const editSegmentClicked = (id) => {
-		window.location.href = "/edit/" + id;
+		window.location.href = `/edit/${id}`;
 	}
 	const deleteSegmentClicked = (id) => {
 		const mutation = `
 			mutation DeleteSegment {
 				DeleteSegmentDefinitionById(
-					id: "` + id + `"
+					id: "${id}"
 				)
 			}
 		`;
@@ -151,7 +151,7 @@ export default function SegmentsPage() {
 				window.location.href = "/SegmentsPage";
 			})
 			.catch(e => {
-				console.log("Delete error : " + e);
+				console.log(`Delete error : ${e}`);
 			})
 	}
 	const viewAllRules = (rules) => {
@@ -316,9 +316,9 @@ export default function SegmentsPage() {
 												{
 													(seg.rules.length === 1) ? (
 														<Typography variant="caption">
-															<strong>{seg.rules[0].attribute + " "}</strong>
-															{seg.rules[0].operator}
-															<strong>{" " + seg.rules[0].values}</strong>
+															<strong>{seg.rules[0].attribute}</strong>
+															{` ${seg.rules[0].operator} `}
+															<strong>{seg.rules[0].values.toString()}</strong>
 														</Typography>
 													) : (
 														<Grid
@@ -326,9 +326,9 @@ export default function SegmentsPage() {
 															direction="column"
 														>
 															<Typography variant="caption">
-																<strong>{seg.rules[0].attribute + " "}</strong>
-																{seg.rules[0].operator}
-																<strong>{" " + seg.rules[0].values}</strong>
+																<strong>{seg.rules[0].attribute}</strong>
+																{` ${seg.rules[0].operator} `}
+																<strong>{seg.rules[0].values.toString()}</strong>
 																+{seg.rules.length - 1} other values
 															</Typography>
 															<Button
@@ -367,7 +367,7 @@ export default function SegmentsPage() {
 						onClose={popClosed}
 					>
 					{selectedID === null ? null : (
-						<Box style={{borderStyle: 'solid', borderWidth: 1, borderColor: 'lightgray'}}>
+						<Box style={{borderStyle: "solid", borderWidth: 1, borderColor: "lightgray"}}>
 							<List>
 								<ListItem button onClick={exportCSVClicked}>
 									<ListItemIcon>
@@ -396,13 +396,13 @@ export default function SegmentsPage() {
 						open={currentRules !== null}
 						onClose={modalClose}
 					>
-						<Box style={{borderStyle: 'solid', borderWidth: 1, borderColor: 'lightgray', textAlign: "center", width: "400px", position: "absolute", left: "50%", top: "50%", padding: "16px", marginLeft: "-200px", marginTop: "-100px", background: 'white'}}>
+						<Box style={{borderStyle: "solid", borderWidth: 1, borderColor: "lightgray", textAlign: "center", width: "400px", position: "absolute", left: "50%", top: "50%", padding: "16px", marginLeft: "-200px", marginTop: "-100px", background: "white"}}>
 							{currentRules === null ? (<Typography>No rules</Typography>) : (
 								currentRules.map(rule => (
 									<Typography key={rule.index} variant="caption">
-										<strong>{rule.attribute + " "}</strong>
-										{rule.operator}
-										<strong>{" " + rule.values}</strong>
+										<strong>{rule.attribute}</strong>
+										{` ${rule.operator} `}
+										<strong>{rule.values.toString()}</strong>
 										<br/>
 									</Typography>
 								))
