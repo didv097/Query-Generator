@@ -122,7 +122,13 @@ function getPopulation(rules, days) {
 	fetch(url, opts)
 		.then(res => res.json())
 		.then(res => {
-			population = res.data.reportCounts.uids;
+			if (res.errors) {
+				console.error(res.errors[0].message);
+				return false;
+			} else {
+				population = res.data.reportCounts.uids;
+				return true;
+			}
 		});
 }
 
