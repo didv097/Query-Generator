@@ -93,10 +93,18 @@ export default function CountDisplay(props) {
 						<div style={{marginTop: 338, marginBottom: 338}}>
 							<Typography align="center">Error</Typography>
 						</div>
-					)
+					);
 				}
 
 				const count = data.reportCounts;
+
+				if (count === undefined) {
+					return (
+						<div style={{marginTop: 338, marginBottom: 338}}>
+							<Typography align="center">Error</Typography>
+						</div>
+					);
+				}
 
 				return (
 					<Box m={1}>
