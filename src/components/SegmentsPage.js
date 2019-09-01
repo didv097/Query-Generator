@@ -151,7 +151,7 @@ export default function SegmentsPage() {
 				window.location.href = "/SegmentsPage";
 			})
 			.catch(e => {
-				console.log(`Delete error : ${e}`);
+				console.error(`Delete error : ${e}`);
 			})
 	}
 	const viewAllRules = (rules) => {

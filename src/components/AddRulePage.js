@@ -345,7 +345,7 @@ export default function AddRulePage(props) {
 				window.location.href = "/SegmentsPage";
 			})
 			.catch(e => {
-				console.log(`Submit error : ${e}`);
+				console.error(`Submit error : ${e}`);
 			})
 	}
 
