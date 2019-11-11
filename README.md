@@ -3,7 +3,7 @@
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
 
-### `java -jar adc_gql-0.0.6-SNAPSHOT-test.jar`
+### `java -jar gql-test.jar`
 
 Runs the GraphQl
 
