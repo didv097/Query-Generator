@@ -24,7 +24,7 @@
     "react-router-dom": "^5.0.1",
     "react-scripts": "3.0.1",
     "recharts": "^1.6.2",
-    "set-value": "^3.0.1"
+    "set-value": "^4.0.1"
   },
   "scripts": {
     "start": "react-scripts start",
